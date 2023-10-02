@@ -1,0 +1,11 @@
+LICENSE.txt
+README.md
+pyproject.toml
+cross_model_information.egg-info/PKG-INFO
+cross_model_information.egg-info/SOURCES.txt
+cross_model_information.egg-info/dependency_links.txt
+cross_model_information.egg-info/requires.txt
+cross_model_information.egg-info/top_level.txt
+schema/__init__.py
+schema/myfunctions.py
+tests/test_myfunctions.py

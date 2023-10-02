@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cross-model-information"
+version = "0.0.1"
+authors = [
+  { name="darellchua2", email="darellchua2@gmail.com" },
+]
+description = "Used to intepret XMI Schema"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "numpy"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/darellchua2/xmi-schema"
+"Bug Tracker" = "https://github.com/darellchua2/xmi-schema/issues"

@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: cross-model-information
+Version: 0.0.1
+Summary: Used to intepret XMI Schema
+Author-email: darellchua2 <darellchua2@gmail.com>
+Project-URL: Homepage, https://github.com/darellchua2/xmi-schema
+Project-URL: Bug Tracker, https://github.com/darellchua2/xmi-schema/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy
+
+I used the followinfg link for reference
+https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f
