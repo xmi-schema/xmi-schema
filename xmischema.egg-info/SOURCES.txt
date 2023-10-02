@@ -1,0 +1,11 @@
+LICENSE.txt
+README.md
+setup.cfg
+setup.py
+schema/__init__.py
+schema/myfunctions.py
+xmischema.egg-info/PKG-INFO
+xmischema.egg-info/SOURCES.txt
+xmischema.egg-info/dependency_links.txt
+xmischema.egg-info/requires.txt
+xmischema.egg-info/top_level.txt

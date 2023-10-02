@@ -1,6 +1,6 @@
 from distutils.core import setup
 setup(
-    name='xmi-schema',         # How you named your package folder (MyLib)
+    name='xmischema',         # How you named your package folder (MyLib)
     packages=['schema'],   # Chose the same as "name"
     version='0.0.1',      # Start with a small number and increase it with every change you make
     # Chose a license from here: https://help.github.com/articles/licensing-a-repository
@@ -10,9 +10,9 @@ setup(
     author='civiltekk',                   # Type in your name
     author_email='civiltekksg@gmail.com',      # Type in your E-Mail
     # Provide either the link to your github or to your website
-    url='https://github.com/user/reponame',
+    url='https://github.com/darellchua2/xmi-schema',
     # I explain this later on
-    download_url='https://github.com/user/reponame/archive/v_01.tar.gz',
+    download_url='https://github.com/darellchua2/xmi-schema/archive/refs/tags/0.0.1.tar.gz',
     # Keywords that define your package best
     keywords=['XMI', 'Cross Model Information', 'Structural Analysis'],
     install_requires=[            # I get to this in a second
