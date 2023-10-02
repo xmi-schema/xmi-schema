@@ -1,0 +1,11 @@
+LICENSE.txt
+README.md
+setup.cfg
+setup.py
+crossmodelinformation.egg-info/PKG-INFO
+crossmodelinformation.egg-info/SOURCES.txt
+crossmodelinformation.egg-info/dependency_links.txt
+crossmodelinformation.egg-info/requires.txt
+crossmodelinformation.egg-info/top_level.txt
+schema/__init__.py
+schema/myfunctions.py
