@@ -1,0 +1,11 @@
+LICENSE.txt
+README.md
+pyproject.toml
+src/xmi/__init__.py
+src/xmi/myfunctions.py
+src/xmi.egg-info/PKG-INFO
+src/xmi.egg-info/SOURCES.txt
+src/xmi.egg-info/dependency_links.txt
+src/xmi.egg-info/requires.txt
+src/xmi.egg-info/top_level.txt
+tests/test_myfunctions.py

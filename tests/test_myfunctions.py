@@ -1,4 +1,4 @@
-from schema import myfunctions
+from src.xmi import myfunctions
 
 
 def test_haversine():
