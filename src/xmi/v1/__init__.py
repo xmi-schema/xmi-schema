@@ -1,0 +1,2 @@
+from .xmi_base import XmiBase
+from .xmi_structural_point_connection import XmiStructuralPointConnection
