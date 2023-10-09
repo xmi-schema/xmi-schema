@@ -2,7 +2,8 @@ import uuid
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
 from .xmi_base import XmiBase
-from .xmi_enums import XmiStructuralCurveMemberTypeEnum, XmiStructuralCurveMemberSegmentEnum
+from .enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberTypeEnum
+from .enums.xmi_enums import XmiSegmentEnum
 
 
 class XmiStructuralCurveMember(XmiBase):
@@ -19,10 +20,10 @@ class XmiStructuralCurveMember(XmiBase):
                  begin_node,
                  end_node,
                  length,
-                 id=None,
-                 name=None,
-                 description=None,
-                 ifcguid=None
+                 id: str = None,
+                 name: str = None,
+                 description: str = None,
+                 ifcguid: str = None
                  ):
 
         uuid_value = uuid.uuid4()
@@ -119,7 +120,7 @@ class XmiStructuralCurveMember(XmiBase):
                 "Segments should be of type list")
 
         for item in value:
-            if not isinstance(item, XmiStructuralCurveMemberSegmentEnum):
+            if not isinstance(item, XmiSegmentEnum):
                 raise ValueError(
                     f"All items must be instances of XmiStructuralCurveMemberSegmentEnum, got {type(item)} instead.")
         self._Segments = value

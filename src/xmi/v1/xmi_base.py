@@ -2,7 +2,7 @@ class XmiBase():
 
     __slots__ = ('_ID', '_Name', '_IFCGUID', '_Description')
 
-    def __init__(self, id=None, name=None, ifcguid=None, description=None):
+    def __init__(self, id: str = None, name: str = None, ifcguid: str = None, description: str = None):
         self.ID = id  # Calls the setter
         self.Name = name
         self.IFCGUID = ifcguid

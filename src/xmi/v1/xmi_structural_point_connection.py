@@ -6,7 +6,14 @@ class XmiStructuralPointConnection(XmiBase):
     __slots__ = XmiBase.__slots__ + ('_Storey', '_X',
                                      '_Y', '_Z')
 
-    def __init__(self, x, y, z, id=None, name=None, description=None, ifcguid=None):
+    def __init__(self,
+                 x: float,
+                 y: float,
+                 z: float,
+                 id: str = None,
+                 name: str = None,
+                 description: str = None,
+                 ifcguid: str = None):
         uuid_value = uuid.uuid4()
         id = id if id else uuid_value
         name = name if name else "{class_name}_{uuid_value}".format(

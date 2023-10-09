@@ -1,0 +1,38 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run XmiParser (Windows)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/xmi/v1/xmi_parser.py",
+      "python": "${workspaceFolder}/myvenv3.10/Scripts/python.exe",
+      "env": {},
+      "cwd": "${workspaceFolder}/src/xmi/v1"
+    },
+    {
+      "name": "Run XmiParser (Linux)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/xmi/v1/xmi_parser.py",
+      "python": "${workspaceFolder}/myvenv3.10/bin/python",
+      "env": {},
+      "cwd": "${workspaceFolder}/src/xmi/v1"
+    },
+    {
+      "name": "Python: pytest",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "python": "${workspaceFolder}/myvenv3.10/Scripts/python.exe", // for macOS/Linux
+      // "pythonPath": "${workspaceFolder}/myvenv3.10/Scripts/python.exe", // for Windows
+      "args": [
+        "-vv", // optional, for verbose output
+        "${workspaceFolder}/tests/xmi/v1/test_xmi_parser.py"
+      ]
+    }
+  ]
+}
