@@ -1,25 +1,25 @@
-from enum import Enum
+from .xmi_enums import XmiEnum
 
 
-class XmiStructuralSurfaceMemberTypeEnum(Enum):
-    SLAB = "Beam"
-    WALL = "Column"
-    PAD_FOOTING = "Bracing"
-    STRIP_FOOTING = "Other"
-    PILECAP = "Pilecap"  # i think this shouldn't be here
-    ROOF_PANEL = "RoofPanel"  # this sounds like archi. should not be here
-    WALL_PANEL = "WallPanel"  # this sounds like archi. should not be here
-    RAFT = "Raft"  # For future changes to be shifted to foundation type elements
+class XmiStructuralSurfaceMemberTypeEnum(XmiEnum):
+    SLAB = 1, "Beam"
+    WALL = 2, "Column"
+    PAD_FOOTING = 3, "Bracing"
+    STRIP_FOOTING = 4, "Other"
+    PILECAP = 5, "Pilecap"  # i think this shouldn't be here
+    ROOF_PANEL = 6, "RoofPanel"  # this sounds like archi. should not be here
+    WALL_PANEL = 7, "WallPanel"  # this sounds like archi. should not be here
+    RAFT = 8, "Raft"  # For future changes to be shifted to foundation type elements
 
 
-class XmiStructuralSurfaceMemberSpanTypeEnum(Enum):
-    ONE_WAY = "OneWay"
-    TWO_WAY = "TwoWay"
+class XmiStructuralSurfaceMemberSpanTypeEnum(XmiEnum):
+    ONE_WAY = 1, "OneWay"
+    TWO_WAY = 2, "TwoWay"
 
 
-class XmiStructuralSurfaceMemberSystemPlaneEnum(Enum):
-    BOTTOM = "Bottom"
-    TOP = "Top"
-    MIDDLE = "Middle"
-    LEFT = "Left"
-    RIGHT = "Right"
+class XmiStructuralSurfaceMemberSystemPlaneEnum(XmiEnum):
+    BOTTOM = 1, "Bottom"
+    TOP = 2, "Top"
+    MIDDLE = 3, "Middle"
+    LEFT = 4, "Left"
+    RIGHT = 5, "Right"

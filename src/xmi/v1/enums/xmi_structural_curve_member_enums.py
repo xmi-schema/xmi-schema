@@ -1,17 +1,8 @@
-from enum import Enum
+from .xmi_enums import XmiEnum
 
 
-class XmiStructuralCurveMemberTypeEnum(Enum):
-    BEAM = "Beam"
-    COLUMN = "Column"
-    BRACING = "Bracing"
-    OTHER = "Other"
-
-
-class XmiSegmentEnum(Enum):
-    LINE = "Line"
-    CIRCULAR_ARC = "Circular Arc"
-    PARABOLIC_ARC = "Parabolic Arc"
-    BEZIER = "Bezier"
-    SPLINE = "Spline"
-    OTHERS = "Others"
+class XmiStructuralCurveMemberTypeEnum(XmiEnum):
+    BEAM = 1, "Beam"
+    COLUMN = 2, "Column"
+    BRACING = 3, "Bracing"
+    OTHER = 4, "Other"

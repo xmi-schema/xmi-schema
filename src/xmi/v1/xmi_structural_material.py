@@ -165,8 +165,8 @@ class XmiStructuralMaterial(XmiBase):
 
     @Type.setter
     def Type(self, value):
-        if not isinstance(value, str):
-            raise TypeError("Type should be an str")
+        if value is not None and not isinstance(value, str):
+            raise TypeError("Type should be an str or None")
         self._Type = value
 
     @property
@@ -175,10 +175,11 @@ class XmiStructuralMaterial(XmiBase):
 
     @Grade.setter
     def Grade(self, value):
-        if not isinstance(value, float):
-            raise TypeError(
-                "Grade should be of type float")
+        if value is not None and not isinstance(value, float):
+            raise TypeError("Grade should be of type float or None")
         self._Grade = value
+
+    # Similarly, for other properties:
 
     @property
     def UnitWeight(self):
@@ -186,9 +187,8 @@ class XmiStructuralMaterial(XmiBase):
 
     @UnitWeight.setter
     def UnitWeight(self, value):
-        if not isinstance(value, float):
-            raise TypeError(
-                "UnitWeight should be of type float")
+        if value is not None and not isinstance(value, float):
+            raise TypeError("UnitWeight should be of type float or None")
         self._UnitWeight = value
 
     @property
@@ -197,9 +197,8 @@ class XmiStructuralMaterial(XmiBase):
 
     @EModulus.setter
     def EModulus(self, value):
-        if not isinstance(value, float):
-            raise TypeError(
-                "EModulus should be of type float")
+        if value is not None and not isinstance(value, float):
+            raise TypeError("EModulus should be of type float or None")
         self._EModulus = value
 
     @property
@@ -208,9 +207,8 @@ class XmiStructuralMaterial(XmiBase):
 
     @GModulus.setter
     def GModulus(self, value):
-        if not isinstance(value, float):
-            raise TypeError(
-                "GModulus should be of type float")
+        if value is not None and not isinstance(value, float):
+            raise TypeError("GModulus should be of type float or None")
         self._GModulus = value
 
     @property
@@ -219,9 +217,8 @@ class XmiStructuralMaterial(XmiBase):
 
     @PoissonRatio.setter
     def PoissonRatio(self, value):
-        if not isinstance(value, float):
-            raise TypeError(
-                "PoissonRatio should be of type float")
+        if value is not None and not isinstance(value, float):
+            raise TypeError("PoissonRatio should be of type float or None")
         self._PoissonRatio = value
 
     @property
@@ -230,7 +227,7 @@ class XmiStructuralMaterial(XmiBase):
 
     @ThermalCoefficient.setter
     def ThermalCoefficient(self, value):
-        if not isinstance(value, (int, float)):
+        if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
-                "ThermalCoefficient should be of type float or integer")
+                "ThermalCoefficient should be of type float, integer, or None")
         self._ThermalCoefficient = value
