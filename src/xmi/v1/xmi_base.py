@@ -1,7 +1,14 @@
 import uuid
+from abc import ABC, abstractmethod
 
 
-class XmiBase():
+class XmiAbstract(ABC):
+    @abstractmethod
+    def from_dict(self, json_path: str):
+        pass
+
+
+class XmiBase(XmiAbstract):
 
     __slots__ = ('_ID', '_Name', '_IFCGUID', '_Description')
 

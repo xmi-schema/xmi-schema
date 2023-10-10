@@ -1,11 +1,10 @@
-import uuid
-
 from .enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 from .xmi_base import XmiBase
 
 
 class XmiStructuralMaterial(XmiBase):
-    __slots__ = XmiBase.__slots__ + ('_Type', '_Grade',
+    __slots__ = XmiBase.__slots__ + ('_Type',
+                                     '_Grade',
                                      '_UnitWeight',
                                      '_EModulus',
                                      '_GModulus',
@@ -28,8 +27,10 @@ class XmiStructuralMaterial(XmiBase):
                  ifcguid: str = None,
                  **kwargs
                  ):
-
-        super().__init__(**kwargs)
+        if not kwargs:
+            super().__init__(id=id, name=name, ifcguid=ifcguid, description=description)
+        else:
+            super().__init__(**kwargs)
         attributes = [
             ('Type', kwargs.get('Type', material_type)),
             ('Grade', kwargs.get('Grade', grade)),
@@ -133,15 +134,12 @@ class XmiStructuralMaterial(XmiBase):
         for attr in cls.attributes_needed:
             if attr not in data:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
+                processed_data[attr] = None
 
         # for type conversion when reading dictionary
         try:
-            if "Type" in processed_data:
-                processed_data["Type"] = XmiStructuralMaterialTypeEnum.from_attribute(
-                    data['Type'])
-            else:
-                raise KeyError(
-                    "The key 'Type' is missing in the data dictionary.")
+            processed_data["Type"] = XmiStructuralMaterialTypeEnum.from_attribute(
+                data['Type'])
         except KeyError as e:
             error_logs.append(e)
             processed_data["Type"] = None
