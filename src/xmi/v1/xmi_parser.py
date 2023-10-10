@@ -1,3 +1,5 @@
+# Optional, for forward declarations in Python 3.7+
+from __future__ import annotations
 import json
 from json import JSONDecodeError
 
@@ -47,7 +49,21 @@ class XmiParser():
                         except Exception as e:
                             xmi_file.errors.append(
                                 ErrorLog(key, index, str(e)))
-            print(xmi_file)
+
+                elif key == "StructuralPointConnection":
+                    for index, value in enumerate(values):
+                        try:
+                            xmi_file.StructuralPointConnection.append(value)
+
+                            member, error_logs = XmiStructuralPointConnection.from_dict(
+                                value)
+                            xmi_file.XmiStructuralPointConnections.append(
+                                member)
+                            xmi_file.errors.extend(
+                                [ErrorLog(key, index, str(error_log), value) for error_log in error_logs])
+                        except Exception as e:
+                            xmi_file.errors.append(
+                                ErrorLog(key, index, str(e)))
             return xmi_file
 
         except FileNotFoundError:
@@ -60,10 +76,3 @@ class XmiParser():
             print(f"Type error: {te}")
         except Exception as e:
             print(f"Error: {e}")
-
-
-if __name__ == "__main__":
-    json_path = "test_xmi_parser.json"
-    xmi_parser = XmiParser()
-    xmi_file = xmi_parser.read_xmi(json_path=json_path)
-    print(xmi_file)
