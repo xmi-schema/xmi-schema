@@ -76,8 +76,11 @@ class XmiParser():
                         try:
                             xmi_file.StructuralMaterial.append(value)
 
-                            member = XmiStructuralMaterial(**value)
+                            member, error_logs = XmiStructuralMaterial.from_dict(
+                                value)
                             xmi_file.XmiStructuralMaterials.append(member)
+                            xmi_file.errors.extend(
+                                [ErrorLog(key, index, str(error_log)) for error_log in error_logs])
                         except Exception as e:
                             xmi_file.errors.append(
                                 ErrorLog(key, index, str(e)))
