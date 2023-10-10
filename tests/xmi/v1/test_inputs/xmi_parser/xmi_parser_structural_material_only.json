@@ -2,7 +2,7 @@
   "StructuralMaterial": [
     {
       "Name": "416902",
-      "Type": "STEEL",
+      "Type": "Steel",
       "Grade": 50.0,
       "UnitWeight": 0.0,
       "EModulus": 6248400000.0,

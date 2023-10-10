@@ -5,18 +5,39 @@ from enum import Enum, unique
 class XmiEnum(Enum):
 
     @classmethod
-    def from_name(cls, name_str):
+    def from_name_get_enum(cls, name_str):
         try:
             return cls[name_str]
         except KeyError:
             return None  # Or raise a custom exception if you prefer
 
     @classmethod
-    def from_attribute(cls, attribute_str):
+    def from_attribute_get_enum(cls, attribute_str: str):
         for member in cls:
             if member.value[1] == attribute_str:
                 return member
         return None  # Or raise a custom exception if you prefer
+
+    @classmethod
+    def from_name_get_enum_attribute(cls, name_str: str):
+        try:
+            return cls[name_str].value[1]
+        except KeyError:
+            return None  # Or raise a custom exception if you prefer
+
+    @classmethod
+    def from_enum_get_enum_attribute(cls, enum: Enum):
+        try:
+            return enum.value[1]
+        except KeyError:
+            return None  # Or raise a custom exception if you prefer
+
+    @classmethod
+    def from_name_get_enum_value(cls, name_str: str):
+        try:
+            return cls[name_str].value[0]
+        except KeyError:
+            return None  # Or raise a custom exception if you prefer
 
 
 @unique

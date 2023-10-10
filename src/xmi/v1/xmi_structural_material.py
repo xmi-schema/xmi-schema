@@ -27,30 +27,64 @@ class XmiStructuralMaterial(XmiBase):
                  ifcguid: str = None,
                  **kwargs
                  ):
-        if not kwargs:
-            super().__init__(id=id, name=name, ifcguid=ifcguid, description=description)
-        else:
-            super().__init__(**kwargs)
+        # Check for mutual exclusivity
+        if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid]):
+            raise ValueError(
+                "Please use either standard parameters or kwargs, not both.")
+
+        # Ensure material_type is provided
+        if material_type is None and 'Type' not in kwargs:
+            raise ValueError(
+                "The 'material_type' parameter is compulsory and must be provided.")
+
+        # Initialize parent class
+        super().__init__(id=id, name=name, ifcguid=ifcguid,
+                         description=description) if not kwargs else super().__init__(**kwargs)
+
+        # Initialize attributes
+        self.set_attributes(material_type, grade, unit_weight, e_modulus,
+                            g_modulus, poisson_ratio, thermal_coefficient, **kwargs)
+
+        # attributes = [
+        #     ('Type', kwargs.get('Type', material_type)),
+        #     ('Grade', kwargs.get('Grade', grade)),
+        #     ('UnitWeight', kwargs.get('UnitWeight', unit_weight)),
+        #     ('EModulus', kwargs.get('EModulus', e_modulus)),
+        #     ('GModulus', kwargs.get('GModulus', g_modulus)),
+        #     ('PoissonRatio', kwargs.get('PoissonRatio', poisson_ratio)),
+        #     ('ThermalCoefficient', kwargs.get(
+        #         'ThermalCoefficient', thermal_coefficient))
+        # ]
+
+        # for attr_name, attr_value in attributes:
+        #     try:
+        #         setattr(self, attr_name, attr_value)
+        #     except Exception as e:
+        #         print(f"Caught an exception while setting {attr_name}: {e}")
+        #         # Set to some default value or None
+        #         setattr(self, attr_name, None)
+
+        # print("Object successfully created")
+
+    def set_attributes(self, material_type, grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, **kwargs):
         attributes = [
-            ('Type', kwargs.get('Type', material_type)),
-            ('Grade', kwargs.get('Grade', grade)),
-            ('UnitWeight', kwargs.get('UnitWeight', unit_weight)),
-            ('EModulus', kwargs.get('EModulus', e_modulus)),
-            ('GModulus', kwargs.get('GModulus', g_modulus)),
-            ('PoissonRatio', kwargs.get('PoissonRatio', poisson_ratio)),
-            ('ThermalCoefficient', kwargs.get(
-                'ThermalCoefficient', thermal_coefficient))
+            ('Type', material_type),
+            ('Grade', grade),
+            ('UnitWeight', unit_weight),
+            ('EModulus', e_modulus),
+            ('GModulus', g_modulus),
+            ('PoissonRatio', poisson_ratio),
+            ('ThermalCoefficient', thermal_coefficient)
         ]
 
         for attr_name, attr_value in attributes:
+            value = kwargs.get(attr_name, attr_value)
             try:
-                setattr(self, attr_name, attr_value)
-            except Exception as e:
-                print(f"Caught an exception while setting {attr_name}: {e}")
-                # Set to some default value or None
+                setattr(self, attr_name, value)
+            except AttributeError as e:
+                print(
+                    f"Caught an AttributeError while setting {attr_name}: {e}")
                 setattr(self, attr_name, None)
-
-        print("Object successfully created")
 
     @property
     def Type(self):
@@ -138,9 +172,12 @@ class XmiStructuralMaterial(XmiBase):
 
         # for type conversion when reading dictionary
         try:
-            processed_data["Type"] = XmiStructuralMaterialTypeEnum.from_attribute(
+            processed_data["Type"] = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
                 data['Type'])
+            if processed_data['Type'] is None and 'Type' in data:
+                error_logs.append(Exception(
+                    "Cannot Identify XmiStructuralMaterialTypeEnum: {data_value}".format(data_value=data['Type'])))
         except KeyError as e:
             error_logs.append(e)
             processed_data["Type"] = None
-        return cls(**data), error_logs
+        return cls(**processed_data), error_logs

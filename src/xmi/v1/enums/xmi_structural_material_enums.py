@@ -5,7 +5,7 @@ from enum import unique
 @unique
 class XmiStructuralMaterialTypeEnum(XmiEnum):
     CONCRETE = (1, "Concrete")
-    STEEL = (2, "STEEL")
+    STEEL = (2, "Steel")
     TIMBER = (3, "Timber")
     ALUMINIUM = (4, "Aluminium")
     COMPOSITE = (5, "Composite")

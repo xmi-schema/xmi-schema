@@ -7,6 +7,10 @@ class XmiAbstract(ABC):
     def from_dict(self, json_path: str):
         pass
 
+    @abstractmethod
+    def to_dict(self):
+        pass
+
 
 class XmiBase(XmiAbstract):
 
