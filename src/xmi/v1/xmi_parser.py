@@ -4,6 +4,8 @@ from json import JSONDecodeError
 from .xmi_structural_point_connection import XmiStructuralPointConnection
 from .xmi_structural_curve_member import XmiStructuralCurveMember
 from .xmi_structural_surface_member import XmiStructuralSurfaceMember
+from .xmi_structural_material import XmiStructuralMaterial
+from .xmi_structural_unit import XmiStructuralUnit
 
 
 class XmiFile():
@@ -68,6 +70,17 @@ class XmiParser():
             for key, values in data.items():
                 if not isinstance(values, list):
                     raise ValueError(f"The value for {key} should be a list.")
+
+                if key == "StructuralMaterial":
+                    for index, value in enumerate(values):
+                        try:
+                            xmi_file.StructuralMaterial.append(value)
+
+                            member = XmiStructuralMaterial(**value)
+                            xmi_file.XmiStructuralMaterials.append(member)
+                        except Exception as e:
+                            xmi_file.errors.append(
+                                ErrorLog(key, index, str(e)))
 
                 if key == "StructuralCurveMember":
                     for index, value in enumerate(values):
