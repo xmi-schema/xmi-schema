@@ -14,7 +14,7 @@ def test_xmi_structural_material_ok():
     description = data['Description']
     ifcguid = data['IFCGUID']
     material_type = XmiStructuralMaterialTypeEnum.CONCRETE
-    grade = 50.0
+    grade = data['Grade']
     unit_weight = data['UnitWeight']
     e_modulus = data['EModulus']
     g_modulus = data['GModulus']
@@ -34,17 +34,17 @@ def test_xmi_structural_material_ok():
         poisson_ratio=poisson_ratio,
         thermal_coefficient=thermal_coefficient
     )
-    assert id == xmi_structural_material.ID
-    assert name == xmi_structural_material.Name
-    assert description == xmi_structural_material.Description
-    assert ifcguid == xmi_structural_material.IFCGUID
-    assert material_type == xmi_structural_material.Type
-    assert grade == xmi_structural_material.Grade
-    assert unit_weight == xmi_structural_material.UnitWeight
-    assert e_modulus == xmi_structural_material.EModulus
-    assert g_modulus == xmi_structural_material.GModulus
-    assert poisson_ratio == xmi_structural_material.PoissonRatio
-    assert thermal_coefficient == xmi_structural_material.ThermalCoefficient
+    assert xmi_structural_material.ID == id
+    assert xmi_structural_material.Name == name
+    assert xmi_structural_material.Description == description
+    assert xmi_structural_material.IFCGUID == ifcguid
+    assert xmi_structural_material.Type == material_type
+    assert xmi_structural_material.Grade == grade
+    assert xmi_structural_material.UnitWeight == unit_weight
+    assert xmi_structural_material.EModulus == e_modulus
+    assert xmi_structural_material.GModulus == g_modulus
+    assert xmi_structural_material.PoissonRatio == poisson_ratio
+    assert xmi_structural_material.ThermalCoefficient == thermal_coefficient
 
 
 def test_xmi_structural_material_json_object_only():
@@ -65,15 +65,16 @@ def test_xmi_structural_material_json_object_only():
     thermal_coefficient = data['ThermalCoefficient']
 
     xmi_structural_material, error_logs = XmiStructuralMaterial.from_dict(data)
-    assert id == xmi_structural_material.ID
-    assert name == xmi_structural_material.Name
-    assert description == xmi_structural_material.Description
-    assert ifcguid == xmi_structural_material.IFCGUID
-    assert material_type_string == XmiStructuralMaterialTypeEnum.from_enum_get_enum_attribute(
-        xmi_structural_material.Type)
-    assert grade == xmi_structural_material.Grade
-    assert unit_weight == xmi_structural_material.UnitWeight
-    assert e_modulus == xmi_structural_material.EModulus
-    assert g_modulus == xmi_structural_material.GModulus
-    assert poisson_ratio == xmi_structural_material.PoissonRatio
-    assert thermal_coefficient == xmi_structural_material.ThermalCoefficient
+
+    assert xmi_structural_material.ID == id
+    assert xmi_structural_material.Name == name
+    assert xmi_structural_material.Description == description
+    assert xmi_structural_material.IFCGUID == ifcguid
+    assert XmiStructuralMaterialTypeEnum.from_enum_get_enum_attribute(
+        xmi_structural_material.Type) == material_type_string
+    assert xmi_structural_material.Grade == grade
+    assert xmi_structural_material.UnitWeight == unit_weight
+    assert xmi_structural_material.EModulus == e_modulus
+    assert xmi_structural_material.GModulus == g_modulus
+    assert xmi_structural_material.PoissonRatio == poisson_ratio
+    assert xmi_structural_material.ThermalCoefficient == thermal_coefficient
