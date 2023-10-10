@@ -11,6 +11,9 @@ class XmiStructuralCurveMember(XmiBase):
         ('_CrossSection', '_Storey', '_Type', '_Nodes',
          '_Segments', '_BeginNode', '_EndNode', '_Length')
 
+    attributes_needed = [slot[1:] if slot.startswith(
+        '_') else slot for slot in __slots__]
+
     def __init__(self,
                  cross_section,
                  storey,

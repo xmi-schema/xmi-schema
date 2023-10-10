@@ -1,3 +1,6 @@
+# Optional, for forward declarations in Python 3.7+
+from __future__ import annotations
+
 from .enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 from .xmi_base import XmiBase
 
@@ -10,11 +13,12 @@ class XmiStructuralMaterial(XmiBase):
                                      '_GModulus',
                                      '_PoissonRatio',
                                      '_ThermalCoefficient')
+
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
-                 material_type: XmiStructuralMaterialTypeEnum = None,
+                 material_type: XmiStructuralMaterialTypeEnum,
                  grade: float = None,
                  unit_weight=None,
                  e_modulus: float = None,
@@ -27,6 +31,7 @@ class XmiStructuralMaterial(XmiBase):
                  ifcguid: str = None,
                  **kwargs
                  ):
+
         # Check for mutual exclusivity
         if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid]):
             raise ValueError(
@@ -44,27 +49,6 @@ class XmiStructuralMaterial(XmiBase):
         # Initialize attributes
         self.set_attributes(material_type, grade, unit_weight, e_modulus,
                             g_modulus, poisson_ratio, thermal_coefficient, **kwargs)
-
-        # attributes = [
-        #     ('Type', kwargs.get('Type', material_type)),
-        #     ('Grade', kwargs.get('Grade', grade)),
-        #     ('UnitWeight', kwargs.get('UnitWeight', unit_weight)),
-        #     ('EModulus', kwargs.get('EModulus', e_modulus)),
-        #     ('GModulus', kwargs.get('GModulus', g_modulus)),
-        #     ('PoissonRatio', kwargs.get('PoissonRatio', poisson_ratio)),
-        #     ('ThermalCoefficient', kwargs.get(
-        #         'ThermalCoefficient', thermal_coefficient))
-        # ]
-
-        # for attr_name, attr_value in attributes:
-        #     try:
-        #         setattr(self, attr_name, attr_value)
-        #     except Exception as e:
-        #         print(f"Caught an exception while setting {attr_name}: {e}")
-        #         # Set to some default value or None
-        #         setattr(self, attr_name, None)
-
-        # print("Object successfully created")
 
     def set_attributes(self, material_type, grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, **kwargs):
         attributes = [
@@ -161,7 +145,7 @@ class XmiStructuralMaterial(XmiBase):
         self._ThermalCoefficient = value
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data: dict) -> XmiStructuralMaterial:
         error_logs = []
         processed_data = data.copy()
 
@@ -180,4 +164,4 @@ class XmiStructuralMaterial(XmiBase):
         except KeyError as e:
             error_logs.append(e)
             processed_data["Type"] = None
-        return cls(**processed_data), error_logs
+        return cls(material_type=processed_data['Type'], **processed_data), error_logs
