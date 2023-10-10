@@ -1,50 +1,12 @@
 import json
 from json import JSONDecodeError
 
+from .xmi_file import XmiFile
 from .xmi_structural_point_connection import XmiStructuralPointConnection
 from .xmi_structural_curve_member import XmiStructuralCurveMember
 from .xmi_structural_surface_member import XmiStructuralSurfaceMember
 from .xmi_structural_material import XmiStructuralMaterial
 from .xmi_structural_unit import XmiStructuralUnit
-
-
-class XmiFile():
-    def __init__(self):
-        self.StructuralModel = []
-        self.StructuralModelDrift = []
-        self.StructuralModelAnalysis = []
-        self.StructuralUnit = []
-        self.StructuralCode = []
-        self.StructuralMaterial = []
-        self.StructuralCrossSection = []
-        self.StructuralPointConnection = []
-        self.StructuralStorey = []
-        self.StructuralCurveMember = []
-        self.StructuralSurfaceMember = []
-        self.StructuralCurveAction = []
-        self.StructuralPointAction = []
-        self.StructuralSurfaceAction = []
-        self.StructuralReinforcement = []
-        self.StructuralSteelDesign = []
-        self.StructuralCurveResult = []
-        self.StructuralSurfaceResult = []
-        self.StructuralPointReaction = []
-        self.StructuralPointSupport = []
-        self.StructuralLineSupport = []
-        self.StructuralAreaSupport = []
-        self.StructuralLoadGroup = []
-        self.StructuralLoadCase = []
-        self.StructuralLoadCombination = []
-        self.XmiStructuralPointConnections = []
-        self.XmiStructuralCurveMembers = []
-        self.XmiStructuralSurfaceMembers = []
-        self.XmiStructuralMaterials = []
-        self.XmiStructuralCrossSection = []
-        self.errors = []  # A list to hold the error logs
-
-    def export_error_logs(self):
-        pass
-# Define an error log class to hold error information
 
 
 class ErrorLog():
@@ -59,7 +21,7 @@ class XmiParser():
     def __init__(self):
         pass
 
-    def read_xmi(self, json_path: str):
+    def read_xmi(self, json_path: str) -> XmiFile:
         xmi_file = XmiFile()
         try:
             with open(json_path, 'r') as f:
@@ -85,40 +47,9 @@ class XmiParser():
                         except Exception as e:
                             xmi_file.errors.append(
                                 ErrorLog(key, index, str(e)))
-
-                if key == "StructuralCurveMember":
-                    for index, value in enumerate(values):
-                        try:
-                            xmi_file.StructuralCurveMember.append(value)
-
-                            member = XmiStructuralCurveMember(**value)
-                            xmi_file.XmiStructuralCurveMembers.append(member)
-                        except Exception as e:
-                            xmi_file.errors.append(
-                                ErrorLog(key, index, str(e)), value)
-
-                elif key == "StructuralPointConnection":
-                    for index, value in enumerate(values):
-                        try:
-                            xmi_file.StructuralPointConnection.append(value)
-
-                            point = XmiStructuralPointConnection(**value)
-                            xmi_file.XmiStructuralPointConnections.append(
-                                point)
-                        except Exception as e:
-                            xmi_file.errors.append(
-                                ErrorLog(key, index, str(e)), value)
-
-                elif key == "StructuralSurfaceMember":
-                    for index, value in enumerate(values):
-                        try:
-                            xmi_file.StructuralSurfaceMember.append(value)
-                            member = XmiStructuralSurfaceMember(**value)
-                            xmi_file.XmiStructuralSurfaceMembers.append(member)
-                        except Exception as e:
-                            xmi_file.errors.append(
-                                ErrorLog(key, index, str(e)), value)
+            print(xmi_file)
             return xmi_file
+
         except FileNotFoundError:
             print("The specified JSON file could not be found.")
         except JSONDecodeError:
@@ -127,6 +58,8 @@ class XmiParser():
             print(f"Value error: {ve}")
         except TypeError as te:
             print(f"Type error: {te}")
+        except Exception as e:
+            print(f"Error: {e}")
 
 
 if __name__ == "__main__":

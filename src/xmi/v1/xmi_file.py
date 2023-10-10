@@ -1,0 +1,36 @@
+class XmiFile():
+    def __init__(self):
+        self.StructuralModel = []
+        self.StructuralModelDrift = []
+        self.StructuralModelAnalysis = []
+        self.StructuralUnit = []
+        self.StructuralCode = []
+        self.StructuralMaterial = []
+        self.StructuralCrossSection = []
+        self.StructuralPointConnection = []
+        self.StructuralStorey = []
+        self.StructuralCurveMember = []
+        self.StructuralSurfaceMember = []
+        self.StructuralCurveAction = []
+        self.StructuralPointAction = []
+        self.StructuralSurfaceAction = []
+        self.StructuralReinforcement = []
+        self.StructuralSteelDesign = []
+        self.StructuralCurveResult = []
+        self.StructuralSurfaceResult = []
+        self.StructuralPointReaction = []
+        self.StructuralPointSupport = []
+        self.StructuralLineSupport = []
+        self.StructuralAreaSupport = []
+        self.StructuralLoadGroup = []
+        self.StructuralLoadCase = []
+        self.StructuralLoadCombination = []
+        self.XmiStructuralPointConnections = []
+        self.XmiStructuralCurveMembers = []
+        self.XmiStructuralSurfaceMembers = []
+        self.XmiStructuralMaterials = []
+        self.XmiStructuralCrossSection = []
+        self.errors = []  # A list to hold the error logs
+
+    def export_error_logs(self):
+        pass
