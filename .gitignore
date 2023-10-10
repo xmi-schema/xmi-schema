@@ -2,3 +2,4 @@ myvenv3.10/
 dist/
 build/
 .pytest_cache/
+*/__pycache__/
