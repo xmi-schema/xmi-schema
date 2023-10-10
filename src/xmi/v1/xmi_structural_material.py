@@ -11,6 +11,8 @@ class XmiStructuralMaterial(XmiBase):
                                      '_GModulus',
                                      '_PoissonRatio',
                                      '_ThermalCoefficient')
+    attributes_needed = [slot[1:] if slot.startswith(
+        '_') else slot for slot in __slots__]
 
     def __init__(self,
                  material_type: XmiStructuralMaterialTypeEnum = None,
@@ -27,13 +29,7 @@ class XmiStructuralMaterial(XmiBase):
                  **kwargs
                  ):
 
-        id = id if id else kwargs.get('ID', str(uuid.uuid4()))
-        name = name if name else kwargs.get('Name', id)
-        description = description if description else kwargs.get(
-            'Description', None)
-        ifcguid = ifcguid if ifcguid else kwargs.get('IFCGUID', None)
-
-        super().__init__(id=id, name=name, ifcguid=ifcguid, description=description)
+        super().__init__(**kwargs)
         attributes = [
             ('Type', kwargs.get('Type', material_type)),
             ('Grade', kwargs.get('Grade', grade)),
@@ -133,6 +129,10 @@ class XmiStructuralMaterial(XmiBase):
     def from_dict(cls, data: dict):
         error_logs = []
         processed_data = data.copy()
+
+        for attr in cls.attributes_needed:
+            if attr not in data:
+                error_logs.append(Exception(f"Missing attribute: {attr}"))
 
         # for type conversion when reading dictionary
         try:
