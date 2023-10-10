@@ -49,6 +49,9 @@ class XmiUnitEnum(XmiEnum):
     MILLIMETER4 = (5, "mm^4")
     MILLIMETER = (6, "mm")
     CENTIMETER = (7, "cm")
+    MILLIMETER3 = (8, "mm^3")
+    MILLIMETER2 = (9, "mm^2")
+    SECOND = (10, "sec")
 
 
 @unique
