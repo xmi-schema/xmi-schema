@@ -48,10 +48,11 @@ class XmiFile():
 
 
 class ErrorLog():
-    def __init__(self, error_type, index, message):
-        self.error_type = error_type
+    def __init__(self, entity_type, index, message, obj=None):
+        self.entity_type = entity_type
         self.index = index
         self.message = message
+        self.obj = str(obj)
 
 
 class XmiParser():
@@ -80,7 +81,7 @@ class XmiParser():
                                 value)
                             xmi_file.XmiStructuralMaterials.append(member)
                             xmi_file.errors.extend(
-                                [ErrorLog(key, index, str(error_log)) for error_log in error_logs])
+                                [ErrorLog(key, index, str(error_log), value) for error_log in error_logs])
                         except Exception as e:
                             xmi_file.errors.append(
                                 ErrorLog(key, index, str(e)))
@@ -94,7 +95,7 @@ class XmiParser():
                             xmi_file.XmiStructuralCurveMembers.append(member)
                         except Exception as e:
                             xmi_file.errors.append(
-                                ErrorLog(key, index, str(e)))
+                                ErrorLog(key, index, str(e)), value)
 
                 elif key == "StructuralPointConnection":
                     for index, value in enumerate(values):
@@ -106,7 +107,7 @@ class XmiParser():
                                 point)
                         except Exception as e:
                             xmi_file.errors.append(
-                                ErrorLog(key, index, str(e)))
+                                ErrorLog(key, index, str(e)), value)
 
                 elif key == "StructuralSurfaceMember":
                     for index, value in enumerate(values):
@@ -116,7 +117,7 @@ class XmiParser():
                             xmi_file.XmiStructuralSurfaceMembers.append(member)
                         except Exception as e:
                             xmi_file.errors.append(
-                                ErrorLog(key, index, str(e)))
+                                ErrorLog(key, index, str(e)), value)
             return xmi_file
         except FileNotFoundError:
             print("The specified JSON file could not be found.")
