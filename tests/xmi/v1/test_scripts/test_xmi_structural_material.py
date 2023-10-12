@@ -78,3 +78,16 @@ def test_xmi_structural_material_json_object_only():
     assert xmi_structural_material.GModulus == g_modulus
     assert xmi_structural_material.PoissonRatio == poisson_ratio
     assert xmi_structural_material.ThermalCoefficient == thermal_coefficient
+
+
+def test_xmi_structural_material_json_object_only_error_type():
+    json_path = "tests/xmi/v1/test_inputs/xmi_structural_material/xmi_parser_structural_material_only.json"
+    with open(json_path, 'r') as f:
+        data = json.load(f)
+
+    # modded to make data wrong
+    data['Type'] = 'STEEL'
+
+    xmi_structural_material, error_logs = XmiStructuralMaterial.from_dict(data)
+    assert xmi_structural_material == None
+    assert len(error_logs) == 1

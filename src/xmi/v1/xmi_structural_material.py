@@ -76,9 +76,9 @@ class XmiStructuralMaterial(XmiBase):
 
     @Type.setter
     def Type(self, value):
-        if value is not None and not isinstance(value, XmiStructuralMaterialTypeEnum):
+        if not isinstance(value, XmiStructuralMaterialTypeEnum):
             raise TypeError(
-                "Type should be an XmiStructuralMaterialTypeEnum or None")
+                "Type should be an XmiStructuralMaterialTypeEnum")
         self._Type = value
 
     @property
@@ -146,6 +146,7 @@ class XmiStructuralMaterial(XmiBase):
 
     @classmethod
     def from_dict(cls, data: dict) -> XmiStructuralMaterial:
+        instance = None
         error_logs = []
         processed_data = data.copy()
 
@@ -161,7 +162,12 @@ class XmiStructuralMaterial(XmiBase):
             if processed_data['Type'] is None and 'Type' in data:
                 error_logs.append(Exception(
                     "Cannot Identify XmiStructuralMaterialTypeEnum: {data_value}".format(data_value=data['Type'])))
+                return None, error_logs
         except KeyError as e:
             error_logs.append(e)
             processed_data["Type"] = None
-        return cls(material_type=processed_data['Type'], **processed_data), error_logs
+            return None, error_logs
+        instance = cls(
+            material_type=processed_data['Type'], **processed_data)
+
+        return instance, error_logs
