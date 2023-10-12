@@ -70,8 +70,8 @@ def test_xmi_structural_material_json_object_only():
     assert xmi_structural_material.Name == name
     assert xmi_structural_material.Description == description
     assert xmi_structural_material.IFCGUID == ifcguid
-    assert XmiStructuralMaterialTypeEnum.from_enum_get_enum_attribute(
-        xmi_structural_material.Type) == material_type_string
+    assert xmi_structural_material.Type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+        material_type_string)
     assert xmi_structural_material.Grade == grade
     assert xmi_structural_material.UnitWeight == unit_weight
     assert xmi_structural_material.EModulus == e_modulus

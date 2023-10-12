@@ -26,9 +26,9 @@ class XmiEnum(Enum):
             return None  # Or raise a custom exception if you prefer
 
     @classmethod
-    def from_enum_get_enum_attribute(cls, enum: Enum):
+    def get_attribute_value(cls):
         try:
-            return enum.value[1]
+            return cls.value[1]
         except KeyError:
             return None  # Or raise a custom exception if you prefer
 
