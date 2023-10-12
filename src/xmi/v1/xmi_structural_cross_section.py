@@ -1,7 +1,10 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
+
 from .constants import *
 from .enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
+
+from .xmi_errors import XmiInconsistentDataAttributeError
 from .xmi_base import XmiBase
 from .xmi_structural_material import XmiStructuralMaterial
 
@@ -175,7 +178,7 @@ class XmiStructuralCrossSection(XmiBase):
             param_required_length = self.Shape.get_quantity_of_cross_section_params()
             value_length = len(value)
             if value_length != param_required_length:
-                raise ValueError(
+                raise XmiInconsistentDataAttributeError(
                     f"The parameter length is different than required XmiStructuralCrossSectionShapeEnum")
         # check for every item within the list of tuple to be an int or float value and all data needs to be at least 0.0
         for item in value:
@@ -186,7 +189,7 @@ class XmiStructuralCrossSection(XmiBase):
                 raise ValueError(
                     f"Value cannot be smaller than 0"
                 )
-        self._Parameters = value
+        self._Parameters = tuple(value)
 
     # to be considered optional as of now
     @property
