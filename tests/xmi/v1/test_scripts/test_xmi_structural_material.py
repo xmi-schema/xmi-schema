@@ -1,5 +1,5 @@
 from src.xmi.v1.xmi_structural_material import XmiStructuralMaterial
-from src.xmi.v1.enums.xmi_structural_material_enums import *
+from src.xmi.v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 
 import json
 

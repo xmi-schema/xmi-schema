@@ -55,9 +55,15 @@ class XmiStructuralCrossSectionShapeEnum(Enum):
             return None  # Or raise a custom exception if you prefer
 
     @classmethod
-    def get_quantity_of_cross_section_params(cls):
+    def get_quantity_of_cross_section_params(cls, enum: Enum):
         try:
-            return cls.value[2]
+            return enum.value[2]
+        except KeyError:
+            return None  # Or raise a custom exception if you prefer
+
+    def get_quantity_of_cross_section_params(self):
+        try:
+            return self.value[2]
         except KeyError:
             return None  # Or raise a custom exception if you prefer
 

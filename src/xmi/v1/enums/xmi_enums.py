@@ -25,10 +25,16 @@ class XmiEnum(Enum):
         except KeyError:
             return None  # Or raise a custom exception if you prefer
 
-    @classmethod
     def get_attribute_value(cls):
         try:
             return cls.value[1]
+        except KeyError:
+            return None  # Or raise a custom exception if you prefer
+
+    @classmethod
+    def get_attribute_value(cls, enum: Enum):
+        try:
+            return enum.value[1]
         except KeyError:
             return None  # Or raise a custom exception if you prefer
 
