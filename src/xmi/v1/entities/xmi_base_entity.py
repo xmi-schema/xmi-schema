@@ -1,14 +1,7 @@
 import uuid
-from abc import ABC, abstractmethod
 
 
-class XmiAbstract(ABC):
-    @abstractmethod
-    def to_dict(self):
-        pass
-
-
-class XmiBase(XmiAbstract):
+class XmiBaseEntity():
 
     __slots__ = ('_ID', '_Name', '_IFCGUID', '_Description')
 
@@ -17,7 +10,7 @@ class XmiBase(XmiAbstract):
                  name: str = None,
                  ifcguid: str = None,
                  description: str = None,
-                 **kwargs):
+                 ** kwargs):
 
         id = id if id else kwargs.get('ID', str(uuid.uuid4()))
         name = name if name else kwargs.get('Name', id)

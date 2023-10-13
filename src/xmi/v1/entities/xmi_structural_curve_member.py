@@ -1,13 +1,13 @@
 import uuid
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from .xmi_base import XmiBase
+from .xmi_base_entity import XmiBaseEntity
 from ..enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberTypeEnum
 from ..enums.xmi_enums import XmiSegmentEnum
 
 
-class XmiStructuralCurveMember(XmiBase):
-    __slots__ = XmiBase.__slots__ + \
+class XmiStructuralCurveMember(XmiBaseEntity):
+    __slots__ = XmiBaseEntity.__slots__ + \
         ('_CrossSection', '_Storey', '_Type', '_Nodes',
          '_Segments', '_BeginNode', '_EndNode', '_Length')
 

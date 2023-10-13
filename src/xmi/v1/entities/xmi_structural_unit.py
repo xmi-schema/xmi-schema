@@ -1,12 +1,12 @@
 import uuid
 
 from ..enums.xmi_enums import XmiUnitEnum
-from .xmi_base import XmiBase
+from .xmi_base_entity import XmiBaseEntity
 
 
-class XmiStructuralUnit(XmiBase):
-    __slots__ = XmiBase.__slots__ + ('_Entity', '_Attribute',
-                                     '_Unit')
+class XmiStructuralUnit(XmiBaseEntity):
+    __slots__ = XmiBaseEntity.__slots__ + ('_Entity', '_Attribute',
+                                           '_Unit')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]

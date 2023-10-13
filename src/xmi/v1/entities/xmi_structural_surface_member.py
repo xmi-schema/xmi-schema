@@ -2,13 +2,13 @@ import uuid
 
 from .xmi_structural_material import XmiStructuralMaterial
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from .xmi_base import XmiBase
+from .xmi_base_entity import XmiBaseEntity
 from ..enums.xmi_structural_surface_member_enums import *
 from ..enums.xmi_enums import XmiSegmentEnum
 
 
-class XmiStructuralSurfaceMember(XmiBase):
-    __slots__ = XmiBase.__slots__ + \
+class XmiStructuralSurfaceMember(XmiBaseEntity):
+    __slots__ = XmiBaseEntity.__slots__ + \
         ('_Storey', '_Material',
          '_Type', '_SpanType', '_Thickness', '_SystemPlane', '_Nodes', '_Edges', '_Area')
 

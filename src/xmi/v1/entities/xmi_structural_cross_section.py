@@ -5,7 +5,7 @@ from ..constants import *
 from ..enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 
 from ..xmi_errors import XmiInconsistentDataAttributeError
-from .xmi_base import XmiBase
+from .xmi_base_entity import XmiBaseEntity
 from .xmi_structural_material import XmiStructuralMaterial
 
 """
@@ -14,12 +14,12 @@ from .xmi_structural_material import XmiStructuralMaterial
 """
 
 
-class XmiStructuralCrossSection(XmiBase):
-    __slots__ = XmiBase.__slots__ + ('_Material',
-                                     '_Shape',
-                                     '_Parameters',
-                                     '_Area',
-                                     '_Ix', '_Iy', "_rx", "_ry", "_Ex", "_Ey", "_Zx", "_Zy", "_J")
+class XmiStructuralCrossSection(XmiBaseEntity):
+    __slots__ = XmiBaseEntity.__slots__ + ('_Material',
+                                           '_Shape',
+                                           '_Parameters',
+                                           '_Area',
+                                           '_Ix', '_Iy', "_rx", "_ry", "_Ex", "_Ey", "_Zx", "_Zy", "_J")
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -294,3 +294,31 @@ class XmiStructuralCrossSection(XmiBase):
         if value is not None and value <= 0.0:
             raise ValueError("Torsional Constant should be larger than 0.0")
         self._J = value
+
+    @property
+    def Zx(self):
+        return self._Zx
+
+    @Zx.setter
+    def Zx(self, value):
+        if value is not None and not isinstance(value, (int, float)):
+            raise TypeError(
+                "Zx (Plastic Modulus - x axis) should be of type float, integer, or None")
+        if value is not None and value <= 0.0:
+            raise ValueError(
+                "Zx (Plastic Modulus - x axis) should be larger than 0.0")
+        self._Zx = value
+
+    @property
+    def Zy(self):
+        return self._Zy
+
+    @Zy.setter
+    def Zy(self, value):
+        if value is not None and not isinstance(value, (int, float)):
+            raise TypeError(
+                "Zy (Plastic Modulus - y axis) should be of type float, integer, or None")
+        if value is not None and value <= 0.0:
+            raise ValueError(
+                "Zy (Plastic Modulus - y axis) should be larger than 0.0")
+        self._Zy = value

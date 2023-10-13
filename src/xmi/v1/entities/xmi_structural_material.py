@@ -2,17 +2,17 @@
 from __future__ import annotations
 
 from ..enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
-from .xmi_base import XmiBase
+from .xmi_base_entity import XmiBaseEntity
 
 
-class XmiStructuralMaterial(XmiBase):
-    __slots__ = XmiBase.__slots__ + ('_Type',
-                                     '_Grade',
-                                     '_UnitWeight',
-                                     '_EModulus',
-                                     '_GModulus',
-                                     '_PoissonRatio',
-                                     '_ThermalCoefficient')
+class XmiStructuralMaterial(XmiBaseEntity):
+    __slots__ = XmiBaseEntity.__slots__ + ('_Type',
+                                           '_Grade',
+                                           '_UnitWeight',
+                                           '_EModulus',
+                                           '_GModulus',
+                                           '_PoissonRatio',
+                                           '_ThermalCoefficient')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]

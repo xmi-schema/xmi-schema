@@ -1,12 +1,12 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from .xmi_base import XmiBase
+from .xmi_base_entity import XmiBaseEntity
 
 
-class XmiStructuralPointConnection(XmiBase):
-    __slots__ = XmiBase.__slots__ + ('_Storey', '_X',
-                                     '_Y', '_Z')
+class XmiStructuralPointConnection(XmiBaseEntity):
+    __slots__ = XmiBaseEntity.__slots__ + ('_Storey', '_X',
+                                           '_Y', '_Z')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
