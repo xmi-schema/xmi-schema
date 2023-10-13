@@ -1,6 +1,6 @@
 import pytest
-from src.xmi.v1.xmi_structural_cross_section import XmiStructuralCrossSection
-from src.xmi.v1.xmi_structural_material import XmiStructuralMaterial
+from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
+from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
 from src.xmi.v1.enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 from src.xmi.v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 from src.xmi.v1.xmi_errors import *
@@ -133,7 +133,7 @@ def test_xmi_structural_cross_section_ok_2():
         structural_cross_section_dict['Shape'])
 
     expected_parameters = tuple(
-        structural_cross_section_dict['Parameters'].split(";"))
+        [float(param) for param in structural_cross_section_dict['Parameters'].split(";")])
     xmi_structural_cross_section = XmiStructuralCrossSection(
         material=xmi_structural_material,
         shape=expected_shape,

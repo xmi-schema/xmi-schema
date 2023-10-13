@@ -2,8 +2,8 @@ import uuid
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
 from .xmi_base import XmiBase
-from .enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberTypeEnum
-from .enums.xmi_enums import XmiSegmentEnum
+from ..enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberTypeEnum
+from ..enums.xmi_enums import XmiSegmentEnum
 
 
 class XmiStructuralCurveMember(XmiBase):

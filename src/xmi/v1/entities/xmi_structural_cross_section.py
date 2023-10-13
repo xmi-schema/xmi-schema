@@ -1,10 +1,10 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from .constants import *
-from .enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
+from ..constants import *
+from ..enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 
-from .xmi_errors import XmiInconsistentDataAttributeError
+from ..xmi_errors import XmiInconsistentDataAttributeError
 from .xmi_base import XmiBase
 from .xmi_structural_material import XmiStructuralMaterial
 

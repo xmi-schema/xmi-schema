@@ -4,11 +4,8 @@ import json
 from json import JSONDecodeError
 
 from .xmi_file import XmiFile
-from .xmi_structural_point_connection import XmiStructuralPointConnection
-from .xmi_structural_curve_member import XmiStructuralCurveMember
-from .xmi_structural_surface_member import XmiStructuralSurfaceMember
-from .xmi_structural_material import XmiStructuralMaterial
-from .xmi_structural_unit import XmiStructuralUnit
+from .entities.xmi_structural_point_connection import XmiStructuralPointConnection
+from .entities.xmi_structural_material import XmiStructuralMaterial
 
 
 class ErrorLog():

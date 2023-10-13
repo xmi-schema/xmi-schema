@@ -1,7 +1,7 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from .enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
+from ..enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 from .xmi_base import XmiBase
 
 

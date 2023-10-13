@@ -1,6 +1,6 @@
 import uuid
 
-from .enums.xmi_enums import XmiUnitEnum
+from ..enums.xmi_enums import XmiUnitEnum
 from .xmi_base import XmiBase
 
 
