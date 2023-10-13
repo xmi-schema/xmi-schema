@@ -4,10 +4,6 @@ from abc import ABC, abstractmethod
 
 class XmiAbstract(ABC):
     @abstractmethod
-    def from_dict(self, json_path: str):
-        pass
-
-    @abstractmethod
     def to_dict(self):
         pass
 

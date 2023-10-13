@@ -294,31 +294,3 @@ class XmiStructuralCrossSection(XmiBase):
         if value is not None and value <= 0.0:
             raise ValueError("Torsional Constant should be larger than 0.0")
         self._J = value
-
-    @classmethod
-    def from_dict(cls, data: dict) -> XmiStructuralCrossSection:
-        instance = None
-        error_logs = []
-        processed_data = data.copy()
-
-        for attr in cls.attributes_needed:
-            if attr not in data:
-                error_logs.append(Exception(f"Missing attribute: {attr}"))
-                processed_data[attr] = None
-
-        # for type conversion when reading dictionary
-        try:
-            processed_data["Shape"] = XmiStructuralCrossSectionShapeEnum.from_attribute_get_enum(
-                data['Shape'])
-            if processed_data['Shape'] is None:
-                error_logs.append(Exception(
-                    "Cannot Identify XmiStructuralCrossSectionShapeEnum: {data_value}".format(data_value=data['Shape'])))
-        except Exception as e:
-            print(e)
-        instance = cls(
-            material=processed_data['Material'],
-            shape=processed_data['Shape'],
-            parameters=processed_data['Parameters']
-            ** processed_data)
-
-        return instance, error_logs
