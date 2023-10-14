@@ -1,5 +1,4 @@
-from .entities.xmi_base_entity import XmiBaseEntity
-from .relationships.xmi_base_relationship import XmiBaseRelationship
+from .xmi_base import *
 
 
 class XmiManager():

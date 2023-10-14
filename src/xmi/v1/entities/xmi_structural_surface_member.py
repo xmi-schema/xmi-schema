@@ -2,7 +2,7 @@ import uuid
 
 from .xmi_structural_material import XmiStructuralMaterial
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from .xmi_base_entity import XmiBaseEntity
+from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 from ..enums.xmi_structural_surface_member_enums import *
 from ..enums.xmi_enums import XmiSegmentEnum
 

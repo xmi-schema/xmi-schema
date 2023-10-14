@@ -5,7 +5,7 @@ from ..constants import *
 from ..enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 
 from ..xmi_errors import XmiInconsistentDataAttributeError
-from .xmi_base_entity import XmiBaseEntity
+from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 from .xmi_structural_material import XmiStructuralMaterial
 
 """

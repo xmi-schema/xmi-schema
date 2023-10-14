@@ -1,7 +1,7 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from .xmi_base_entity import XmiBaseEntity
+from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 
 
 class XmiStructuralPointConnection(XmiBaseEntity):

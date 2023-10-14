@@ -2,17 +2,17 @@
 from __future__ import annotations
 
 from ..enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
-from .xmi_base_entity import XmiBaseEntity
+from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 
 
 class XmiStructuralMaterial(XmiBaseEntity):
-    __slots__ = XmiBaseEntity.__slots__ + ('_Type',
-                                           '_Grade',
-                                           '_UnitWeight',
-                                           '_EModulus',
-                                           '_GModulus',
-                                           '_PoissonRatio',
-                                           '_ThermalCoefficient')
+    __slots__ = XmiBaseEntity.__slots__ + ('_material_type',
+                                           '_grade',
+                                           '_unit_weight',
+                                           '_e_modulus',
+                                           '_g_modulus',
+                                           '_poisson_ratio',
+                                           '_thermal_coefficient')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -29,22 +29,23 @@ class XmiStructuralMaterial(XmiBaseEntity):
                  name: str = None,
                  description: str = None,
                  ifcguid: str = None,
+                 relationships: list[XmiBaseRelationship] = [],
                  **kwargs
                  ):
 
         # Check for mutual exclusivity
-        if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid]):
+        if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid, relationships]):
             raise ValueError(
                 "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if material_type is None and 'Type' not in kwargs:
+        if material_type is None and 'material_type' not in kwargs:
             raise ValueError(
                 "The 'material_type' parameter is compulsory and must be provided.")
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description) if not kwargs else super().__init__(**kwargs)
+                         description=description, relationships=relationships) if not kwargs else super().__init__(**kwargs)
 
         # Initialize attributes
         self.set_attributes(material_type, grade, unit_weight, e_modulus,
@@ -52,13 +53,13 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
     def set_attributes(self, material_type, grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, **kwargs):
         attributes = [
-            ('Type', material_type),
-            ('Grade', grade),
-            ('UnitWeight', unit_weight),
-            ('EModulus', e_modulus),
-            ('GModulus', g_modulus),
-            ('PoissonRatio', poisson_ratio),
-            ('ThermalCoefficient', thermal_coefficient)
+            ('material_type', material_type),
+            ('grade', grade),
+            ('unit_weight', unit_weight),
+            ('e_modulus', e_modulus),
+            ('g_modulus', g_modulus),
+            ('poisson_ratio', poisson_ratio),
+            ('thermal_coefficient', thermal_coefficient)
         ]
 
         for attr_name, attr_value in attributes:
@@ -71,78 +72,78 @@ class XmiStructuralMaterial(XmiBaseEntity):
                 setattr(self, attr_name, None)
 
     @property
-    def Type(self):
-        return self._Type
+    def material_type(self):
+        return self._material_type
 
-    @Type.setter
-    def Type(self, value):
+    @material_type.setter
+    def material_type(self, value):
         if not isinstance(value, XmiStructuralMaterialTypeEnum):
             raise TypeError(
                 "Type should be an XmiStructuralMaterialTypeEnum")
-        self._Type = value
+        self._material_type = value
 
     @property
-    def Grade(self):
-        return self._Grade
+    def grade(self):
+        return self._grade
 
-    @Grade.setter
-    def Grade(self, value):
+    @grade.setter
+    def grade(self, value):
         if value is not None and not isinstance(value, float):
             raise TypeError("Grade should be of type float or None")
-        self._Grade = value
+        self._grade = value
 
     # Similarly, for other properties:
 
     @property
-    def UnitWeight(self):
-        return self._UnitWeight
+    def unit_weight(self):
+        return self._unit_weight
 
-    @UnitWeight.setter
-    def UnitWeight(self, value):
+    @unit_weight.setter
+    def unit_weight(self, value):
         if value is not None and not isinstance(value, float):
             raise TypeError("UnitWeight should be of type float or None")
-        self._UnitWeight = value
+        self._unit_weight = value
 
     @property
-    def EModulus(self):
-        return self._EModulus
+    def e_modulus(self):
+        return self._e_modulus
 
-    @EModulus.setter
-    def EModulus(self, value):
+    @e_modulus.setter
+    def e_modulus(self, value):
         if value is not None and not isinstance(value, float):
             raise TypeError("EModulus should be of type float or None")
-        self._EModulus = value
+        self._e_modulus = value
 
     @property
-    def GModulus(self):
-        return self._GModulus
+    def g_modulus(self):
+        return self._g_modulus
 
-    @GModulus.setter
-    def GModulus(self, value):
+    @g_modulus.setter
+    def g_modulus(self, value):
         if value is not None and not isinstance(value, float):
             raise TypeError("GModulus should be of type float or None")
-        self._GModulus = value
+        self._g_modulus = value
 
     @property
-    def PoissonRatio(self):
-        return self._PoissonRatio
+    def poisson_ratio(self):
+        return self._poisson_ratio
 
-    @PoissonRatio.setter
-    def PoissonRatio(self, value):
+    @poisson_ratio.setter
+    def poisson_ratio(self, value):
         if value is not None and not isinstance(value, float):
             raise TypeError("PoissonRatio should be of type float or None")
-        self._PoissonRatio = value
+        self._poisson_ratio = value
 
     @property
-    def ThermalCoefficient(self):
-        return self._ThermalCoefficient
+    def thermal_coefficient(self):
+        return self._thermal_coefficient
 
-    @ThermalCoefficient.setter
-    def ThermalCoefficient(self, value):
+    @thermal_coefficient.setter
+    def thermal_coefficient(self, value):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "ThermalCoefficient should be of type float, integer, or None")
-        self._ThermalCoefficient = value
+        self._thermal_coefficient = value
 
     @classmethod
     def from_dict(cls, data: dict) -> XmiStructuralMaterial:
@@ -157,17 +158,17 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
         # for type conversion when reading dictionary
         try:
-            processed_data["Type"] = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
-                data['Type'])
-            if processed_data['Type'] is None and 'Type' in data:
+            processed_data["material_type"] = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+                data['material_type'])
+            if processed_data['material_type'] is None and 'Type' in data:
                 error_logs.append(Exception(
-                    "Cannot Identify XmiStructuralMaterialTypeEnum: {data_value}".format(data_value=data['Type'])))
+                    "Cannot Identify XmiStructuralMaterialTypeEnum: {data_value}".format(data_value=data['material_type'])))
                 return None, error_logs
         except KeyError as e:
             error_logs.append(e)
-            processed_data["Type"] = None
+            processed_data["material_type"] = None
             return None, error_logs
         instance = cls(
-            material_type=processed_data['Type'], **processed_data)
+            material_type=processed_data['material_type'], **processed_data)
 
         return instance, error_logs

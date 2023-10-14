@@ -1,0 +1,6 @@
+from .xmi_structural_cross_section import XmiStructuralCrossSection
+from .xmi_structural_curve_member import XmiStructuralCurveMember
+from .xmi_structural_material import XmiStructuralMaterial
+from .xmi_structural_point_connection import XmiStructuralPointConnection
+from .xmi_structural_surface_member import XmiStructuralSurfaceMember
+from .xmi_structural_unit import XmiStructuralUnit

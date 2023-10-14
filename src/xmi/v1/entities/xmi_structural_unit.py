@@ -1,7 +1,7 @@
 import uuid
 
 from ..enums.xmi_enums import XmiUnitEnum
-from .xmi_base_entity import XmiBaseEntity
+from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 
 
 class XmiStructuralUnit(XmiBaseEntity):
