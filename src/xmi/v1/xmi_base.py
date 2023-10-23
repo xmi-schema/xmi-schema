@@ -88,6 +88,7 @@ class XmiBaseEntity():
 
 
 class XmiBaseRelationship():
+    __slots__ = ('_source', '_target', '_name')
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name: str = None) -> XmiBaseRelationship:
         """_summary_
@@ -109,3 +110,36 @@ class XmiBaseRelationship():
         self.source = source
         self.target = target
         self.name = name
+
+    # Getter and setter for source
+    @property
+    def source(self):
+        return self._source
+
+    @source.setter
+    def source(self, source):
+        if isinstance(source, XmiBaseEntity):
+            self._source = source
+        else:
+            raise ValueError("Source must be of type XmiBaseEntity")
+
+    # Getter and setter for target
+    @property
+    def target(self):
+        return self._target
+
+    @target.setter
+    def target(self, target):
+        if isinstance(target, XmiBaseEntity):
+            self._target = target
+        else:
+            raise ValueError("Target must be of type XmiBaseEntity")
+
+    # Getter and setter for name
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
