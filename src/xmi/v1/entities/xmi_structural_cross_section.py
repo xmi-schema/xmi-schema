@@ -15,11 +15,19 @@ from .xmi_structural_material import XmiStructuralMaterial
 
 
 class XmiStructuralCrossSection(XmiBaseEntity):
-    __slots__ = XmiBaseEntity.__slots__ + ('_Material',
-                                           '_Shape',
-                                           '_Parameters',
-                                           '_Area',
-                                           '_Ix', '_Iy', "_rx", "_ry", "_Ex", "_Ey", "_Zx", "_Zy", "_J")
+    __slots__ = XmiBaseEntity.__slots__ + ('_material',
+                                           '_shape',
+                                           '_parameters',
+                                           '_area',
+                                           '_second_moment_of_area_x_axis',
+                                           '_second_moment_of_area_y_axis',
+                                           "_radius_of_gyration_x_axis",
+                                           "_radius_of_gyration_y_axis",
+                                           "_elastic_modulus_x_axis",
+                                           "_elastic_modulus_y_axis",
+                                           "_plastic_modulus_x_axis",
+                                           "_plastic_modulus_y_axis",
+                                           "_torsional_constant")
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -28,6 +36,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                  material: XmiStructuralMaterial,
                  shape: XmiStructuralCrossSectionShapeEnum,
                  parameters: list | tuple,
+                 area: float | int | None = None,
                  second_moment_of_area_x_axis: float | int | None = None,
                  second_moment_of_area_y_axis: float | int | None = None,
                  radius_of_gyration_x_axis: float | int | None = None,
@@ -37,7 +46,6 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                  plastic_modulus_x_axis: float | int | None = None,
                  plastic_modulus_y_axis: float | int | None = None,
                  torsional_constant: float | int | None = None,
-                 area: float | int | None = None,
                  id: str = None,
                  name: str = None,
                  description: str = None,
@@ -114,19 +122,19 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                        area,
                        **kwargs):
         attributes = [
-            ('Material', material),
-            ('Shape', shape),
-            ('Parameters', parameters),
-            ('Area', area),
-            ('Ix', second_moment_of_area_x_axis),
-            ('Iy', second_moment_of_area_y_axis),
-            ('rx', radius_of_gyration_x_axis),
-            ('ry', radius_of_gyration_y_axis),
-            ('Ex', elastic_modulus_x_axis),
-            ('Ey', elastic_modulus_y_axis),
-            ('Zx', plastic_modulus_x_axis),
-            ('Zy', plastic_modulus_y_axis),
-            ('J', torsional_constant)
+            ('material', material),
+            ('shape', shape),
+            ('parameters', parameters),
+            ('area', area),
+            ('second_moment_of_area_x_axis', second_moment_of_area_x_axis),
+            ('second_moment_of_area_y_axis', second_moment_of_area_y_axis),
+            ('radius_of_gyration_x_axis', radius_of_gyration_x_axis),
+            ('radius_of_gyration_y_axis', radius_of_gyration_y_axis),
+            ('elastic_modulus_x_axis', elastic_modulus_x_axis),
+            ('elastic_modulus_y_axis', elastic_modulus_y_axis),
+            ('plastic_modulus_x_axis', plastic_modulus_x_axis),
+            ('plastic_modulus_y_axis', plastic_modulus_y_axis),
+            ('torsional_constant', torsional_constant)
         ]
 
         for attr_name, attr_value in attributes:
@@ -139,43 +147,43 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                 setattr(self, attr_name, None)
 
     @property
-    def Material(self):
-        return self._Material
+    def material(self):
+        return self._material
 
-    @Material.setter
-    def Material(self, value):
+    @material.setter
+    def material(self, value):
         if not isinstance(value, XmiStructuralMaterial):
             raise TypeError(
                 "Material should be an XmiStructuralMaterial")
-        self._Material = value
+        self._material = value
 
     @property
-    def Shape(self):
-        return self._Shape
+    def shape(self):
+        return self._shape
 
-    @Shape.setter
-    def Shape(self, value):
+    @shape.setter
+    def shape(self, value):
         if not isinstance(value, XmiStructuralCrossSectionShapeEnum):
             raise TypeError(
                 "Shape should be of type XmiStructuralCrossSectionShapeEnum")
-        self._Shape = value
+        self._shape = value
 
     # Similarly, for other properties:
 
     @property
-    def Parameters(self):
-        return self._Parameters
+    def parameters(self):
+        return self._parameters
 
-    @Parameters.setter
-    def Parameters(self, value):
+    @parameters.setter
+    def parameters(self, value):
         # check if the datatype is correct
         if not isinstance(value, (list, tuple)):
             raise TypeError(
                 "Parameters should be of type list or tuple")
 
         # check for quantity of params
-        if self.Shape and self.Shape != XmiStructuralCrossSectionShapeEnum.OTHERS and value:
-            param_required_length = self.Shape.get_quantity_of_cross_section_params()
+        if self.shape and self.shape != XmiStructuralCrossSectionShapeEnum.OTHERS and value:
+            param_required_length = self.shape.get_quantity_of_cross_section_params()
             value_length = len(value)
             if value_length != param_required_length:
                 raise XmiInconsistentDataAttributeError(
@@ -189,136 +197,136 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                 raise ValueError(
                     f"Value cannot be smaller than 0"
                 )
-        self._Parameters = tuple(value)
+        self._parameters = tuple(value)
 
     # to be considered optional as of now
     @property
-    def Area(self):
-        return self._Area
+    def area(self):
+        return self._area
 
-    @Area.setter
-    def Area(self, value):
+    @area.setter
+    def area(self, value):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError("Area should be of type float,int or None")
         if value is not None and value <= 0.0:
             raise ValueError("Area should be larger than 0.0")
-        self._Area = value
+        self._area = value
 
     @property
-    def Ix(self):
-        return self._Ix
+    def second_moment_of_area_x_axis(self):
+        return self._second_moment_of_area_x_axis
 
-    @Ix.setter
-    def Ix(self, value):
+    @second_moment_of_area_x_axis.setter
+    def second_moment_of_area_x_axis(self, value):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "Ix (Second Moment of Area - x axis) should be of type float,int or None")
         if value is not None and value <= 0.0:
             raise ValueError("Ix should be larger than 0.0")
-        self._Ix = value
+        self._second_moment_of_area_x_axis = value
 
     @property
-    def Iy(self):
-        return self._Iy
+    def second_moment_of_area_y_axis(self):
+        return self._second_moment_of_area_y_axis
 
-    @Iy.setter
-    def Iy(self, value):
+    @second_moment_of_area_y_axis.setter
+    def second_moment_of_area_y_axis(self, value):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "Iy (Second Moment of Area - y axis) should be of type float,int or None")
         if value is not None and value <= 0.0:
             raise ValueError("Iy should be larger than 0.0")
-        self._Iy = value
+        self._second_moment_of_area_y_axis = value
 
     @property
-    def rx(self):
-        return self._rx
+    def radius_of_gyration_x_axis(self):
+        return self._radius_of_gyration_x_axis
 
-    @rx.setter
-    def rx(self, value):
+    @radius_of_gyration_x_axis.setter
+    def radius_of_gyration_x_axis(self, value):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "rx (Radius of Gyration - x axis) should be of type float or None")
         if value is not None and value <= 0.0:
             raise ValueError("rx should be larger than 0.0")
-        self._rx = value
+        self._radius_of_gyration_x_axis = value
 
     @property
-    def ry(self):
-        return self._ry
+    def radius_of_gyration_y_axis(self):
+        return self._radius_of_gyration_y_axis
 
-    @ry.setter
-    def ry(self, value):
+    @radius_of_gyration_y_axis.setter
+    def radius_of_gyration_y_axis(self, value):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "ry (Radius of Gyration - y axis) should be of type float or None")
         if value is not None and value <= 0.0:
             raise ValueError("ry should be larger than 0.0")
-        self._ry = value
+        self._radius_of_gyration_y_axis = value
 
     @property
-    def Ex(self):
-        return self._Ex
+    def elastic_modulus_x_axis(self):
+        return self._elastic_modulus_x_axis
 
-    @Ex.setter
-    def Ex(self, value):
+    @elastic_modulus_x_axis.setter
+    def elastic_modulus_x_axis(self, value):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Ex (E Modulus - x axis) should be of type float, integer, or None")
         if value is not None and value <= 0.0:
             raise ValueError("Ex should be larger than 0.0")
-        self._Ex = value
+        self._elastic_modulus_x_axis = value
 
     @property
-    def Ey(self):
-        return self._Ey
+    def elastic_modulus_y_axis(self):
+        return self._elastic_modulus_y_axis
 
-    @Ey.setter
-    def Ey(self, value):
+    @elastic_modulus_y_axis.setter
+    def elastic_modulus_y_axis(self, value):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Ey (E Modulus - y axis) should be of type float, integer, or None")
         if value is not None and value <= 0.0:
             raise ValueError("Ey should be larger than 0.0")
-        self._Ey = value
+        self._elastic_modulus_y_axis = value
 
     @property
-    def J(self):
-        return self._J
+    def torsional_constant(self):
+        return self._torsional_constant
 
-    @J.setter
-    def J(self, value):
+    @torsional_constant.setter
+    def torsional_constant(self, value):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Torsional Constant should be of type float, integer, or None")
         if value is not None and value <= 0.0:
             raise ValueError("Torsional Constant should be larger than 0.0")
-        self._J = value
+        self._torsional_constant = value
 
     @property
-    def Zx(self):
-        return self._Zx
+    def plastic_modulus_x_axis(self):
+        return self._plastic_modulus_x_axis
 
-    @Zx.setter
-    def Zx(self, value):
+    @plastic_modulus_x_axis.setter
+    def plastic_modulus_x_axis(self, value):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Zx (Plastic Modulus - x axis) should be of type float, integer, or None")
         if value is not None and value <= 0.0:
             raise ValueError(
                 "Zx (Plastic Modulus - x axis) should be larger than 0.0")
-        self._Zx = value
+        self._plastic_modulus_x_axis = value
 
     @property
-    def Zy(self):
-        return self._Zy
+    def plastic_modulus_y_axis(self):
+        return self._plastic_modulus_y_axis
 
-    @Zy.setter
-    def Zy(self, value):
+    @plastic_modulus_y_axis.setter
+    def plastic_modulus_y_axis(self, value):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Zy (Plastic Modulus - y axis) should be of type float, integer, or None")
         if value is not None and value <= 0.0:
             raise ValueError(
                 "Zy (Plastic Modulus - y axis) should be larger than 0.0")
-        self._Zy = value
+        self._plastic_modulus_y_axis = value

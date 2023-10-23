@@ -7,8 +7,8 @@ class XmiManager():
         self.relationships = []
         self.histories = []
 
-    def create_entity(self, entity_class: XmiBaseEntity, name) -> XmiBaseEntity:
-        entity = entity_class(name)
+    def create_entity(self, entity_class: XmiBaseEntity, **kwargs) -> XmiBaseEntity:
+        entity = entity_class(**kwargs)
         self.entities.append(entity)
         return entity
 
