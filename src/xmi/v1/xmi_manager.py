@@ -5,6 +5,7 @@ class XmiManager():
     def __init__(self):
         self.entities = []
         self.relationships = []
+        self.histories = []
 
     def create_entity(self, entity_class: XmiBaseEntity, name) -> XmiBaseEntity:
         entity = entity_class(name)
