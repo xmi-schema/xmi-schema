@@ -38,7 +38,7 @@ class XmiParser():
                         try:
                             xmi_file.StructuralMaterial.append(value)
 
-                            member, error_logs = XmiStructuralMaterial.from_dict(
+                            member, error_logs = XmiStructuralMaterial.from_xmi_dict_obj(
                                 value)
                             xmi_file.XmiStructuralMaterials.append(member)
                             xmi_file.errors.extend(
