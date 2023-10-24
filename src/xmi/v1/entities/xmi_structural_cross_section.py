@@ -330,3 +330,23 @@ class XmiStructuralCrossSection(XmiBaseEntity):
             raise ValueError(
                 "Zy (Plastic Modulus - y axis) should be larger than 0.0")
         self._plastic_modulus_y_axis = value
+
+    def is_empty_or_whitespace(input_string: str) -> bool:
+        return not input_string or not input_string.strip()
+
+    @classmethod
+    def convert_parameter_string_to_tuple(self, parameter_str: str) -> tuple[int, float]:
+        parameter_list: list[str] = parameter_str.split(';')
+        for param in parameter_list:
+            if self.is_empty_or_whitespace(param):
+                raise XmiInconsistentDataAttributeError(
+                    f"The individual parameter [{param}] within the XmiStructuralCrossSection 'parameters' attribute should not be empty string or empty space")
+            try:
+                float_value = float(param)
+            except ValueError:
+                raise XmiInconsistentDataAttributeError(
+                    f"The parameter [{param}] within the XmiStructuralCrossSection 'parameters' attribute should be convertible to float")
+
+        parameter_tuple = tuple([float(param) for param in parameter_list])
+
+        return parameter_tuple
