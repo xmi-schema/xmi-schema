@@ -105,12 +105,12 @@ class XmiStructuralPointConnection(XmiBaseEntity):
         self._storey = value
 
     @classmethod
-    def from_dict(cls, data: dict) -> XmiStructuralPointConnection:
+    def from_dict(cls, obj: dict) -> XmiStructuralPointConnection:
         error_logs = []
-        processed_data = data.copy()
+        processed_data = obj.copy()
 
         for attr in cls.attributes_needed:
-            if attr not in data:
+            if attr not in obj:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None
 
@@ -130,7 +130,7 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 **processed_data)
         except Exception as e:
             error_logs.append(
-                Exception(f"Error instantiating StructuralPointConnection: {xmi_dict_obj}"))
+                Exception(f"Error instantiating StructuralPointConnection: {obj}"))
 
         return instance, error_logs
 
