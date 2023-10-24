@@ -5,8 +5,8 @@ from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 
 
 class XmiStructuralPointConnection(XmiBaseEntity):
-    __slots__ = XmiBaseEntity.__slots__ + ('_Storey', '_X',
-                                           '_Y', '_Z')
+    __slots__ = XmiBaseEntity.__slots__ + ('_x',
+                                           '_y', '_z', '_storey')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -19,23 +19,24 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                  id: str = None,
                  name: str = None,
                  description: str = None,
-                 ifcguid: str = None, **kwargs):
+                 ifcguid: str = None,
+                 **kwargs):
 
         # Check for mutual exclusivity
-        if kwargs and any([x, y, z, storey]):
+        if kwargs and any([x, y, z]):
             raise ValueError(
                 "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if x is None and 'X' not in kwargs:
+        if x is None and 'x' not in kwargs:
             raise ValueError(
                 "The 'x' parameter is compulsory and must be provided.")
         # Ensure material_type is provided
-        if y is None and 'Y' not in kwargs:
+        if y is None and 'y' not in kwargs:
             raise ValueError(
                 "The 'y' parameter is compulsory and must be provided.")
         # Ensure material_type is provided
-        if z is None and 'Z' not in kwargs:
+        if z is None and 'z' not in kwargs:
             raise ValueError(
                 "The 'z' parameter is compulsory and must be provided.")
 
@@ -48,10 +49,10 @@ class XmiStructuralPointConnection(XmiBaseEntity):
 
     def set_attributes(self, x, y, z, storey, **kwargs):
         attributes = [
-            ('X', x),
-            ('Y', y),
-            ('Z', z),
-            ('Storey', storey)
+            ('x', x),
+            ('y', y),
+            ('z', z),
+            ('storey', storey)
         ]
 
         for attr_name, attr_value in attributes:
@@ -64,44 +65,44 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 setattr(self, attr_name, None)
 
     @property
-    def X(self):
-        return self._X
+    def x(self):
+        return self._x
 
-    @X.setter
-    def X(self, value):
+    @x.setter
+    def x(self, value):
         if not isinstance(value, (int, float)):
             raise TypeError("X should be an int or float")
-        self._X = value
+        self._x = value
 
     @property
-    def Y(self):
-        return self._Y
+    def y(self):
+        return self._y
 
-    @Y.setter
-    def Y(self, value):
+    @y.setter
+    def y(self, value):
         if not isinstance(value, (int, float)):
             raise TypeError("Y should be an int or float")
-        self._Y = value
+        self._y = value
 
     @property
-    def Z(self):
-        return self._Z
+    def z(self):
+        return self._z
 
-    @Z.setter
-    def Z(self, value):
+    @z.setter
+    def z(self, value):
         if not isinstance(value, (int, float)):
             raise TypeError("Z should be an int or float")
-        self._Z = value
+        self._z = value
 
     @property
-    def Storey(self):
-        return self._Storey
+    def storey(self):
+        return self._storey
 
-    @Storey.setter
-    def Storey(self, value):
+    @storey.setter
+    def storey(self, value):
         if not isinstance(value, str):
             raise TypeError("Storey should be an str")
-        self._Storey = value
+        self._storey = value
 
     @classmethod
     def from_dict(cls, data: dict) -> XmiStructuralPointConnection:
@@ -112,7 +113,48 @@ class XmiStructuralPointConnection(XmiBaseEntity):
             if attr not in data:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None
-        return cls(processed_data['X'],
-                   processed_data['Y'],
-                   processed_data['Z']
-                   ** processed_data), error_logs
+
+        x_found = processed_data['x']
+        y_found = processed_data['y']
+        z_found = processed_data['z']
+
+        # remove compulsory keys for proper class instantiation
+        del processed_data['x']
+        del processed_data['y']
+        del processed_data['z']
+        try:
+            instance = cls(
+                x=x_found,
+                y=y_found,
+                z=z_found,
+                **processed_data)
+        except Exception as e:
+            error_logs.append(
+                Exception(f"Error instantiating StructuralPointConnection: {xmi_dict_obj}"))
+
+        return instance, error_logs
+
+    @classmethod
+    def from_xmi_dict_obj(cls, xmi_dict_obj: dict):
+        # Define a mapping from snake_case keys to custom keys
+        KEY_MAPPING = {
+            "Name": "name",
+            "X": "x",
+            "Y": "y",
+            "Z": "z",
+            "Storey": "storey",
+            "Description": "description",
+            "ID": "id",
+            "IFCGUID": "ifcguid",
+        }
+        instance = None
+        error_logs = []
+        processed_data = {KEY_MAPPING.get(
+            key, key): value for key, value in xmi_dict_obj.items()}
+
+        instance, error_logs_found = cls.from_dict(
+            processed_data)
+
+        error_logs.extend(error_logs_found)
+
+        return instance, error_logs

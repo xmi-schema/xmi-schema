@@ -145,52 +145,6 @@ class XmiStructuralMaterial(XmiBaseEntity):
         self._thermal_coefficient = value
 
     @classmethod
-    def from_xmi_dict_obj(cls, xmi_dict_obj: dict) -> XmiStructuralMaterial:
-        # Define a mapping from snake_case keys to custom keys
-        KEY_MAPPING = {
-            "Name": "name",
-            "Type": "material_type",
-            "Grade": "grade",
-            "UnitWeight": "unit_weight",
-            "EModulus": "e_modulus",
-            "GModulus": "g_modulus",
-            "PoissonRatio": "poisson_ratio",
-            "Description": "description",
-            "ID": "id",
-            "IFCGUID": "ifcguid",
-            "ThermalCoefficient": "thermal_coefficient"
-        }
-        instance = None
-        error_logs = []
-        processed_data = {KEY_MAPPING.get(
-            key, key): value for key, value in xmi_dict_obj.items()}
-
-        for attr in cls.attributes_needed:
-            if attr not in processed_data:
-                error_logs.append(Exception(f"Missing attribute: {attr}"))
-                processed_data[attr] = None
-
-        # for type conversion when reading dictionary
-        try:
-            material_type_found = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
-                processed_data['material_type'])
-
-            if material_type_found is None:
-                error_logs.append(Exception(
-                    "Cannot Identify XmiStructuralMaterialTypeEnum: {data_value}".format(data_value=xmi_dict_obj['material_type'])))
-                return None, error_logs
-        except KeyError as e:
-            error_logs.append(e)
-            return None, error_logs
-
-        del processed_data['material_type']
-
-        instance = cls(
-            material_type=material_type_found, **processed_data)
-
-        return instance, error_logs
-
-    @classmethod
     def from_dict(cls, obj: dict) -> XmiStructuralMaterial:
         instance = None
         error_logs = []
@@ -216,7 +170,39 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
         del processed_data['material_type']
 
-        instance = cls(
-            material_type=material_type_found, **processed_data)
+        try:
+            instance = cls(
+                material_type=material_type_found, **processed_data)
+        except Exception as e:
+            error_logs.append(
+                Exception(f"Error instantiating StructuralMaterial: {obj}"))
+
+        return instance, error_logs
+
+    @classmethod
+    def from_xmi_dict_obj(cls, xmi_dict_obj: dict) -> XmiStructuralMaterial:
+        # Define a mapping from snake_case keys to custom keys
+        KEY_MAPPING = {
+            "Name": "name",
+            "Type": "material_type",
+            "Grade": "grade",
+            "UnitWeight": "unit_weight",
+            "EModulus": "e_modulus",
+            "GModulus": "g_modulus",
+            "PoissonRatio": "poisson_ratio",
+            "Description": "description",
+            "ID": "id",
+            "IFCGUID": "ifcguid",
+            "ThermalCoefficient": "thermal_coefficient"
+        }
+        instance = None
+        error_logs = []
+        processed_data = {KEY_MAPPING.get(
+            key, key): value for key, value in xmi_dict_obj.items()}
+
+        instance, error_logs_found = cls.from_dict(
+            processed_data)
+
+        error_logs.extend(error_logs_found)
 
         return instance, error_logs

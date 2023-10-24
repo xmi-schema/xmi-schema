@@ -14,7 +14,7 @@ def test_xmi_manager_1():
 
     print(xmi_manager)
 
-    assert len(xmi_manager.entities) == 1
+    assert len(xmi_manager.entities) == 563
     assert len(xmi_manager.relationships) == 0
 
     xmi_structural_materials_found = [

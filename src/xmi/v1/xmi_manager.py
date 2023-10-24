@@ -1,6 +1,7 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
+from .entities.xmi_structural_point_connection import XmiStructuralPointConnection
 from .entities.xmi_structural_material import XmiStructuralMaterial
 
 from .xmi_base import *
@@ -45,9 +46,9 @@ class XmiManager():
         return [rel for rel in self.relationships if rel.target.name == target_name]
 
     def read_xmi_dict(self, xmi_dict: dict):
-        for xmi_key, xmi_value in xmi_dict.items():
-            if xmi_key == "StructuralMaterial":
-                for index, xmi_structural_material_obj in enumerate(xmi_value):
+        for xmi_dict_key, xmi_dict_value in xmi_dict.items():
+            if xmi_dict_key == "StructuralMaterial":
+                for index, xmi_structural_material_obj in enumerate(xmi_dict_value):
                     try:
                         xmi_structural_material, error_logs = XmiStructuralMaterial.from_xmi_dict_obj(
                             xmi_structural_material_obj)
@@ -55,4 +56,15 @@ class XmiManager():
                         self.errors.extend(error_logs)
                     except Exception as e:
                         self.errors.append(
-                            ErrorLog(xmi_key, index, str(e)))
+                            ErrorLog(xmi_dict_key, index, str(e)))
+
+            if xmi_dict_key == "StructuralPointConnection":
+                for index, xmi_structural_point_connection_obj in enumerate(xmi_dict_value):
+                    try:
+                        xmi_structural_point_connection, error_logs = XmiStructuralPointConnection.from_xmi_dict_obj(
+                            xmi_structural_point_connection_obj)
+                        self.entities.append(xmi_structural_point_connection)
+                        self.errors.extend(error_logs)
+                    except Exception as e:
+                        self.errors.append(
+                            ErrorLog(xmi_dict_key, index, str(e)))
