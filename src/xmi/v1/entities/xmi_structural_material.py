@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
-from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
+from ..xmi_base import XmiBaseEntity
 
 
 class XmiStructuralMaterial(XmiBaseEntity):
@@ -29,12 +29,11 @@ class XmiStructuralMaterial(XmiBaseEntity):
                  name: str = None,
                  description: str = None,
                  ifcguid: str = None,
-                 relationships: list[XmiBaseRelationship] = [],
                  **kwargs
                  ):
 
         # Check for mutual exclusivity
-        if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid, relationships]):
+        if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid]):
             raise ValueError(
                 "Please use either standard parameters or kwargs, not both.")
 
@@ -45,7 +44,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description, relationships=relationships) if not kwargs else super().__init__(**kwargs)
+                         description=description) if not kwargs else super().__init__(**kwargs)
 
         # Initialize attributes
         self.set_attributes(material_type, grade, unit_weight, e_modulus,

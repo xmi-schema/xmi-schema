@@ -47,11 +47,12 @@ class XmiManager():
     def read_xmi_dict(self, xmi_dict: dict):
         for xmi_key, xmi_value in xmi_dict.items():
             if xmi_key == "StructuralMaterial":
-                for index, xmi_structural_material_obj in enumerate(xmi_dict['StructuralMaterial']):
+                for index, xmi_structural_material_obj in enumerate(xmi_value):
                     try:
-                        xmi_structural_material = XmiStructuralMaterial.from_xmi_dict_obj(
+                        xmi_structural_material, error_logs = XmiStructuralMaterial.from_xmi_dict_obj(
                             xmi_structural_material_obj)
                         self.entities.append(xmi_structural_material)
+                        self.errors.extend(error_logs)
                     except Exception as e:
                         self.errors.append(
                             ErrorLog(xmi_key, index, str(e)))

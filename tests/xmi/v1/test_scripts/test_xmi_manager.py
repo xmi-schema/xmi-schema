@@ -1,6 +1,7 @@
 import json
 
 from src.xmi.v1.xmi_manager import XmiManager
+from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
 
 
 def test_xmi_manager_1():
@@ -15,3 +16,7 @@ def test_xmi_manager_1():
 
     assert len(xmi_manager.entities) == 1
     assert len(xmi_manager.relationships) == 0
+
+    xmi_structural_materials_found = [
+        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralMaterial)]
+    assert len(xmi_structural_materials_found) == 1

@@ -6,14 +6,13 @@ import uuid
 
 class XmiBaseEntity():
 
-    __slots__ = ('_id', '_name', '_ifcguid', '_description', '_relationships')
+    __slots__ = ('_id', '_name', '_ifcguid', '_description')
 
     def __init__(self,
                  id: str = None,
                  name: str = None,
                  ifcguid: str = None,
                  description: str = None,
-                 relationships: list[XmiBaseRelationship] = [],
                  ** kwargs):
 
         id = id if id else kwargs.get('id', str(uuid.uuid4()))
@@ -21,13 +20,10 @@ class XmiBaseEntity():
         description = description if description else kwargs.get(
             'description', None)
         ifcguid = ifcguid if ifcguid else kwargs.get('ifcguid', None)
-        relationships = relationships if relationships else kwargs.get(
-            'relationships', [])
         self.id = id  # Calls the setter
         self.name = name
         self.ifcguid = ifcguid
         self.description = description
-        self.relationships = relationships
 
     @property
     def id(self):
@@ -68,20 +64,6 @@ class XmiBaseEntity():
         if value is not None and not isinstance(value, str):
             raise TypeError("Description should be a string")
         self._description = value
-
-    @property
-    def relationships(self):
-        return self._relationships
-
-    @relationships.setter
-    def relationships(self, value):
-        if not isinstance(value, list):
-            raise TypeError("relationships should be a list")
-        for item in value:
-            if not isinstance(item, XmiBaseRelationship):
-                raise ValueError(
-                    f"All items must be instances of XmiBaseRelationship, got {type(item)} instead.")
-        self._relationships = value
 
     def to_dict(self):
         return {slot.lstrip('_'): getattr(self, slot) for slot in self.__slots__}
