@@ -23,7 +23,7 @@ class XmiError(Exception):
         return base_msg
 
 
-class XmiInconsistentDataAttributeError(XmiError):
+class XmiInconsistentDataTypeError(XmiError):
     pass
 
 

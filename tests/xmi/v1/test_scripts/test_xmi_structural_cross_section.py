@@ -147,7 +147,7 @@ def test_xmi_structural_cross_section_fail():
 
     shape = XmiStructuralCrossSectionShapeEnum.CIRCULAR
     parameters = (100, 100)  # value is shown in mm for testing purposes
-    with pytest.raises(XmiInconsistentDataAttributeError, match="The parameter length is different than required XmiStructuralCrossSectionShapeEnum"):
+    with pytest.raises(XmiInconsistentDataTypeError, match="The parameter length is different than required XmiStructuralCrossSectionShapeEnum"):
         xmi_structural_cross_section = XmiStructuralCrossSection(
             material=xmi_structural_material,
             shape=shape,

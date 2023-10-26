@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 from .entities.xmi_structural_cross_section import XmiStructuralCrossSection
-
 from .entities.xmi_structural_point_connection import XmiStructuralPointConnection
 from .entities.xmi_structural_material import XmiStructuralMaterial
+from .relationships.xmi_has_structural_material import XmiHasStructuralMaterial
 from .xmi_errors import *
 from .xmi_base import *
 
@@ -112,9 +112,12 @@ class XmiManager():
                             xmi_structural_cross_section_obj,
                             material=xmi_structural_material_found_in_xmi_manager
                         )
+                        self.errors.extend(error_logs)
                         if xmi_structural_cross_section:
                             self.entities.append(xmi_structural_cross_section)
-                        self.errors.extend(error_logs)
+                            self.create_relationship(
+                                XmiHasStructuralMaterial, xmi_structural_cross_section, xmi_structural_cross_section.material)
+
                     except Exception as e:
                         self.errors.append(
                             ErrorLog(xmi_dict_key, index, str(e)))
