@@ -71,17 +71,17 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                 "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if material is None and 'Material' not in kwargs:
+        if material is None and 'material' not in kwargs:
             raise ValueError(
                 "The 'material' parameter is compulsory and must be provided.")
 
         # Ensure material_type is provided
-        if shape is None and 'Shape' not in kwargs:
+        if shape is None and 'shape' not in kwargs:
             raise ValueError(
                 "The 'shape' parameter is compulsory and must be provided.")
 
         # Ensure material_type is provided
-        if parameters is None and 'Parameters' not in kwargs:
+        if parameters is None and 'parameters' not in kwargs:
             raise ValueError(
                 "The 'parameters' parameter is compulsory and must be provided.")
 
@@ -444,7 +444,6 @@ class XmiStructuralCrossSection(XmiBaseEntity):
             "Description": "description",
             "ID": "id",
             "IFCGUID": "ifcguid",
-            "ThermalCoefficient": "thermal_coefficient"
         }
 
         instance: XmiStructuralCrossSection | None = None
