@@ -8,7 +8,7 @@ from ..xmi_base import XmiBaseRelationship, XmiBaseEntity
 from ..constants import *
 
 
-class XmiHasStructuralMaterial(XmiBaseRelationship):
+class XmiHasStructuralNode(XmiBaseRelationship):
     __slots__ = XmiBaseRelationship.__slots__
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, **kwargs):

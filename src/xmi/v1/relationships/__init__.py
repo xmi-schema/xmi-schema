@@ -1,0 +1,2 @@
+from .xmi_has_structural_material import XmiHasStructuralMaterial
+from .xmi_has_structural_node import XmiHasStructuralNode
