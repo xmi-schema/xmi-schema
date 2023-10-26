@@ -4,7 +4,7 @@ from __future__ import annotations
 from ..constants import *
 from ..enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 
-from ..xmi_errors import XmiInconsistentDataAttributeError
+from ..xmi_errors import *
 from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 from .xmi_structural_material import XmiStructuralMaterial
 
@@ -350,3 +350,114 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         parameter_tuple = tuple([float(param) for param in parameter_list])
 
         return parameter_tuple
+
+    # from_dict class method is used to do data conversion
+    @classmethod
+    def from_dict(cls, obj: dict) -> XmiStructuralCrossSection:
+        instance = None
+        error_logs = []
+        processed_data = obj.copy()
+
+        for attr in cls.attributes_needed:
+            if attr not in processed_data:
+                error_logs.append(Exception(f"Missing attribute: {attr}"))
+                processed_data[attr] = None
+
+        # for type conversion when reading dictionary
+        try:
+            # check for material found
+            material_found = processed_data['material']
+            if material_found is None:
+                error_logs.append(XmiMissingReferenceInstanceError(
+                    "Please provide material value of type XmiStructuralMaterial"))
+                return None, error_logs
+            else:
+                if not isinstance(material_found, XmiStructuralMaterial):
+                    error_logs.append(XmiInconsistentDataAttributeError(
+                        "material provided need to be of instance XmiStructuralMaterial"))
+
+            # check for conversion of parameters to tuple of parameters suitable for the Shape
+            shape_found = processed_data['shape']
+            if shape_found is None:
+                error_logs.append(XmiMissingRequiredAttributeError(
+                    "Please provide value of type XmiStructuralCrossSectionShapeTypeEnum for the shape attribute"))
+                return None, error_logs
+            else:
+                shape_found = XmiStructuralCrossSectionShapeEnum.from_attribute_get_enum(
+                    processed_data['shape'])
+                if not isinstance(shape_found, XmiStructuralCrossSectionShapeEnum):
+                    error_logs.append(XmiInconsistentDataAttributeError(
+                        "shape value provided need to be of instance XmiStructuralCrossSectionShapeEnum"))
+                    return None, error_logs
+                processed_data['shape'] = shape_found
+
+            # check for params
+            parameters_found = processed_data['parameters']
+            if parameters_found is None:
+                error_logs.append(XmiMissingRequiredAttributeError(
+                    "Please provide value for the parameters attribute"))
+                return None, error_logs
+            else:
+                parameters_found = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
+                    processed_data['parameters'])
+
+                if not isinstance(parameters_found, tuple):
+                    error_logs.append(XmiInconsistentDataAttributeError(
+                        "parameters value after conversion using the convert_parameter_string_to_tuple function should be of type tuple"))
+                    return None, error_logs
+                processed_data['parameters'] = parameters_found
+        except KeyError as e:
+            error_logs.append(e)
+            return None, error_logs
+
+        del processed_data['material']
+
+        try:
+            instance = cls(
+                material=material_found, **processed_data)
+        except Exception as e:
+            error_logs.append(
+                Exception(f"Error instantiating XmiStructuralCrossSection: {obj}"))
+
+        return instance, error_logs
+
+    # additional parameters are used to inject reference elements
+    @classmethod
+    def from_xmi_dict_obj(cls, xmi_dict_obj: dict,
+                          material: XmiStructuralMaterial = None) -> XmiStructuralCrossSection:
+        # Define a mapping from snake_case keys to custom keys
+        KEY_MAPPING = {
+            "Name": "name",
+            "Material": "material",
+            "Parameters": "parameters",
+            "Shape": "shape",
+            "Ix": "second_moment_of_area_x_axis",
+            "Iy": "second_moment_of_area_y_axis",
+            "rx": "radius_of_gyration_x_axis",
+            "ry": "radius_of_gyration_y_axis",
+            "Ex": "elastic_modulus_x_axis",
+            "Ey": "elastic_modulus_y_axis",
+            "Zx": "plastic_modulus_x_axis",
+            "Zy": "plastic_modulus_y_axis",
+            "J": "torsional_constant",
+            "Area": "area",
+            "Description": "description",
+            "ID": "id",
+            "IFCGUID": "ifcguid",
+            "ThermalCoefficient": "thermal_coefficient"
+        }
+
+        instance: XmiStructuralCrossSection | None = None
+        error_logs: list[Exception] = []
+        processed_data: dict = {KEY_MAPPING.get(
+            key, key): value for key, value in xmi_dict_obj.items()}
+
+        if 'material' in processed_data.keys() and material is not None:
+            processed_data['material'] = material
+
+        instance, error_logs_found = cls.from_dict(
+            processed_data)
+
+        error_logs.extend(error_logs_found)
+
+        return instance, error_logs

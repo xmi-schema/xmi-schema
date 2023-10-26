@@ -195,6 +195,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
             "IFCGUID": "ifcguid",
             "ThermalCoefficient": "thermal_coefficient"
         }
+
         instance = None
         error_logs = []
         processed_data = {KEY_MAPPING.get(

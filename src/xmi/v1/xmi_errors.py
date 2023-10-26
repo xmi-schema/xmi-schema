@@ -25,3 +25,13 @@ class XmiError(Exception):
 
 class XmiInconsistentDataAttributeError(XmiError):
     pass
+
+
+class XmiMissingReferenceInstanceError(XmiError):
+    # Error is flagged when a necessary reference attribute in the form of an instance is required
+    pass
+
+
+class XmiMissingRequiredAttributeError(XmiError):
+    # Error is flagged when error found during preparation of instance prior to instantation for required attributes
+    pass
