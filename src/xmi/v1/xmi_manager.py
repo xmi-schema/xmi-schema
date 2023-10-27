@@ -4,7 +4,10 @@ from __future__ import annotations
 from .entities.xmi_structural_cross_section import XmiStructuralCrossSection
 from .entities.xmi_structural_point_connection import XmiStructuralPointConnection
 from .entities.xmi_structural_material import XmiStructuralMaterial
+from .entities.xmi_structural_curve_member import XmiStructuralCurveMember
+
 from .relationships.xmi_has_structural_material import XmiHasStructuralMaterial
+
 from .xmi_errors import *
 from .xmi_base import *
 
@@ -95,18 +98,77 @@ class XmiManager():
                     try:
                         xmi_structural_material_found_in_xmi_manager = None
 
-                        if 'Material' in xmi_structural_cross_section_obj:
-                            xmi_structural_material_name_to_find: str = xmi_structural_cross_section_obj[
-                                'Material']
-                            xmi_structural_material_found_in_xmi_manager = next(
-                                (inst for inst in self.entities
-                                 if inst.name == xmi_structural_material_name_to_find
-                                 and isinstance(inst, XmiStructuralMaterial)),
-                                None
-                            )
-                        else:
+                        if 'Material' not in xmi_structural_cross_section_obj:
                             raise XmiMissingReferenceInstanceError(
                                 "Material Attribute in xmi_dict is missing")
+
+                        xmi_structural_material_name_to_find: str = xmi_structural_cross_section_obj[
+                            'Material']
+                        xmi_structural_material_found_in_xmi_manager = next(
+                            (inst for inst in self.entities
+                                if inst.name == xmi_structural_material_name_to_find
+                                and isinstance(inst, XmiStructuralMaterial)),
+                            None
+                        )
+
+                        xmi_structural_cross_section, error_logs = XmiStructuralCrossSection.from_xmi_dict_obj(
+                            xmi_structural_cross_section_obj,
+                            material=xmi_structural_material_found_in_xmi_manager
+                        )
+                        self.errors.extend(error_logs)
+                        if xmi_structural_cross_section:
+                            self.entities.append(xmi_structural_cross_section)
+                            self.create_relationship(
+                                XmiHasStructuralMaterial, xmi_structural_cross_section, xmi_structural_cross_section.material)
+
+                    except Exception as e:
+                        self.errors.append(
+                            ErrorLog(xmi_dict_key, index, str(e)))
+
+            if xmi_dict_key == "StructuralCurveMember":
+                for index, xmi_structural_curve_member_obj in enumerate(xmi_dict_value):
+                    try:
+                        xmi_structural_cross_section_found_in_xmi_manager = None
+
+                        if 'CrossSection' not in xmi_structural_curve_member_obj:
+                            raise XmiMissingReferenceInstanceError(
+                                "CrossSection Attribute in xmi_dict is missing")
+
+                        xmi_structural_cross_section_name_to_find: str = xmi_structural_curve_member_obj[
+                            'CrossSection']
+
+                        xmi_structural_cross_section_found_in_xmi_manager = next(
+                            (inst for inst in self.entities
+                                if inst.name == xmi_structural_cross_section_name_to_find
+                                and isinstance(inst, XmiStructuralCrossSection)), None)
+
+                        xmi_structural_point_connections_name_str_to_find: str = xmi_structural_curve_member_obj[
+                            'Nodes']
+
+                        xmi_structural_point_connections_found_in_xmi_manager = []
+
+                        xmi_structural_point_connections_name_list_to_find: list[str] = xmi_structural_point_connections_name_str_to_find.split(
+                            ";")
+                        if not xmi_structural_point_connections_name_list_to_find == [xmi_structural_point_connections_name_str_to_find]:
+                            for xmi_structural_point_connection_name in xmi_structural_point_connections_name_list_to_find:
+                                xmi_structural_point_connection_found_in_xmi_manager = next(
+                                    (inst for inst in self.entities
+                                        if inst.name == xmi_structural_point_connection_name
+                                        and isinstance(inst, XmiStructuralPointConnection)), None)
+                                xmi_structural_point_connections_found_in_xmi_manager.append(
+                                    xmi_structural_point_connection_found_in_xmi_manager)
+
+                        xmi_segments_str_to_find: str = xmi_structural_curve_member_obj['Segments']
+                        
+                        xmi_segments_list_to_find: list[str] = xmi_segments_str_to_find.split(";")
+                        if not xmi_segments_list_to_find == [xmi_segments_str_to_find]:
+                            
+
+                        xmi_structural_curve_member, error_logs = XmiStructuralCurveMember.from_xmi_dict_obj(
+                            xmi_structural_curve_member_obj,
+                            cross_section=xmi_structural_cross_section_found_in_xmi_manager,
+                            nodes=xmi_structural_point_connections_found_in_xmi_manager
+                        )
 
                         xmi_structural_cross_section, error_logs = XmiStructuralCrossSection.from_xmi_dict_obj(
                             xmi_structural_cross_section_obj,

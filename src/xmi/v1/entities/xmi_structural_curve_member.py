@@ -6,11 +6,15 @@ import uuid
 from ..entities.xmi_structural_cross_section import XmiStructuralCrossSection
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
+from ..xmi_base import XmiBaseEntity, XmiBaseGeometry, XmiBaseRelationship
 from ..enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberTypeEnum
 from ..enums.xmi_enums import XmiSegmentEnum
 
 from ..xmi_errors import *
+
+# Revit uses X,Y,Z
+# Etabs uses X,Y,-Z
+# TSD uses X,-Y,-Z
 
 
 class XmiStructuralCurveMember(XmiBaseEntity):
@@ -323,9 +327,9 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 "Segments should be of type list")
 
         for item in value:
-            if not isinstance(item, XmiSegmentEnum):
+            if not isinstance(item, XmiBaseGeometry):
                 raise ValueError(
-                    f"All items must be instances of XmiStructuralCurveMemberSegmentEnum, got {type(item)} instead.")
+                    f"All items must be instances of XmiBaseGeometry, got {type(item)} instead.")
         self._segments = value
 
     @property
@@ -438,8 +442,31 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 "end_node_z_offset should be of type float or int")
         self.end_node_z_offset = value
 
+    def is_empty_or_whitespace(input_string: str) -> bool:
+        return not input_string or not input_string.strip()
+
     @classmethod
-    def from_dict(cls, obj: dict) -> XmiStructuralCrossSection:
+    def convert_local_axis_string_to_tuple(cls, axis_direction, local_axis_str: str) -> tuple:
+        local_axis_list: list[str] = local_axis_str.split(';')
+        if len(local_axis_list) != 3:
+            raise XmiMissingRequiredAttributeError(
+                f"The XmiStructuralCurveMember 'local_axis_{axis_direction}' attribute should have 3 parameters")
+
+        for local_axis_value in local_axis_list:
+            if cls.is_empty_or_whitespace(local_axis_value):
+                raise XmiInconsistentDataTypeError(
+                    f"The individual parameter [{local_axis_value}] within the XmiStructuralCurveMember 'local_axis_{axis_direction}' attribute should not be empty string or empty space")
+            try:
+                float_value = float(local_axis_value)
+            except ValueError:
+                raise XmiInconsistentDataTypeError(
+                    f"The parameter [{local_axis_value}] within the XmiStructuralCurveMember 'local_axis_{axis_direction}' attribute should be convertible to float")
+
+        parameter_tuple = tuple([float(param) for param in local_axis_list])
+        return parameter_tuple
+
+    @classmethod
+    def from_dict(cls, obj: dict) -> XmiStructuralCurveMember:
         instance = None
         error_logs = []
         processed_data = obj.copy()
@@ -452,55 +479,109 @@ class XmiStructuralCurveMember(XmiBaseEntity):
         # for type conversion when reading dictionary
         try:
             # check for material found
-            material_found = processed_data['material']
-            if material_found is None:
+            cross_section_found = processed_data['cross_section']
+            if cross_section_found is None:
                 error_logs.append(XmiMissingReferenceInstanceError(
-                    "Please provide material value of type XmiStructuralMaterial"))
+                    "Please provide cross_section value of type XmiStructuralCrossSection"))
                 return None, error_logs
-            else:
-                if not isinstance(material_found, XmiStructuralMaterial):
-                    error_logs.append(XmiInconsistentDataTypeError(
-                        "material provided need to be of instance XmiStructuralMaterial"))
+            if not isinstance(cross_section_found, XmiStructuralCrossSection):
+                error_logs.append(XmiInconsistentDataTypeError(
+                    "cross_section provided need to be of instance XmiStructuralCrossSection"))
 
-            # check for conversion of parameters to tuple of parameters suitable for the Shape
-            shape_found = processed_data['shape']
-            if shape_found is None:
+            # check for nodes
+            nodes_found = processed_data['nodes']
+            if nodes_found is None:
                 error_logs.append(XmiMissingRequiredAttributeError(
-                    "Please provide value of type XmiStructuralCrossSectionShapeTypeEnum for the shape attribute"))
+                    "Please provide value for the nodes attribute"))
                 return None, error_logs
-            else:
-                shape_found = XmiStructuralCrossSectionShapeEnum.from_attribute_get_enum(
-                    processed_data['shape'])
-                if not isinstance(shape_found, XmiStructuralCrossSectionShapeEnum):
-                    error_logs.append(XmiInconsistentDataTypeError(
-                        "shape value provided need to be of instance XmiStructuralCrossSectionShapeEnum"))
-                    return None, error_logs
-                processed_data['shape'] = shape_found
 
-            # check for params
-            parameters_found = processed_data['parameters']
-            if parameters_found is None:
+            if not isinstance(nodes_found, list):
+                error_logs.append(XmiInconsistentDataTypeError(
+                    "nodes value provided need to be of instance list"))
+                return None, error_logs
+            for node in nodes_found:
+                if not isinstance(node, XmiStructuralPointConnection):
+                    error_logs.append(XmiInconsistentDataTypeError(
+                        "nodes value provided need to be of instance XmiStructuralPointConnection"))
+
+            # check for segments
+            segments_found = processed_data['segments']
+            if segments_found is None:
+                error_logs.append(XmiMissingRequiredAttributeError(
+                    "Please provide value for the segments attribute"))
+                return None, error_logs
+
+            if not isinstance(segments_found, list):
+                error_logs.append(XmiInconsistentDataTypeError(
+                    "segments value provided need to be of instance list"))
+                return None, error_logs
+            for segment in segments_found:
+                if not isinstance(segment, XmiBaseGeometry):
+                    error_logs.append(XmiInconsistentDataTypeError(
+                        "segment value provided need to be of instance XmiBaseGeometry"))
+
+            # check for local_axis_x
+            local_axis_x_found = processed_data['local_axis_x']
+            if local_axis_x_found is None:
                 error_logs.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the parameters attribute"))
                 return None, error_logs
-            else:
-                parameters_found = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
-                    processed_data['parameters'])
+            local_axis_x_found = XmiStructuralCurveMember.convert_local_axis_string_to_tuple(
+                processed_data['local_axis_x'])
 
-                if not isinstance(parameters_found, tuple):
-                    error_logs.append(XmiInconsistentDataTypeError(
-                        "parameters value after conversion using the convert_parameter_string_to_tuple function should be of type tuple"))
-                    return None, error_logs
-                processed_data['parameters'] = parameters_found
+            if not isinstance(local_axis_x_found, tuple):
+                error_logs.append(XmiInconsistentDataTypeError(
+                    "local_axis_x value after conversion using the convert_parameter_string_to_tuple function should be of type tuple"))
+                return None, error_logs
+            processed_data['local_axis_x'] = local_axis_x_found
+
+            # check for local_axis_y
+            local_axis_y_found = processed_data['local_axis_y']
+            if local_axis_y_found is None:
+                error_logs.append(XmiMissingRequiredAttributeError(
+                    "Please provide value for the parameters attribute"))
+                return None, error_logs
+            local_axis_y_found = XmiStructuralCurveMember.convert_local_axis_string_to_tuple(
+                processed_data['local_axis_y'])
+
+            if not isinstance(local_axis_y_found, tuple):
+                error_logs.append(XmiInconsistentDataTypeError(
+                    "local_axis_y value after conversion using the convert_parameter_string_to_tuple function should be of type tuple"))
+                return None, error_logs
+            processed_data["local_axis_y"] = local_axis_y_found
+
+            # check for local_axis_z
+            local_axis_z_found = processed_data['local_axis_z']
+            if local_axis_z_found is None:
+                error_logs.append(XmiMissingRequiredAttributeError(
+                    "Please provide value for the parameters attribute"))
+                return None, error_logs
+            local_axis_z_found = XmiStructuralCurveMember.convert_local_axis_string_to_tuple(
+                processed_data['local_axis_z'])
+            if not isinstance(local_axis_z_found, tuple):
+                error_logs.append(XmiInconsistentDataTypeError(
+                    "local_axis_z value after conversion using the convert_parameter_string_to_tuple function should be of type tuple"))
+                return None, error_logs
+            processed_data["local_axis_z"] = local_axis_z_found
+
         except KeyError as e:
             error_logs.append(e)
             return None, error_logs
 
-        del processed_data['material']
+        del processed_data['cross_section']
+        del processed_data['nodes']
+        del processed_data['local_axis_x']
+        del processed_data['local_axis_y']
+        del processed_data['local_axis_z']
 
         try:
             instance = cls(
-                material=material_found, **processed_data)
+                cross_section=cross_section_found,
+                nodes=nodes_found,
+                local_axis_x=local_axis_x_found,
+                local_axis_y=local_axis_y_found,
+                local_axis_z=local_axis_z_found,
+                ** processed_data)
         except Exception as e:
             error_logs.append(
                 Exception(f"Error instantiating XmiStructuralCrossSection: {obj}"))
@@ -511,7 +592,8 @@ class XmiStructuralCurveMember(XmiBaseEntity):
     @classmethod
     def from_xmi_dict_obj(cls, xmi_dict_obj: dict,
                           cross_section: XmiStructuralCrossSection = None,
-                          nodes: list[XmiStructuralPointConnection] = None) -> XmiStructuralCurveMember:
+                          nodes: list[XmiStructuralPointConnection] = None,
+                          segments: list[XmiBaseGeometry] = None) -> XmiStructuralCurveMember:
         # Define a mapping from snake_case keys to custom keys
         KEY_MAPPING = {
             "CrossSection": "cross_section",
@@ -580,6 +662,9 @@ class XmiStructuralCurveMember(XmiBaseEntity):
 
         if 'nodes' in processed_data.keys() and nodes is not None:
             processed_data['nodes'] = nodes
+
+        if 'segments' in processed_data.keys() and segments is not None:
+            processed_data['segments'] = segments
 
         instance, error_logs_found = cls.from_dict(
             processed_data)

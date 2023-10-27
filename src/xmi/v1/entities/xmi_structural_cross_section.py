@@ -8,6 +8,8 @@ from ..xmi_errors import *
 from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 from .xmi_structural_material import XmiStructuralMaterial
 
+from ..xmi_utilities import is_empty_or_whitespace
+
 """
 1. Need to standardize "Parameters" property
 
@@ -331,14 +333,14 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                 "Zy (Plastic Modulus - y axis) should be larger than 0.0")
         self._plastic_modulus_y_axis = value
 
-    def is_empty_or_whitespace(input_string: str) -> bool:
-        return not input_string or not input_string.strip()
+    # def is_empty_or_whitespace(input_string: str) -> bool:
+    #     return not input_string or not input_string.strip()
 
     @classmethod
     def convert_parameter_string_to_tuple(self, parameter_str: str) -> tuple[int, float]:
         parameter_list: list[str] = parameter_str.split(';')
         for param in parameter_list:
-            if self.is_empty_or_whitespace(param):
+            if is_empty_or_whitespace(param):
                 raise XmiInconsistentDataTypeError(
                     f"The individual parameter [{param}] within the XmiStructuralCrossSection 'parameters' attribute should not be empty string or empty space")
             try:

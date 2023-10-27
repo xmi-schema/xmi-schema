@@ -1,13 +1,12 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from ..enums.xmi_enums import XmiSegmentEnum
 from ..xmi_base import XmiBaseGeometry
 from .xmi_point_3d import XmiPoint3D
 
 
-class XmiLine3D(XmiBaseGeometry):
-    __slots__ = ('_start_point', '_end_point', '_segment_type')
+class XmiArc3D(XmiBaseGeometry):
+    __slots__ = ('_start_point', '_end_point')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -15,8 +14,9 @@ class XmiLine3D(XmiBaseGeometry):
     def __init__(self,
                  start_point: XmiPoint3D,
                  end_point: XmiPoint3D,
+                 center_point: XmiPoint3D,
+                 radius: float,
                  **kwargs):
-        self.segment_type: XmiSegmentEnum = XmiSegmentEnum.LINE
 
         # Check for mutual exclusivity
         if kwargs and any([]):
@@ -32,16 +32,22 @@ class XmiLine3D(XmiBaseGeometry):
             raise ValueError(
                 "The 'end_point' parameter is compulsory and must be provided.")
 
+        # Ensure material_type is provided
+        if center_point is None and 'center_point' not in kwargs:
+            raise ValueError(
+                "The 'center_point' parameter is compulsory and must be provided.")
+
         # Initialize parent class
         super().__init__()
 
         # Initialize attributes
-        self.set_attributes(start_point, end_point, **kwargs)
+        self.set_attributes(start_point, end_point, center_point, **kwargs)
 
-    def set_attributes(self, start_point, end_point, **kwargs):
+    def set_attributes(self, start_point, end_point, center_point, **kwargs):
         attributes = [
             ('start_point', start_point),
             ('end_point', end_point),
+            ('center_point', center_point)
         ]
 
         for attr_name, attr_value in attributes:
@@ -74,14 +80,14 @@ class XmiLine3D(XmiBaseGeometry):
         self._end_point = value
 
     @property
-    def segment_type(self):
-        return self._segment_type
+    def center_point(self):
+        return self._center_point
 
-    @segment_type.setter
-    def segment_type(self, value):
-        if not isinstance(value, XmiSegmentEnum):
-            raise TypeError("segment_type should be an XmiSegmentEnum")
-        self._segment_type = value
+    @center_point.setter
+    def center_point(self, value):
+        if not isinstance(value, XmiPoint3D):
+            raise TypeError("center_point should be an XmiPoint3D")
+        self._center_point = value
 
     @classmethod
     def from_dict(cls, obj: dict) -> XmiPoint3D:
@@ -95,10 +101,12 @@ class XmiLine3D(XmiBaseGeometry):
 
         start_point_found = processed_data['start_point']
         end_point_found = processed_data['end_point']
+        center_point_found = processed_data['center_point']
 
         # remove compulsory keys for proper class instantiation
         del processed_data['start_point']
         del processed_data['end_point']
+        del processed_data['center_point']
         try:
             instance = cls(
                 start_point=start_point_found,
