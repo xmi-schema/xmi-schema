@@ -15,7 +15,7 @@ class XmiArc3D(XmiBaseGeometry):
                  start_point: XmiPoint3D,
                  end_point: XmiPoint3D,
                  center_point: XmiPoint3D,
-                 radius: float,
+                 radius: float = None,
                  **kwargs):
 
         # Check for mutual exclusivity

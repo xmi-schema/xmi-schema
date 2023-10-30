@@ -1,12 +1,10 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-import uuid
-
 from ..entities.xmi_structural_cross_section import XmiStructuralCrossSection
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from ..xmi_base import XmiBaseEntity, XmiBaseGeometry, XmiBaseRelationship
+from ..xmi_base import XmiBaseEntity, XmiBaseGeometry
 from ..enums.xmi_structural_curve_member_enums import *
 from ..enums.xmi_enums import XmiSegmentTypeEnum
 
@@ -93,85 +91,32 @@ class XmiStructuralCurveMember(XmiBaseEntity):
             raise ValueError(
                 "The 'curve_member_type' parameter is compulsory and must be provided.")
 
-        # Ensure nodes is provided
-        if nodes is None and 'nodes' not in kwargs:
-            raise ValueError(
-                "The 'nodes' parameter is compulsory and must be provided.")
-
-        # Ensure segments is provided
-        if segments is None and 'segments' not in kwargs:
-            raise ValueError(
-                "The 'segments' parameter is compulsory and must be provided.")
-
         # Ensure system_line is provided
         if system_line is None and 'system_line' not in kwargs:
             raise ValueError(
                 "The 'system_line' parameter is compulsory and must be provided.")
 
+        # Ensure segments is provided
+        if segments is None:
+            # if segments is None and not in kwargs, then check if the nodes and segment_types is provided
+            # if not provided then only raise error
+            raise ValueError(
+                "The 'segments' parameter is compulsory and must be provided.")
+
+        # Ensure nodes is provided
+        if nodes is None:
+            raise ValueError(
+                "The 'nodes' parameter is compulsory and must be provided.")
+
         # Ensure begin_node is provided
-        if begin_node is None and 'begin_node' not in kwargs:
+        if begin_node is None:
             raise ValueError(
                 "The 'begin_node' parameter is compulsory and must be provided.")
 
         # Ensure end_node is provided
-        if end_node is None and 'end_node' not in kwargs:
+        if end_node is None:
             raise ValueError(
                 "The 'end_node' parameter is compulsory and must be provided.")
-
-        # Ensure local_axis_x is provided
-        if local_axis_x is None and 'local_axis_x' not in kwargs:
-            raise ValueError(
-                "The 'local_axis_x' parameter is compulsory and must be provided.")
-
-        # Ensure local_axis_y is provided
-        if local_axis_y is None and 'local_axis_y' not in kwargs:
-            raise ValueError(
-                "The 'local_axis_y' parameter is compulsory and must be provided.")
-
-        # Ensure local_axis_z is provided
-        if local_axis_z is None and 'local_axis_z' not in kwargs:
-            raise ValueError(
-                "The 'local_axis_z' parameter is compulsory and must be provided.")
-
-        # Ensure begin_node_x_offset is provided
-        if begin_node_x_offset is None and 'begin_node_x_offset' not in kwargs:
-            raise ValueError(
-                "The 'begin_node_x_offset' parameter is compulsory and must be provided.")
-
-        # Ensure begin_node_y_offset is provided
-        if begin_node_y_offset is None and 'begin_node_y_offset' not in kwargs:
-            raise ValueError(
-                "The 'begin_node_y_offset' parameter is compulsory and must be provided.")
-
-        # Ensure begin_node_z_offset is provided
-        if begin_node_z_offset is None and 'begin_node_z_offset' not in kwargs:
-            raise ValueError(
-                "The 'begin_node_z_offset' parameter is compulsory and must be provided.")
-
-        # Ensure end_node_x_offset is provided
-        if end_node_x_offset is None and 'end_node_x_offset' not in kwargs:
-            raise ValueError(
-                "The 'end_node_x_offset' parameter is compulsory and must be provided.")
-
-        # Ensure end_node_y_offset is provided
-        if end_node_y_offset is None and 'end_node_y_offset' not in kwargs:
-            raise ValueError(
-                "The 'end_node_y_offset' parameter is compulsory and must be provided.")
-
-        # Ensure end_node_z_offset is provided
-        if end_node_z_offset is None and 'end_node_z_offset' not in kwargs:
-            raise ValueError(
-                "The 'end_node_z_offset' parameter is compulsory and must be provided.")
-
-        # Ensure end_node_z_offset is provided
-        if end_node_z_offset is None and 'end_node_z_offset' not in kwargs:
-            raise ValueError(
-                "The 'end_node_z_offset' parameter is compulsory and must be provided.")
-
-        # Ensure end_node_z_offset is provided
-        if end_node_z_offset is None and 'end_node_z_offset' not in kwargs:
-            raise ValueError(
-                "The 'end_node_z_offset' parameter is compulsory and must be provided.")
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
@@ -179,33 +124,34 @@ class XmiStructuralCurveMember(XmiBaseEntity):
 
         # Initialize attributes
         self.set_attributes(
-            cross_section,
-            curve_member_type,
-            nodes,
-            segments,
-            system_line,
-            begin_node,
-            end_node,
-            local_axis_x,
-            local_axis_y,
-            local_axis_z,
-            begin_node_x_offset,
-            end_node_x_offset,
-            begin_node_y_offset,
-            end_node_y_offset,
-            begin_node_z_offset,
-            end_node_z_offset,
-            length,
-            storey,
-            **kwargs)
+            cross_section=cross_section,
+            curve_member_type=curve_member_type,
+            nodes=nodes,
+            segments=segments,
+            system_line=system_line,
+            begin_node=begin_node,
+            end_node=end_node,
+            local_axis_x=local_axis_x,
+            local_axis_y=local_axis_y,
+            local_axis_z=local_axis_z,
+            begin_node_x_offset=begin_node_x_offset,
+            end_node_x_offset=end_node_x_offset,
+            begin_node_y_offset=begin_node_y_offset,
+            end_node_y_offset=end_node_y_offset,
+            begin_node_z_offset=begin_node_z_offset,
+            end_node_z_offset=end_node_z_offset,
+            length=length,
+            storey=storey,
+            segment_types=segment_types
+            ** kwargs)
 
     def set_attributes(self,
-                       cross_section,
-                       curve_member_type,
-                       nodes,
-                       segments,
-                       system_line,
-                       begin_node,
+                       cross_section: XmiStructuralCrossSection,
+                       curve_member_type: XmiStructuralCurveMemberTypeEnum,
+                       system_line: XmiStructuralCurveMemberSystemLineEnum,
+                       nodes: list[XmiStructuralPointConnection],
+                       segments: list[XmiBaseGeometry],
+                       begin_node: XmiStructuralPointConnection,
                        end_node,
                        local_axis_x,
                        local_axis_y,
