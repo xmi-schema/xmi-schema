@@ -4,7 +4,7 @@ from .xmi_structural_material import XmiStructuralMaterial
 from .xmi_structural_point_connection import XmiStructuralPointConnection
 from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
 from ..enums.xmi_structural_surface_member_enums import *
-from ..enums.xmi_enums import XmiSegmentEnum
+from ..enums.xmi_enums import XmiSegmentTypeEnum
 
 
 class XmiStructuralSurfaceMember(XmiBaseEntity):
@@ -89,7 +89,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             raise TypeError(
                 "Edges should be type list")
         for item in value:
-            if not isinstance(item, XmiSegmentEnum):
+            if not isinstance(item, XmiSegmentTypeEnum):
                 raise ValueError(
                     f"All items must be instances of type XmiSegmentEnum, got {type(item)} instead.")
         self._Edges = value

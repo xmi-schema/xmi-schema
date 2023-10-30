@@ -159,10 +159,9 @@ class XmiManager():
                                     xmi_structural_point_connection_found_in_xmi_manager)
 
                         xmi_segments_str_to_find: str = xmi_structural_curve_member_obj['Segments']
-                        
-                        xmi_segments_list_to_find: list[str] = xmi_segments_str_to_find.split(";")
-                        if not xmi_segments_list_to_find == [xmi_segments_str_to_find]:
-                            
+
+                        xmi_segments_list_to_find: list[str] = xmi_segments_str_to_find.split(
+                            ";")
 
                         xmi_structural_curve_member, error_logs = XmiStructuralCurveMember.from_xmi_dict_obj(
                             xmi_structural_curve_member_obj,
@@ -170,15 +169,11 @@ class XmiManager():
                             nodes=xmi_structural_point_connections_found_in_xmi_manager
                         )
 
-                        xmi_structural_cross_section, error_logs = XmiStructuralCrossSection.from_xmi_dict_obj(
-                            xmi_structural_cross_section_obj,
-                            material=xmi_structural_material_found_in_xmi_manager
-                        )
                         self.errors.extend(error_logs)
-                        if xmi_structural_cross_section:
-                            self.entities.append(xmi_structural_cross_section)
+                        if xmi_structural_curve_member:
+                            self.entities.append(xmi_structural_curve_member)
                             self.create_relationship(
-                                XmiHasStructuralMaterial, xmi_structural_cross_section, xmi_structural_cross_section.material)
+                                XmiHasStructuralCrossSection, xmi_structural_curve_member, xmi_structural_curve_member.cross_section)
 
                     except Exception as e:
                         self.errors.append(

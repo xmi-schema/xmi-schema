@@ -1,7 +1,7 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from ..enums.xmi_enums import XmiSegmentEnum
+from ..enums.xmi_enums import XmiSegmentTypeEnum
 from ..xmi_base import XmiBaseGeometry
 from .xmi_point_3d import XmiPoint3D
 
@@ -16,7 +16,7 @@ class XmiLine3D(XmiBaseGeometry):
                  start_point: XmiPoint3D,
                  end_point: XmiPoint3D,
                  **kwargs):
-        self.segment_type: XmiSegmentEnum = XmiSegmentEnum.LINE
+        self.segment_type: XmiSegmentTypeEnum = XmiSegmentTypeEnum.LINE
 
         # Check for mutual exclusivity
         if kwargs and any([]):
@@ -79,7 +79,7 @@ class XmiLine3D(XmiBaseGeometry):
 
     @segment_type.setter
     def segment_type(self, value):
-        if not isinstance(value, XmiSegmentEnum):
+        if not isinstance(value, XmiSegmentTypeEnum):
             raise TypeError("segment_type should be an XmiSegmentEnum")
         self._segment_type = value
 

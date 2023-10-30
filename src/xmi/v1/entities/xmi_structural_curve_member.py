@@ -7,8 +7,8 @@ from ..entities.xmi_structural_cross_section import XmiStructuralCrossSection
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
 from ..xmi_base import XmiBaseEntity, XmiBaseGeometry, XmiBaseRelationship
-from ..enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberTypeEnum
-from ..enums.xmi_enums import XmiSegmentEnum
+from ..enums.xmi_structural_curve_member_enums import *
+from ..enums.xmi_enums import XmiSegmentTypeEnum
 
 from ..xmi_errors import *
 
@@ -39,29 +39,31 @@ class XmiStructuralCurveMember(XmiBaseEntity):
          '_end_node_z_offset',
          '_end_fixity_start',
          '_end_fixity_end',
+         '_segment_types',
          )
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
-                 cross_section,
-                 curve_member_type,
-                 nodes,
-                 segments,
-                 system_line,
-                 begin_node,
-                 end_node,
-                 local_axis_x,
-                 local_axis_y,
-                 local_axis_z,
-                 begin_node_x_offset,
-                 end_node_x_offset,
-                 begin_node_y_offset,
-                 end_node_y_offset,
-                 begin_node_z_offset,
-                 end_node_z_offset,
+                 cross_section: XmiStructuralCrossSection,
+                 curve_member_type: XmiStructuralCurveMemberTypeEnum,
+                 system_line: XmiStructuralCurveMemberSystemLineEnum,
+                 local_axis_x: tuple = (1.0, 0.0, 0.0),
+                 local_axis_y: tuple = (0.0, 1.0, 0.0),
+                 local_axis_z: tuple = (0.0, 0.0, 1.0),
+                 begin_node_x_offset: float | int = 0.0,
+                 end_node_x_offset: float | int = 0.0,
+                 begin_node_y_offset: float | int = 0.0,
+                 end_node_y_offset: float | int = 0.0,
+                 begin_node_z_offset: float | int = 0.0,
+                 end_node_z_offset: float | int = 0.0,
+                 segments: list[XmiBaseGeometry] = [],
+                 nodes: list[XmiStructuralPointConnection] = [],
+                 segment_types: list[XmiSegmentTypeEnum] = [],
                  length: int | float | None = None,
+                 begin_node: XmiStructuralPointConnection = None,
+                 end_node: XmiStructuralPointConnection = None,
                  #  end_fixity_start,  # optional
                  #  end_fixity_end,  # optional
                  storey: str | None = None,
@@ -584,7 +586,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 ** processed_data)
         except Exception as e:
             error_logs.append(
-                Exception(f"Error instantiating XmiStructuralCrossSection: {obj}"))
+                Exception(f"Error instantiating XmiStructuralCurveMember: {obj}"))
 
         return instance, error_logs
 

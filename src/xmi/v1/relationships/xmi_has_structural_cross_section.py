@@ -2,16 +2,13 @@
 from __future__ import annotations
 
 from ..xmi_base import XmiBaseRelationship, XmiBaseEntity
-# from ..entities.xmi_structural_material import XmiStructuralMaterial
-# from ..entities.xmi_structural_cross_section import XmiStructuralCrossSection
-# from ..xmi_errors import XmiInconsistentDataTypeError
 from ..constants import *
 
 
-class XmiHasStructuralNode(XmiBaseRelationship):
+class XmiHasStructuralCrossSection(XmiBaseRelationship):
     __slots__ = XmiBaseRelationship.__slots__
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, **kwargs):
-        name = 'hasStructuralNode'
+        name = 'hasStructuralCrossSection'
 
         super().__init__(source, target, name, **kwargs)
