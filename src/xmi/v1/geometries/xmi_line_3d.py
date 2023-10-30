@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 from ..enums.xmi_enums import XmiSegmentTypeEnum
-from ..xmi_base import XmiBaseGeometry
+from ..xmi_base import XmiBaseEntity
 from .xmi_point_3d import XmiPoint3D
 
 
-class XmiLine3D(XmiBaseGeometry):
+class XmiLine3D(XmiBaseEntity):
     __slots__ = ('_start_point', '_end_point', '_segment_type')
 
     attributes_needed = [slot[1:] if slot.startswith(

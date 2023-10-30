@@ -1,11 +1,11 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from ..xmi_base import XmiBaseGeometry
+from ..xmi_base import XmiBaseEntity
 from .xmi_point_3d import XmiPoint3D
 
 
-class XmiArc3D(XmiBaseGeometry):
+class XmiArc3D(XmiBaseEntity):
     __slots__ = ('_start_point', '_end_point')
 
     attributes_needed = [slot[1:] if slot.startswith(

@@ -4,15 +4,11 @@ from __future__ import annotations
 from ..entities.xmi_structural_cross_section import XmiStructuralCrossSection
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from ..xmi_base import XmiBaseEntity, XmiBaseGeometry
+from ..xmi_base import XmiBaseEntity, XmiBaseEntity
 from ..enums.xmi_structural_curve_member_enums import *
-from ..enums.xmi_enums import XmiSegmentTypeEnum
+# from ..enums.xmi_enums import XmiSegmentTypeEnum
 
 from ..xmi_errors import *
-
-# Revit uses X,Y,Z
-# Etabs uses X,Y,-Z
-# TSD uses X,-Y,-Z
 
 
 class XmiStructuralCurveMember(XmiBaseEntity):
@@ -56,7 +52,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                  end_node_y_offset: float | int = 0.0,
                  begin_node_z_offset: float | int = 0.0,
                  end_node_z_offset: float | int = 0.0,
-                 segments: list[XmiBaseGeometry] = [],
+                 segments: list[XmiBaseEntity] = [],
                  nodes: list[XmiStructuralPointConnection] = [],
                  segment_types: list[XmiSegmentTypeEnum] = [],
                  length: int | float | None = None,
@@ -150,7 +146,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                        curve_member_type: XmiStructuralCurveMemberTypeEnum,
                        system_line: XmiStructuralCurveMemberSystemLineEnum,
                        nodes: list[XmiStructuralPointConnection],
-                       segments: list[XmiBaseGeometry],
+                       segments: list[XmiBaseEntity],
                        begin_node: XmiStructuralPointConnection,
                        end_node,
                        local_axis_x,
@@ -275,7 +271,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 "Segments should be of type list")
 
         for item in value:
-            if not isinstance(item, XmiBaseGeometry):
+            if not isinstance(item, XmiBaseEntity):
                 raise ValueError(
                     f"All items must be instances of XmiBaseGeometry, got {type(item)} instead.")
         self._segments = value
@@ -464,7 +460,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                     "segments value provided need to be of instance list"))
                 return None, error_logs
             for segment in segments_found:
-                if not isinstance(segment, XmiBaseGeometry):
+                if not isinstance(segment, XmiBaseEntity):
                     error_logs.append(XmiInconsistentDataTypeError(
                         "segment value provided need to be of instance XmiBaseGeometry"))
 
@@ -541,7 +537,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
     def from_xmi_dict_obj(cls, xmi_dict_obj: dict,
                           cross_section: XmiStructuralCrossSection = None,
                           nodes: list[XmiStructuralPointConnection] = None,
-                          segments: list[XmiBaseGeometry] = None) -> XmiStructuralCurveMember:
+                          segments: list[XmiBaseEntity] = None) -> XmiStructuralCurveMember:
         # Define a mapping from snake_case keys to custom keys
         KEY_MAPPING = {
             "CrossSection": "cross_section",

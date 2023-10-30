@@ -11,7 +11,7 @@ from ..constants import *
 class XmiHasStructuralMaterial(XmiBaseRelationship):
     __slots__ = XmiBaseRelationship.__slots__
 
-    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, **kwargs):
+    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralMaterial', **kwargs):
         name = 'hasStructuralMaterial'
 
         # if not isinstance(source, XmiStructuralCrossSection):
@@ -21,4 +21,4 @@ class XmiHasStructuralMaterial(XmiBaseRelationship):
         #     raise XmiInconsistentDataTypeError(
         #         "'target' parameter needs to be of type XmiStructuralMaterial")
 
-        super().__init__(source, target, name, **kwargs)
+        super().__init__(source, target, name)

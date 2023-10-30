@@ -1,12 +1,12 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from ..xmi_base import XmiBaseGeometry
+from ..xmi_base import XmiBaseEntity
 
 
-class XmiPoint3D(XmiBaseGeometry):
+class XmiPoint3D(XmiBaseEntity):
 
-    __slots__ = ('_x', '_y', '_z')
+    __slots__ = XmiBaseEntity.__slots__ + ('_x', '_y', '_z')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -15,6 +15,10 @@ class XmiPoint3D(XmiBaseGeometry):
                  x: float,
                  y: float,
                  z: float,
+                 id: str = None,
+                 name: str = None,
+                 description: str = None,
+                 ifcguid: str = None,
                  **kwargs):
 
         # Check for mutual exclusivity
@@ -36,7 +40,8 @@ class XmiPoint3D(XmiBaseGeometry):
                 "The 'z' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__()
+        super().__init__(id=id, name=name, ifcguid=ifcguid,
+                         description=description) if not kwargs else super().__init__(**kwargs)
 
         # Initialize attributes
         self.set_attributes(x, y, z, **kwargs)
@@ -124,5 +129,30 @@ class XmiPoint3D(XmiBaseGeometry):
         except Exception as e:
             error_logs.append(
                 Exception(f"Error instantiating XmiPoint3D: {obj}"))
+
+        return instance, error_logs
+
+    @classmethod
+    def from_xmi_dict_obj(cls, xmi_dict_obj: dict):
+        # Define a mapping from snake_case keys to custom keys
+        KEY_MAPPING = {
+            # "Name": "name",
+            "X": "x",
+            "Y": "y",
+            "Z": "z",
+            # "Storey": "storey",
+            # "Description": "description",
+            # "ID": "id",
+            # "IFCGUID": "ifcguid",
+        }
+        instance = None
+        error_logs = []
+        processed_data = {KEY_MAPPING.get(
+            key, key): value for key, value in xmi_dict_obj.items() if key in KEY_MAPPING}
+
+        instance, error_logs_found = cls.from_dict(
+            processed_data)
+
+        error_logs.extend(error_logs_found)
 
         return instance, error_logs

@@ -8,7 +8,7 @@ from ..constants import *
 class XmiHasStructuralCrossSection(XmiBaseRelationship):
     __slots__ = XmiBaseRelationship.__slots__
 
-    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, **kwargs):
+    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralCrossSection', **kwargs):
         name = 'hasStructuralCrossSection'
 
-        super().__init__(source, target, name, **kwargs)
+        super().__init__(source, target, name)

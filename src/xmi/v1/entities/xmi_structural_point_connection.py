@@ -2,19 +2,21 @@
 from __future__ import annotations
 
 from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
+from ..geometries.xmi_point_3d import XmiPoint3D
 
 
 class XmiStructuralPointConnection(XmiBaseEntity):
-    __slots__ = XmiBaseEntity.__slots__ + ('_x',
-                                           '_y', '_z', '_storey')
+    __slots__ = XmiBaseEntity.__slots__ + ('_node',
+                                           '_storey')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
-                 x: float,
-                 y: float,
-                 z: float,
+                 node: XmiPoint3D,
+                 #  x: float = 0.0,
+                 #  y: float = 0.0,
+                 #  z: float = 0.0,
                  storey: str = None,
                  id: str = None,
                  name: str = None,
@@ -23,35 +25,25 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                  **kwargs):
 
         # Check for mutual exclusivity
-        if kwargs and any([x, y, z]):
+        if kwargs and any([]):
             raise ValueError(
                 "Please use either standard parameters or kwargs, not both.")
 
-        # Ensure material_type is provided
-        if x is None and 'x' not in kwargs:
+        # # Ensure point is provided
+        if node is None and 'node' not in kwargs:
             raise ValueError(
-                "The 'x' parameter is compulsory and must be provided.")
-        # Ensure material_type is provided
-        if y is None and 'y' not in kwargs:
-            raise ValueError(
-                "The 'y' parameter is compulsory and must be provided.")
-        # Ensure material_type is provided
-        if z is None and 'z' not in kwargs:
-            raise ValueError(
-                "The 'z' parameter is compulsory and must be provided.")
+                "The 'node' parameter is compulsory and must be provided.")
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
                          description=description) if not kwargs else super().__init__(**kwargs)
 
         # Initialize attributes
-        self.set_attributes(x, y, z, storey, **kwargs)
+        self.set_attributes(node, storey, **kwargs)
 
-    def set_attributes(self, x, y, z, storey, **kwargs):
+    def set_attributes(self, node, storey, **kwargs):
         attributes = [
-            ('x', x),
-            ('y', y),
-            ('z', z),
+            ('node', node),
             ('storey', storey)
         ]
 
@@ -65,34 +57,14 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 setattr(self, attr_name, None)
 
     @property
-    def x(self):
-        return self._x
+    def node(self):
+        return self._node
 
-    @x.setter
-    def x(self, value):
-        if not isinstance(value, (int, float)):
-            raise TypeError("X should be an int or float")
-        self._x = value
-
-    @property
-    def y(self):
-        return self._y
-
-    @y.setter
-    def y(self, value):
-        if not isinstance(value, (int, float)):
-            raise TypeError("Y should be an int or float")
-        self._y = value
-
-    @property
-    def z(self):
-        return self._z
-
-    @z.setter
-    def z(self, value):
-        if not isinstance(value, (int, float)):
-            raise TypeError("Z should be an int or float")
-        self._z = value
+    @node.setter
+    def node(self, value):
+        if not isinstance(value, XmiPoint3D):
+            raise TypeError("node should be an XmiPoint3D")
+        self._node = value
 
     @property
     def storey(self):
@@ -114,19 +86,14 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None
 
-        x_found = processed_data['x']
-        y_found = processed_data['y']
-        z_found = processed_data['z']
+        node_found = processed_data['node']
 
         # remove compulsory keys for proper class instantiation
-        del processed_data['x']
-        del processed_data['y']
-        del processed_data['z']
+        del processed_data['node']
+
         try:
             instance = cls(
-                x=x_found,
-                y=y_found,
-                z=z_found,
+                node=node_found,
                 **processed_data)
         except Exception as e:
             error_logs.append(

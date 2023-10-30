@@ -11,7 +11,5 @@ from ..constants import *
 class XmiHasStructuralNode(XmiBaseRelationship):
     __slots__ = XmiBaseRelationship.__slots__
 
-    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, **kwargs):
-        name = 'hasStructuralNode'
-
-        super().__init__(source, target, name, **kwargs)
+    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralNode', **kwargs):
+        super().__init__(source, target, name)
