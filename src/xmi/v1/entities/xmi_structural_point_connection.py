@@ -36,7 +36,7 @@ class XmiStructuralPointConnection(XmiBaseEntity):
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description) if not kwargs else super().__init__(**kwargs)
+                         description=description)
 
         # Initialize attributes
         self.set_attributes(node, storey, **kwargs)
@@ -106,13 +106,13 @@ class XmiStructuralPointConnection(XmiBaseEntity):
         # Define a mapping from snake_case keys to custom keys
         KEY_MAPPING = {
             "Name": "name",
-            "X": "x",
-            "Y": "y",
-            "Z": "z",
+            # "X": "x",
+            # "Y": "y",
+            # "Z": "z",
             "Storey": "storey",
             "Description": "description",
             "ID": "id",
-            "IFCGUID": "ifcguid",
+            "IFCGUID": "ifcguid"
         }
         instance = None
         error_logs = []
