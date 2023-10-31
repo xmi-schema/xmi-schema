@@ -1,4 +1,6 @@
 from enum import Enum, unique
+from ..geometries.xmi_line_3d import XmiLine3D
+from ..geometries.xmi_arc_3d import XmiArc3D
 
 
 @unique
@@ -62,8 +64,8 @@ class XmiUnitEnum(XmiEnum):
 
 @unique
 class XmiSegmentTypeEnum(XmiEnum):
-    LINE = (1, "Line")
-    CIRCULAR_ARC = (2, "Circular Arc")
+    LINE = (1, "Line", XmiLine3D)
+    CIRCULAR_ARC = (2, "Circular Arc", XmiArc3D)
     PARABOLIC_ARC = (3, "Parabolic Arc")
     BEZIER = (4, "Bezier")
     SPLINE = (5, "Spline")
