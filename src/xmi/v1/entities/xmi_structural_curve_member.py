@@ -4,9 +4,9 @@ from __future__ import annotations
 from ..entities.xmi_structural_cross_section import XmiStructuralCrossSection
 
 from .xmi_structural_point_connection import XmiStructuralPointConnection
+from ..enums.xmi_enums import XmiSegmentTypeEnum
 from ..xmi_base import XmiBaseEntity, XmiBaseEntity
 from ..enums.xmi_structural_curve_member_enums import *
-# from ..enums.xmi_enums import XmiSegmentTypeEnum
 
 from ..xmi_errors import *
 
