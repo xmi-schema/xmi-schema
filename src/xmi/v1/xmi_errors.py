@@ -1,5 +1,5 @@
 class XmiError(Exception):
-    def __init__(self, message, error_code=None, problem_data=None):
+    def __init__(self, message: str, error_code: str = None, problem_data: dict = None):
         # Call the base class constructor
         super().__init__(message)
 

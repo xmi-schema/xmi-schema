@@ -29,11 +29,11 @@ class XmiLine3D(XmiBaseGeometry):
         #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if start_point is None and 'start_point' not in kwargs:
+        if start_point is None:
             raise ValueError(
                 "The 'start_point' parameter is compulsory and must be provided.")
         # Ensure material_type is provided
-        if end_point is None and 'end_point' not in kwargs:
+        if end_point is None:
             raise ValueError(
                 "The 'end_point' parameter is compulsory and must be provided.")
 

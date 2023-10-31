@@ -30,15 +30,15 @@ class XmiPoint3D(XmiBaseGeometry):
         #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if x is None and 'x' not in kwargs:
+        if x is None:
             raise ValueError(
                 "The 'x' parameter is compulsory and must be provided.")
         # Ensure material_type is provided
-        if y is None and 'y' not in kwargs:
+        if y is None:
             raise ValueError(
                 "The 'y' parameter is compulsory and must be provided.")
         # Ensure material_type is provided
-        if z is None and 'z' not in kwargs:
+        if z is None:
             raise ValueError(
                 "The 'z' parameter is compulsory and must be provided.")
 

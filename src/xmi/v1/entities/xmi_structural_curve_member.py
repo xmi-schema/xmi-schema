@@ -69,26 +69,26 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                  ):
 
         # Check for mutual exclusivity, things that are optional should be inside any
-        if kwargs and any([
-                length,
-                storey,
-                id, name, description, ifcguid
-        ]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # if kwargs and any([
+        #         length,
+        #         storey,
+        #         id, name, description, ifcguid
+        # ]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure cross_section is provided
-        if cross_section is None and 'cross_section' not in kwargs:
+        if cross_section is None:
             raise ValueError(
                 "The 'cross_section' parameter is compulsory and must be provided.")
 
         # Ensure curve_member_type is provided
-        if curve_member_type is None and 'curve_member_type' not in kwargs:
+        if curve_member_type is None:
             raise ValueError(
                 "The 'curve_member_type' parameter is compulsory and must be provided.")
 
         # Ensure system_line is provided
-        if system_line is None and 'system_line' not in kwargs:
+        if system_line is None:
             raise ValueError(
                 "The 'system_line' parameter is compulsory and must be provided.")
 
@@ -116,7 +116,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description) if not kwargs else super().__init__(**kwargs)
+                         description=description)
 
         # Initialize attributes
         self.set_attributes(

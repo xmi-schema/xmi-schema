@@ -33,8 +33,6 @@ def test_xmi_manager_1():
         obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCrossSection)]
     xmi_structural_point_connections_found = [
         obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
-    # xmi_structural_point_connections_found = [
-    #     obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
     xmi_point_3d_found = [
         obj for obj in xmi_manager.entities if isinstance(obj, XmiPoint3D)]
 

@@ -51,7 +51,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description) if not kwargs else super().__init__(**kwargs)
+                         description=description)
 
         # Initialize attributes
         self.set_attributes(material_type, grade, unit_weight, e_modulus,

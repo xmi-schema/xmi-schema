@@ -73,23 +73,23 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if material is None and 'material' not in kwargs:
+        if material is None:
             raise ValueError(
                 "The 'material' parameter is compulsory and must be provided.")
 
         # Ensure material_type is provided
-        if shape is None and 'shape' not in kwargs:
+        if shape is None:
             raise ValueError(
                 "The 'shape' parameter is compulsory and must be provided.")
 
         # Ensure material_type is provided
-        if parameters is None and 'parameters' not in kwargs:
+        if parameters is None:
             raise ValueError(
                 "The 'parameters' parameter is compulsory and must be provided.")
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description) if not kwargs else super().__init__(**kwargs)
+                         description=description)
 
         # Initialize attributes
         self.set_attributes(
