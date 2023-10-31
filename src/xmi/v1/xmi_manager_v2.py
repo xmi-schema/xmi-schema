@@ -9,6 +9,9 @@ from .geometries.xmi_point_3d import XmiPoint3D
 
 from .relationships.xmi_has_structural_material import XmiHasStructuralMaterial
 from .relationships.xmi_has_structural_node import XmiHasStructuralNode
+from .relationships.xmi_has_structural_cross_section import XmiHasStructuralCrossSection
+from .relationships.xmi_has_point_3d import XmiHasPoint3D
+from .relationships.xmi_has_segment import XmiHasSegment
 
 from .xmi_errors import *
 from .xmi_base import XmiBaseEntity, XmiBaseRelationship
@@ -16,7 +19,7 @@ from .enums.xmi_enums import XmiSegmentTypeEnum
 
 
 class ErrorLog():
-    def __init__(self, entity_type, index, message, obj=None):
+    def __init__(self, entity_type: str, index: int, message: str, obj: str = None):
         self.entity_type = entity_type
         self.index = index
         self.message = message
@@ -102,7 +105,7 @@ class XmiManager():
                                 xmi_structural_point_connection)
                             self.entities.append(xmi_point_3d)
                             self.create_relationship(
-                                XmiHasStructuralNode, xmi_structural_point_connection, xmi_point_3d)
+                                XmiHasPoint3D, xmi_structural_point_connection, xmi_point_3d)
 
                         self.errors.extend(error_logs)
                     except Exception as e:
@@ -211,9 +214,20 @@ class XmiManager():
                         self.errors.extend(error_logs)
                         if xmi_structural_curve_member:
                             self.entities.append(xmi_structural_curve_member)
-                            # self.create_relationship(
-                            #     XmiHasStructuralCrossSection, xmi_structural_curve_member, xmi_structural_curve_member.cross_section)
+                            self.entities.append(segment_found)
+                            self.create_relationship(
+                                XmiHasStructuralCrossSection, xmi_structural_curve_member, xmi_structural_curve_member.cross_section)
+                            for segment in xmi_structural_curve_member.segments:
+                                self.create_relationship(
+                                    XmiHasSegment, segment, xmi_structural_curve_member)
+                                self.create_relationship(
+                                    XmiHasPoint3D, segment, segment.start_point)
+                                self.create_relationship(
+                                    XmiHasPoint3D, segment, segment.end_point)
 
+                            for node in xmi_structural_curve_member.nodes:
+                                self.create_relationship(
+                                    XmiHasStructuralNode, node, xmi_structural_curve_member)
                     except Exception as e:
                         self.errors.append(
-                            ErrorLog(xmi_dict_key, index, str(e)))
+                            ErrorLog(xmi_dict_key, index, str(e), obj=xmi_structural_curve_member_obj))

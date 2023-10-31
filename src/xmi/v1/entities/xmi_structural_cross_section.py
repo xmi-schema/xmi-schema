@@ -412,11 +412,12 @@ class XmiStructuralCrossSection(XmiBaseEntity):
             error_logs.append(e)
             return None, error_logs
 
-        del processed_data['material']
+        # del processed_data['material']
 
         try:
             instance = cls(
-                material=material_found, **processed_data)
+                # material=material_found,
+                **processed_data)
         except Exception as e:
             error_logs.append(
                 Exception(f"Error instantiating XmiStructuralCrossSection: {obj}"))

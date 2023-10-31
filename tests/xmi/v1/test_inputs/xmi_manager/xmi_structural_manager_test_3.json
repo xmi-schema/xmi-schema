@@ -16,12 +16,12 @@
   ],
   "StructuralCrossSection": [
     {
-      "Name": "416903",
+      "Name": "416900",
       "Material": "416902",
       "Shape": "Rectangular",
-      "Parameters": "300;300",
+      "Parameters": "600;600",
       "Description": "",
-      "Area": 90000,
+      "Area": 360000,
       "Ix": 1.0,
       "Iy": 1.0,
       "rx": 1.0,
@@ -31,8 +31,8 @@
       "Zx": 1.0,
       "Zy": 1.0,
       "J": 1.0,
-      "ID": "d2bef6b7-d442-4cc0-9c4a-2da9c02c1921-00066f87",
-      "IFCGUID": "3IllQtr49Cm9nABQd0AdQc"
+      "ID": "d2bef6b7-d442-4cc0-9c4a-2da9c02c1921-00066de6",
+      "IFCGUID": "3IllQtr49Cm9nABQd0AdJ7"
     }
   ],
   "StructuralPointConnection": [
