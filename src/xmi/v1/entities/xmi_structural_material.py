@@ -32,13 +32,20 @@ class XmiStructuralMaterial(XmiBaseEntity):
                  **kwargs
                  ):
 
-        # Check for mutual exclusivity
-        if kwargs and any([grade, unit_weight, e_modulus, g_modulus, poisson_ratio, thermal_coefficient, id, name, description, ifcguid]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # Check for mutual exclusivity, things that are optional should be inside any
+        # if kwargs and any([grade,
+        #                    unit_weight,
+        #                    e_modulus,
+        #                    g_modulus,
+        #                    poisson_ratio,
+        #                    thermal_coefficient,
+        #                    id, name, description, ifcguid
+        #                    ]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
-        if material_type is None and 'material_type' not in kwargs:
+        if material_type is None:
             raise ValueError(
                 "The 'material_type' parameter is compulsory and must be provided.")
 

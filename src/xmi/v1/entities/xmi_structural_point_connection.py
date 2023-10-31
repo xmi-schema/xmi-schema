@@ -24,13 +24,13 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                  ifcguid: str = None,
                  **kwargs):
 
-        # Check for mutual exclusivity
-        if kwargs and any([]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # Check for mutual exclusivity, things that are optional should be inside any
+        # if kwargs and any([storey, id, name, description, ifcguid]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # # Ensure point is provided
-        if node is None and 'node' not in kwargs:
+        if node is None:
             raise ValueError(
                 "The 'node' parameter is compulsory and must be provided.")
 
@@ -89,11 +89,11 @@ class XmiStructuralPointConnection(XmiBaseEntity):
         node_found = processed_data['node']
 
         # remove compulsory keys for proper class instantiation
-        del processed_data['node']
+        # del processed_data['node']
 
         try:
             instance = cls(
-                node=node_found,
+                # node=node_found,
                 **processed_data)
         except Exception as e:
             error_logs.append(

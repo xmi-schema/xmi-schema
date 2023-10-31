@@ -11,7 +11,7 @@ from src.xmi.v1.relationships.xmi_has_structural_material import XmiHasStructura
 from src.xmi.v1.relationships.xmi_has_structural_node import XmiHasStructuralNode
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_xmi_manager_1():
     json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_1.json"
     with open(json_path, 'r') as f:
@@ -47,7 +47,7 @@ def test_xmi_manager_1():
     assert len(xmi_manager.relationships) == 562
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_xmi_manager_2():
     json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_2.json"
     with open(json_path, 'r') as f:
@@ -92,6 +92,7 @@ def test_xmi_manager_2():
     assert xmi_has_structural_material.target == xmi_structural_materials_found[0]
 
 
+@pytest.mark.skip()
 def test_xmi_manager_3():
     json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_3.json"
     with open(json_path, 'r') as f:

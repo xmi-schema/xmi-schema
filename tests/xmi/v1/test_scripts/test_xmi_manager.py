@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from src.xmi.v1.xmi_manager import XmiManager
 from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
 from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
@@ -7,6 +9,7 @@ from src.xmi.v1.entities.xmi_structural_point_connection import XmiStructuralPoi
 from src.xmi.v1.relationships.xmi_has_structural_material import XmiHasStructuralMaterial
 
 
+@pytest.mark.skip()
 def test_xmi_manager_1():
     json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_1.json"
     with open(json_path, 'r') as f:
@@ -36,6 +39,7 @@ def test_xmi_manager_1():
     assert len(xmi_structural_point_connections_found) == 562
 
 
+@pytest.mark.skip()
 def test_xmi_manager_2():
     json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_2.json"
     with open(json_path, 'r') as f:

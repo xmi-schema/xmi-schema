@@ -178,9 +178,11 @@ class XmiManager():
                             xmi_structural_point_connections_found_in_xmi_manager.append(
                                 xmi_structural_point_connection_found_in_xmi_manager)
 
+                        # find segments within structural_curve_member
                         xmi_segments_str_to_find: str = xmi_structural_curve_member_obj['Segments']
                         xmi_segments_list_to_find: list[str] = xmi_segments_str_to_find.split(
                             ";")
+                        # check segments validity
                         if len(xmi_segments_list_to_find) > 1:
                             exception_found = ValueError(
                                 "Segments Key should only have 1 segment for {xmi_structural_curve_member_obj}".format(xmi_structural_curve_member_obj=str(xmi_structural_curve_member_obj)))
@@ -189,13 +191,21 @@ class XmiManager():
                                          str(exception_found))
                             )
                             pass
+                        # find segment_type
                         xmi_segment_type_found = XmiSegmentTypeEnum.from_attribute_get_enum(
                             xmi_segments_list_to_find[0])
-
+                        # if segment type exist. find and create geometry_element
+                        xmi_segment_geometry_class_found: XmiBaseEntity = xmi_segment_type_found.get_geometry_class()
+                        segment_found = xmi_segment_geometry_class_found(start_point=xmi_structural_point_connections_found_in_xmi_manager[0].node,
+                                                                         end_point=xmi_structural_point_connections_found_in_xmi_manager[
+                                                                             1].node
+                                                                         )
                         xmi_structural_curve_member, error_logs = XmiStructuralCurveMember.from_xmi_dict_obj(
                             xmi_structural_curve_member_obj,
                             cross_section=xmi_structural_cross_section_found_in_xmi_manager,
-                            nodes=xmi_structural_point_connections_found_in_xmi_manager
+                            nodes=xmi_structural_point_connections_found_in_xmi_manager,
+                            segments=[segment_found],
+                            segment_types=[xmi_segment_type_found]
                         )
 
                         self.errors.extend(error_logs)

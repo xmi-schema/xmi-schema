@@ -55,22 +55,22 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                  **kwargs
                  ):
 
-        # Check for mutual exclusivity
-        if kwargs and any([
-                second_moment_of_area_x_axis,
-                second_moment_of_area_y_axis,
-                radius_of_gyration_x_axis,
-                radius_of_gyration_y_axis,
-                elastic_modulus_x_axis,
-                elastic_modulus_y_axis,
-                plastic_modulus_x_axis,
-                plastic_modulus_y_axis,
-                torsional_constant,
-                area,
-                id, name, description, ifcguid
-        ]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # Check for mutual exclusivity, things that are optional should be inside any
+        # if kwargs and any([
+        #         second_moment_of_area_x_axis,
+        #         second_moment_of_area_y_axis,
+        #         radius_of_gyration_x_axis,
+        #         radius_of_gyration_y_axis,
+        #         elastic_modulus_x_axis,
+        #         elastic_modulus_y_axis,
+        #         plastic_modulus_x_axis,
+        #         plastic_modulus_y_axis,
+        #         torsional_constant,
+        #         area,
+        #         id, name, description, ifcguid
+        # ]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
         if material is None and 'material' not in kwargs:

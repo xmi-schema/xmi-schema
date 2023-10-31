@@ -70,3 +70,11 @@ class XmiSegmentTypeEnum(XmiEnum):
     BEZIER = (4, "Bezier")
     SPLINE = (5, "Spline")
     OTHERS = (6, "Others")
+
+    def get_geometry_class(self):
+        try:
+            if len(self.value) < 3:
+                return None
+            return self.value[2]
+        except KeyError:
+            return None  # Or raise a custom exception if you prefer

@@ -2,14 +2,15 @@
 from __future__ import annotations
 
 from ..xmi_base import XmiBaseEntity
+from .xmi_geometry import XmiBaseGeometry
 
 
-class XmiPoint3D(XmiBaseEntity):
+class XmiPoint3D(XmiBaseGeometry):
 
     __slots__ = XmiBaseEntity.__slots__ + ('_x', '_y', '_z')
 
     attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot not in ('_ifcguid')]
 
     def __init__(self,
                  x: float,
@@ -21,10 +22,12 @@ class XmiPoint3D(XmiBaseEntity):
                  ifcguid: str = None,
                  **kwargs):
 
-        # Check for mutual exclusivity
-        if kwargs and any([x, y, z]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # Check for mutual exclusivity, things that are optional should be inside any
+        # if kwargs and any([
+        #     id, name, description, ifcguid
+        # ]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
         if x is None and 'x' not in kwargs:
@@ -41,7 +44,7 @@ class XmiPoint3D(XmiBaseEntity):
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description) if not kwargs else super().__init__(**kwargs)
+                         description=description, **kwargs)
 
         # Initialize attributes
         self.set_attributes(x, y, z, **kwargs)
@@ -134,16 +137,17 @@ class XmiPoint3D(XmiBaseEntity):
 
     @classmethod
     def from_xmi_dict_obj(cls, xmi_dict_obj: dict):
+        # currently xmi_file doesnt support xmi id for reference, will assume structural_point_connection's id and name
+
         # Define a mapping from snake_case keys to custom keys
         KEY_MAPPING = {
-            # "Name": "name",
+            "Name": "name",
             "X": "x",
             "Y": "y",
             "Z": "z",
-            # "Storey": "storey",
-            # "Description": "description",
-            # "ID": "id",
-            # "IFCGUID": "ifcguid",
+            "Description": "description",
+            "ID": "id",
+            "IFCGUID": "ifcguid",
         }
         instance = None
         error_logs = []

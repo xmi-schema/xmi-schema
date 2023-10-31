@@ -3,9 +3,10 @@ from __future__ import annotations
 
 from ..xmi_base import XmiBaseEntity
 from .xmi_point_3d import XmiPoint3D
+from .xmi_geometry import XmiBaseGeometry
 
 
-class XmiLine3D(XmiBaseEntity):
+class XmiLine3D(XmiBaseGeometry):
     __slots__ = ('_start_point', '_end_point')
 
     attributes_needed = [slot[1:] if slot.startswith(
@@ -14,12 +15,18 @@ class XmiLine3D(XmiBaseEntity):
     def __init__(self,
                  start_point: XmiPoint3D,
                  end_point: XmiPoint3D,
+                 id: str = None,
+                 name: str = None,
+                 description: str = None,
+                 ifcguid: str = None,
                  **kwargs):
 
-        # Check for mutual exclusivity
-        if kwargs and any([]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # Check for mutual exclusivity, things that are optional should be inside any
+        # if kwargs and any([
+        #     id, name, description, ifcguid
+        # ]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
         if start_point is None and 'start_point' not in kwargs:

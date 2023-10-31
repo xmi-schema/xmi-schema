@@ -68,7 +68,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                  **kwargs
                  ):
 
-        # Check for mutual exclusivity
+        # Check for mutual exclusivity, things that are optional should be inside any
         if kwargs and any([
                 length,
                 storey,
@@ -422,7 +422,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
 
         # for type conversion when reading dictionary
         try:
-            # check for material found
+            # check for cross_section_found
             cross_section_found = processed_data['cross_section']
             if cross_section_found is None:
                 error_logs.append(XmiMissingReferenceInstanceError(
@@ -537,7 +537,8 @@ class XmiStructuralCurveMember(XmiBaseEntity):
     def from_xmi_dict_obj(cls, xmi_dict_obj: dict,
                           cross_section: XmiStructuralCrossSection = None,
                           nodes: list[XmiStructuralPointConnection] = None,
-                          segments: list[XmiBaseEntity] = None) -> XmiStructuralCurveMember:
+                          segments: list[XmiBaseEntity] = None,
+                          segment_types: list[XmiSegmentTypeEnum] = None) -> XmiStructuralCurveMember:
         # Define a mapping from snake_case keys to custom keys
         KEY_MAPPING = {
             "CrossSection": "cross_section",
@@ -601,14 +602,17 @@ class XmiStructuralCurveMember(XmiBaseEntity):
         processed_data: dict = {KEY_MAPPING.get(
             key, key): value for key, value in xmi_dict_obj.items()}
 
-        if 'cross_section' in processed_data.keys() and cross_section is not None:
+        if cross_section is not None:
             processed_data['cross_section'] = cross_section
 
-        if 'nodes' in processed_data.keys() and nodes is not None:
+        if nodes is not None:
             processed_data['nodes'] = nodes
 
-        if 'segments' in processed_data.keys() and segments is not None:
+        if segments is not None:
             processed_data['segments'] = segments
+
+        if segment_types is not None:
+            processed_data['segment_types'] = segment_types
 
         instance, error_logs_found = cls.from_dict(
             processed_data)

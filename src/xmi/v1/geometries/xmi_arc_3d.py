@@ -3,9 +3,10 @@ from __future__ import annotations
 
 from ..xmi_base import XmiBaseEntity
 from .xmi_point_3d import XmiPoint3D
+from .xmi_geometry import XmiBaseGeometry
 
 
-class XmiArc3D(XmiBaseEntity):
+class XmiArc3D(XmiBaseGeometry):
     __slots__ = ('_start_point', '_end_point')
 
     attributes_needed = [slot[1:] if slot.startswith(
@@ -16,12 +17,18 @@ class XmiArc3D(XmiBaseEntity):
                  end_point: XmiPoint3D,
                  center_point: XmiPoint3D,
                  radius: float = None,
+                 id: str = None,
+                 name: str = None,
+                 description: str = None,
+                 ifcguid: str = None,
                  **kwargs):
 
-        # Check for mutual exclusivity
-        if kwargs and any([]):
-            raise ValueError(
-                "Please use either standard parameters or kwargs, not both.")
+        # Check for mutual exclusivity, things that are optional should be inside any
+        # if kwargs and any([
+        #     id, name, description, ifcguid
+        # ]):
+        #     raise ValueError(
+        #         "Please use either standard parameters or kwargs, not both.")
 
         # Ensure material_type is provided
         if start_point is None and 'start_point' not in kwargs:
@@ -38,7 +45,8 @@ class XmiArc3D(XmiBaseEntity):
                 "The 'center_point' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__()
+        super().__init__(id=id, name=name, ifcguid=ifcguid,
+                         description=description, **kwargs)
 
         # Initialize attributes
         self.set_attributes(start_point, end_point, center_point, **kwargs)
