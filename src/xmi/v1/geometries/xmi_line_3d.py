@@ -1,13 +1,12 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from ..enums.xmi_enums import XmiSegmentTypeEnum
 from ..xmi_base import XmiBaseEntity
 from .xmi_point_3d import XmiPoint3D
 
 
 class XmiLine3D(XmiBaseEntity):
-    __slots__ = ('_start_point', '_end_point', '_segment_type')
+    __slots__ = ('_start_point', '_end_point')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
@@ -16,7 +15,6 @@ class XmiLine3D(XmiBaseEntity):
                  start_point: XmiPoint3D,
                  end_point: XmiPoint3D,
                  **kwargs):
-        self.segment_type: XmiSegmentTypeEnum = XmiSegmentTypeEnum.LINE
 
         # Check for mutual exclusivity
         if kwargs and any([]):
@@ -72,16 +70,6 @@ class XmiLine3D(XmiBaseEntity):
         if not isinstance(value, XmiPoint3D):
             raise TypeError("end_point should be an XmiPoint3D")
         self._end_point = value
-
-    @property
-    def segment_type(self):
-        return self._segment_type
-
-    @segment_type.setter
-    def segment_type(self, value):
-        if not isinstance(value, XmiSegmentTypeEnum):
-            raise TypeError("segment_type should be an XmiSegmentEnum")
-        self._segment_type = value
 
     @classmethod
     def from_dict(cls, obj: dict) -> XmiPoint3D:
