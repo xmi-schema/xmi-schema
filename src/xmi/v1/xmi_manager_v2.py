@@ -190,19 +190,16 @@ class XmiManager():
                             exception_found = ValueError(
                                 "Segments Key should only have 1 segment for {xmi_structural_curve_member_obj}".format(xmi_structural_curve_member_obj=str(xmi_structural_curve_member_obj)))
                             self.errors.append(
-                                ErrorLog(xmi_dict_key, index,
-                                         str(exception_found))
-                            )
+                                ErrorLog(xmi_dict_key, index, str(exception_found)))
                             pass
                         # find segment_type
-                        xmi_segment_type_found = XmiSegmentTypeEnum.from_attribute_get_enum(
+                        xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum(
                             xmi_segments_list_to_find[0])
                         # if segment type exist. find and create geometry_element
                         xmi_segment_geometry_class_found: XmiBaseEntity = xmi_segment_type_found.get_geometry_class()
                         segment_found = xmi_segment_geometry_class_found(start_point=xmi_structural_point_connections_found_in_xmi_manager[0].node,
                                                                          end_point=xmi_structural_point_connections_found_in_xmi_manager[
-                                                                             1].node
-                                                                         )
+                                                                             1].node)
                         xmi_structural_curve_member, error_logs = XmiStructuralCurveMember.from_xmi_dict_obj(
                             xmi_structural_curve_member_obj,
                             cross_section=xmi_structural_cross_section_found_in_xmi_manager,
