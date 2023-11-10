@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from src.xmi.v1.xmi_manager_v2 import XmiManager
+from src.xmi.v1.xmi_manager import XmiManager
 from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
 from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
 from src.xmi.v1.entities.xmi_structural_point_connection import XmiStructuralPointConnection
