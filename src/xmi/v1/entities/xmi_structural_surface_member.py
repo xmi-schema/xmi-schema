@@ -1,12 +1,17 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
+from .xmi_structural_curve_member import XmiStructuralCurveMember
+from .xmi_structural_cross_section import XmiStructuralCrossSection
+from .xmi_segment import XmiSegment
 from .xmi_structural_material import XmiStructuralMaterial
 from .xmi_structural_point_connection import XmiStructuralPointConnection
-from ..xmi_base import XmiBaseEntity
+
 from ..enums.xmi_structural_surface_member_enums import *
-from ..enums.xmi_enums import XmiSegmentTypeEnum
-from ..entities.xmi_segment import XmiSegment
+
+
+from ..xmi_base import XmiBaseEntity
+from ..xmi_errors import *
 
 
 class XmiStructuralSurfaceMember(XmiBaseEntity):
@@ -300,7 +305,29 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
         self._storey = value
 
     @classmethod
-    def from_dict(cls, obj: dict) -> XmiStructuralCurveMember:
+    def convert_local_axis_string_to_tuple(cls, axis_direction, local_axis_str: str) -> tuple:
+        local_axis_list: list[str] = local_axis_str.split(',')
+        if len(local_axis_list) != 3:
+            raise XmiMissingRequiredAttributeError(
+                f"The XmiStructuralCurveMember 'local_axis_{axis_direction}' attribute should have 3 parameters")
+
+        for local_axis_value in local_axis_list:
+            if cls.is_empty_or_whitespace(local_axis_value):
+                raise XmiInconsistentDataTypeError(
+                    f"The individual parameter [{local_axis_value}] within the XmiStructuralCurveMember 'local_axis_{axis_direction}' attribute should not be empty string or empty space")
+            try:
+                float_value = float(local_axis_value)
+            except ValueError:
+                raise XmiInconsistentDataTypeError(
+                    f"The parameter [{local_axis_value}] within the XmiStructuralCurveMember 'local_axis_{axis_direction}' attribute should be convertible to float")
+
+        parameter_tuple = tuple([float(param) for param in local_axis_list])
+        return parameter_tuple
+
+    @classmethod
+    def from_dict(cls,
+                  obj: dict
+                  ) -> XmiStructuralCurveMember:
         instance = None
         exceptions = []
         processed_data = obj.copy()
@@ -313,14 +340,15 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
         # for type conversion when reading dictionary
         try:
             # check for cross_section_found
-            cross_section_found = processed_data['cross_section']
-            if cross_section_found is None:
+            material_found = processed_data['material']
+            if material_found is None:
                 exceptions.append(XmiMissingReferenceInstanceError(
-                    "Please provide cross_section value of type XmiStructuralCrossSection"))
+                    "Please provide material value of type XmiStructuralMaterial"))
                 return None, exceptions
-            if not isinstance(cross_section_found, XmiStructuralCrossSection):
+
+            if not isinstance(material_found, XmiStructuralMaterial):
                 exceptions.append(XmiInconsistentDataTypeError(
-                    "cross_section provided need to be of instance XmiStructuralCrossSection"))
+                    "material provided need to be of instance XmiStructuralMaterial"))
                 return None, exceptions
 
             # check for nodes
@@ -346,15 +374,17 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the segments attribute"))
                 return None, exceptions
-            # if segments length = 0, return error
-            if len(segments_found) == 0:
-                exceptions.append(XmiMissingRequiredAttributeError(
-                    "The 'segments' parameter requires at least 1 segment of Type XmiSegment"))
-                return None, exceptions
+
             # if segment is not type list, return error
             if not isinstance(segments_found, list):
                 exceptions.append(XmiInconsistentDataTypeError(
                     "segments value provided need to be of instance list"))
+                return None, exceptions
+
+            # if segments length < 3, return error
+            if len(segments_found) < 3:
+                exceptions.append(XmiMissingRequiredAttributeError(
+                    "The 'segments' parameter requires at least 3 segment of Type XmiSegment"))
                 return None, exceptions
 
             # check for all segment datatypes
@@ -364,37 +394,14 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                         "segment value provided need to be of instance XmiSegment"))
                     return None, exceptions
 
-            # setting up begin_node and end_node of element
-            if len(segments_found) > 0:
-                segment_begin: XmiSegment = segments_found[0]
-                segment_end: XmiSegment = segments_found[len(segments_found)-1]
-
-                begin_node_found = next(
-                    (spc for spc in nodes_found if spc == segment_begin.begin_node), None)
-                end_node_found = next(
-                    (spc for spc in nodes_found if spc == segment_end.end_node), None)
-
-                # check against xmi_dict provided
-                if begin_node_found.name != processed_data['begin_node']:
-                    exceptions.append(ValueError(
-                        "'begin_node' in dictionary differs than the 1 defined in dictionary"))
-                    return None, exceptions
-                if end_node_found.name != processed_data['end_node']:
-                    exceptions.append(ValueError(
-                        "'end_node' in dictionary differs than the 1 defined in dictionary"))
-                    return None, exceptions
-
-                processed_data['begin_node'] = begin_node_found
-                processed_data['end_node'] = end_node_found
-
             # check for local_axis_x
             local_axis_x_found = processed_data['local_axis_x']
             if local_axis_x_found is None:
                 exceptions.append(XmiMissingRequiredAttributeError(
-                    "Please provide value for the parameters attribute"))
+                    "Please provide value for the 'local_axis_x' attribute"))
                 return None, exceptions
 
-            local_axis_x_found = XmiStructuralCurveMember.convert_local_axis_string_to_tuple(
+            local_axis_x_found = XmiStructuralSurfaceMember.convert_local_axis_string_to_tuple(
                 'x', processed_data['local_axis_x'])
 
             if not isinstance(local_axis_x_found, tuple):
@@ -407,9 +414,9 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             local_axis_y_found = processed_data['local_axis_y']
             if local_axis_y_found is None:
                 exceptions.append(XmiMissingRequiredAttributeError(
-                    "Please provide value for the parameters attribute"))
+                    "Please provide value for the 'local_axis_y' attribute"))
                 return None, exceptions
-            local_axis_y_found = XmiStructuralCurveMember.convert_local_axis_string_to_tuple(
+            local_axis_y_found = XmiStructuralSurfaceMember.convert_local_axis_string_to_tuple(
                 'y', processed_data['local_axis_y'])
 
             if not isinstance(local_axis_y_found, tuple):
@@ -422,9 +429,9 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             local_axis_z_found = processed_data['local_axis_z']
             if local_axis_z_found is None:
                 exceptions.append(XmiMissingRequiredAttributeError(
-                    "Please provide value for the parameters attribute"))
+                    "Please provide value for the 'local_axis_z' attribute"))
                 return None, exceptions
-            local_axis_z_found = XmiStructuralCurveMember.convert_local_axis_string_to_tuple(
+            local_axis_z_found = XmiStructuralSurfaceMember.convert_local_axis_string_to_tuple(
                 'z', processed_data['local_axis_z'])
             if not isinstance(local_axis_z_found, tuple):
                 exceptions.append(XmiInconsistentDataTypeError(
@@ -433,24 +440,24 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             processed_data["local_axis_z"] = local_axis_z_found
 
             # check system_line
-            system_line_found = processed_data['system_line']
-            if system_line_found is None:
+            system_plane_found = processed_data['system_plane']
+            if system_plane_found is None:
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the system_line attribute"))
                 return None, exceptions
-            system_line_found = XmiStructuralCurveMemberSystemLineEnum.from_attribute_get_enum(
-                processed_data['system_line'])
-            processed_data["system_line"] = system_line_found
+            system_plane_found = XmiStructuralSurfaceMemberSystemPlaneEnum.from_attribute_get_enum(
+                processed_data['system_plane'])
+            processed_data["system_plane"] = system_plane_found
 
             # check curve_member_type
-            curve_member_type_found = processed_data['curve_member_type']
-            if curve_member_type_found is None:
+            surface_member_type_found = processed_data['surface_member_type']
+            if surface_member_type_found is None:
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the curve_member_type attribute"))
                 return None, exceptions
-            curve_member_type_found = XmiStructuralCurveMemberTypeEnum.from_attribute_get_enum(
-                processed_data['curve_member_type'])
-            processed_data["curve_member_type"] = curve_member_type_found
+            surface_member_type_found = XmiStructuralSurfaceMemberTypeEnum.from_attribute_get_enum(
+                processed_data['surface_member_type'])
+            processed_data["surface_member_type"] = surface_member_type_found
 
         except KeyError as e:
             exceptions.append(e)

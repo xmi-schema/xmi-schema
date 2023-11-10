@@ -55,23 +55,6 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                  **kwargs
                  ):
 
-        # Check for mutual exclusivity, things that are optional should be inside any
-        # if kwargs and any([
-        #         second_moment_of_area_x_axis,
-        #         second_moment_of_area_y_axis,
-        #         radius_of_gyration_x_axis,
-        #         radius_of_gyration_y_axis,
-        #         elastic_modulus_x_axis,
-        #         elastic_modulus_y_axis,
-        #         plastic_modulus_x_axis,
-        #         plastic_modulus_y_axis,
-        #         torsional_constant,
-        #         area,
-        #         id, name, description, ifcguid
-        # ]):
-        #     raise ValueError(
-        #         "Please use either standard parameters or kwargs, not both.")
-
         # Ensure material_type is provided
         if material is None:
             raise ValueError(
@@ -93,35 +76,35 @@ class XmiStructuralCrossSection(XmiBaseEntity):
 
         # Initialize attributes
         self.set_attributes(
-            material,
-            shape,
-            parameters,
-            second_moment_of_area_x_axis,
-            second_moment_of_area_y_axis,
-            radius_of_gyration_x_axis,
-            radius_of_gyration_y_axis,
-            elastic_modulus_x_axis,
-            elastic_modulus_y_axis,
-            plastic_modulus_x_axis,
-            plastic_modulus_y_axis,
-            torsional_constant,
-            area,
+            material=material,
+            shape=shape,
+            parameters=parameters,
+            second_moment_of_area_x_axis=second_moment_of_area_x_axis,
+            second_moment_of_area_y_axis=second_moment_of_area_y_axis,
+            radius_of_gyration_x_axis=radius_of_gyration_x_axis,
+            radius_of_gyration_y_axis=radius_of_gyration_y_axis,
+            elastic_modulus_x_axis=elastic_modulus_x_axis,
+            elastic_modulus_y_axis=elastic_modulus_y_axis,
+            plastic_modulus_x_axis=plastic_modulus_x_axis,
+            plastic_modulus_y_axis=plastic_modulus_y_axis,
+            torsional_constant=torsional_constant,
+            area=area,
             **kwargs)
 
     def set_attributes(self,
-                       material,
-                       shape,
-                       parameters,
-                       second_moment_of_area_x_axis,
-                       second_moment_of_area_y_axis,
-                       radius_of_gyration_x_axis,
-                       radius_of_gyration_y_axis,
-                       elastic_modulus_x_axis,
-                       elastic_modulus_y_axis,
-                       plastic_modulus_x_axis,
-                       plastic_modulus_y_axis,
-                       torsional_constant,
-                       area,
+                       material: XmiStructuralMaterial,
+                       shape: XmiStructuralCrossSectionShapeEnum,
+                       parameters: list | tuple,
+                       second_moment_of_area_x_axis: float | int | None,
+                       second_moment_of_area_y_axis: float | int | None,
+                       radius_of_gyration_x_axis: float | int | None,
+                       radius_of_gyration_y_axis: float | int | None,
+                       elastic_modulus_x_axis: float | int | None,
+                       elastic_modulus_y_axis: float | int | None,
+                       plastic_modulus_x_axis: float | int | None,
+                       plastic_modulus_y_axis: float | int | None,
+                       torsional_constant: float | int | None,
+                       area: float | int,
                        **kwargs):
         attributes = [
             ('material', material),

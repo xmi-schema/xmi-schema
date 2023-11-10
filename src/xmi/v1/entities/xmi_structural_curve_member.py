@@ -493,15 +493,17 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the segments attribute"))
                 return None, exceptions
-            # if segments length = 0, return error
-            if len(segments_found) == 0:
-                exceptions.append(XmiMissingRequiredAttributeError(
-                    "The 'segments' parameter requires at least 1 segment of Type XmiSegment"))
-                return None, exceptions
+
             # if segment is not type list, return error
             if not isinstance(segments_found, list):
                 exceptions.append(XmiInconsistentDataTypeError(
                     "segments value provided need to be of instance list"))
+                return None, exceptions
+
+            # if segments length = 0, return error
+            if len(segments_found) == 0:
+                exceptions.append(XmiMissingRequiredAttributeError(
+                    "The 'segments' parameter requires at least 1 segment of Type XmiSegment"))
                 return None, exceptions
 
             # check for all segment datatypes
