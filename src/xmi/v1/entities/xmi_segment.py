@@ -18,7 +18,7 @@ class XmiSegment(XmiBaseEntity):
                                            '_segment_type'
                                            )
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,

@@ -8,6 +8,9 @@ from ..constants import *
 class XmiHasPoint3D(XmiBaseRelationship):
     __slots__ = XmiBaseRelationship.__slots__
 
+    _attributes_needed = [slot[1:] if slot.startswith(
+        '_') else slot for slot in __slots__]
+
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasPoint3D', **kwargs):
         name = 'hasPoint3D'
 

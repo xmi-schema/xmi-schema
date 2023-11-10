@@ -9,14 +9,11 @@ class XmiStructuralPointConnection(XmiBaseEntity):
     __slots__ = XmiBaseEntity.__slots__ + ('_point',
                                            '_storey')
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
                  point: XmiPoint3D,
-                 #  x: float = 0.0,
-                 #  y: float = 0.0,
-                 #  z: float = 0.0,
                  storey: str = None,
                  id: str = None,
                  name: str = None,
@@ -81,7 +78,7 @@ class XmiStructuralPointConnection(XmiBaseEntity):
         error_logs = []
         processed_data = obj.copy()
 
-        for attr in cls.attributes_needed:
+        for attr in cls._attributes_needed:
             if attr not in obj:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None

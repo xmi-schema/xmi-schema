@@ -14,7 +14,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
                                            '_poisson_ratio',
                                            '_thermal_coefficient')
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
@@ -157,7 +157,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
         error_logs = []
         processed_data = obj.copy()
 
-        for attr in cls.attributes_needed:
+        for attr in cls._attributes_needed:
             if attr not in processed_data:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None

@@ -9,14 +9,25 @@ from ..enums.xmi_enums import XmiSegmentTypeEnum
 
 class XmiStructuralSurfaceMember(XmiBaseEntity):
     __slots__ = XmiBaseEntity.__slots__ + \
-        ('_Storey', '_Material',
-         '_Type', '_SpanType', '_Thickness', '_SystemPlane', '_Nodes', '_Edges', '_Area')
+        ('_material',
+         '_surface_member_type',
+         '_span_type',
+         '_thickness',
+         '_system_plane',
+         '_nodes',
+         '_edges',
+         '_area',
+         '_storey'
+         )
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    # __slots__ = XmiBaseEntity.__slots__ + \
+    #     ('_Storey', '_Material',
+    #      '_Type', '_SpanType', '_Thickness', '_SystemPlane', '_Nodes', '_Edges', '_Area')
+
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
-                 storey,
                  material,
                  surface_member_type,
                  span_type,
@@ -25,27 +36,12 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                  nodes,
                  edges,
                  area,
+                 storey: str = None,
                  id=None,
                  name=None,
                  description=None,
                  ifcguid=None
                  ):
-
-        uuid_value = uuid.uuid4()
-        id = id if id else uuid_value
-        name = name if name else "{class_name}_{uuid_value}".format(
-            class_name=surface_member_type(self).__name__, uuid_value=uuid_value)
-
-        super().__init__(id=id, name=name, ifcguid=ifcguid, description=description)
-        self.Material = material
-        self.Storey = storey
-        self.Type = surface_member_type
-        self.Edges = edges
-        self.SystemPlane = system_plane
-        self.Thickness = thickness
-        self.SpanType = span_type
-        self.Nodes = nodes
-        self.Area = area
 
     @property
     def Material(self):

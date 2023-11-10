@@ -12,7 +12,7 @@ class XmiHasGeometry(XmiBaseRelationship):
                                                  '_is_end'
                                                  )
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseGeometry, name='hasGeometry', **kwargs):

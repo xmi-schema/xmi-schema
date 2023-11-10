@@ -10,7 +10,7 @@ class XmiHasLine3D(XmiBaseRelationship):
                                                  '_is_end'
                                                  )
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasLine3D', **kwargs):
@@ -19,7 +19,7 @@ class XmiHasLine3D(XmiBaseRelationship):
         super().__init__(source, target, name)
 
         for key, value in kwargs.items():
-            if key in self.attributes_needed:
+            if key in self._attributes_needed:
                 # Use the property setter for type checking
                 setattr(self, key, value)
 

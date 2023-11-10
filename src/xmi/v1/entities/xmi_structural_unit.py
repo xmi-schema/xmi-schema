@@ -8,7 +8,7 @@ class XmiStructuralUnit(XmiBaseEntity):
     __slots__ = XmiBaseEntity.__slots__ + ('_Entity', '_Attribute',
                                            '_Unit')
 
-    attributes_needed = [slot[1:] if slot.startswith(
+    _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self, entity, attribute, unit, id=None, name=None, description=None, ifcguid=None):
