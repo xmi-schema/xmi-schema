@@ -1,16 +1,21 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
+from ..enums.xmi_enums import XmiSegmentTypeEnum
+
 from ..entities.xmi_structural_point_connection import XmiStructuralPointConnection
 
-from ..geometries.xmi_geometry import XmiBaseGeometry
+from ..geometries.xmi_base_geometry import XmiBaseGeometry
 
 from ..xmi_base import XmiBaseEntity
 
 
 class XmiSegment(XmiBaseEntity):
     __slots__ = XmiBaseEntity.__slots__ + ('_geometry',
-                                           '_position'
+                                           '_position',
+                                           '_begin_node',
+                                           '_end_node',
+                                           '_segment_type'
                                            )
 
     attributes_needed = [slot[1:] if slot.startswith(
@@ -19,8 +24,9 @@ class XmiSegment(XmiBaseEntity):
     def __init__(self,
                  geometry: XmiBaseGeometry,
                  position: int,
-                 start_node: XmiStructuralPointConnection,
+                 begin_node: XmiStructuralPointConnection,
                  end_node: XmiStructuralPointConnection,
+                 segment_type: XmiSegmentTypeEnum,
                  id: str = None,
                  name: str = None,
                  description: str = None,
@@ -38,7 +44,7 @@ class XmiSegment(XmiBaseEntity):
                 "The 'position' parameter is compulsory and must be provided.")
 
         # Ensure material_type is provided
-        if start_node is None:
+        if begin_node is None:
             raise ValueError(
                 "The 'start_node' parameter is compulsory and must be provided.")
 
@@ -47,21 +53,37 @@ class XmiSegment(XmiBaseEntity):
             raise ValueError(
                 "The 'end_node' parameter is compulsory and must be provided.")
 
+        # Ensure material_type is provided
+        if segment_type is None:
+            raise ValueError(
+                "The 'segment_type' parameter is compulsory and must be provided.")
+
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
                          description=description)
 
+        # Initialize attributes
+        self.set_attributes(
+            geometry,
+            position,
+            begin_node,
+            end_node,
+            segment_type,
+            **kwargs)
+
     def set_attributes(self,
                        geometry: XmiBaseGeometry,
                        position: int,
-                       start_node: XmiStructuralPointConnection,
+                       begin_node: XmiStructuralPointConnection,
                        end_node: XmiStructuralPointConnection,
+                       segment_type: XmiSegmentTypeEnum,
                        **kwargs):
         attributes = [
             ('geometry', geometry),
             ('position', position),
-            ('start_node', start_node),
-            ('end_node', end_node)
+            ('begin_node', begin_node),
+            ('end_node', end_node),
+            ('segment_type', segment_type)
         ]
 
         for attr_name, attr_value in attributes:
@@ -96,15 +118,15 @@ class XmiSegment(XmiBaseEntity):
         self._position = value
 
     @property
-    def start_node(self):
-        return self._start_node
+    def begin_node(self):
+        return self._begin_node
 
-    @start_node.setter
-    def start_node(self, value):
+    @begin_node.setter
+    def begin_node(self, value):
         if not isinstance(value, XmiStructuralPointConnection):
             raise TypeError(
-                "start_node should be of type XmiStructuralPointConnection")
-        self._start_node = value
+                "begin_node should be of type XmiStructuralPointConnection")
+        self._begin_node = value
 
     @property
     def end_node(self):
@@ -116,3 +138,14 @@ class XmiSegment(XmiBaseEntity):
             raise TypeError(
                 "end_node should be of type XmiStructuralPointConnection")
         self._end_node = value
+
+    @property
+    def segment_type(self):
+        return self._segment_type
+
+    @segment_type.setter
+    def segment_type(self, value):
+        if not isinstance(value, XmiSegmentTypeEnum):
+            raise TypeError(
+                "segment_type should be of type XmiSegmentTypeEnum")
+        self._segment_type = value

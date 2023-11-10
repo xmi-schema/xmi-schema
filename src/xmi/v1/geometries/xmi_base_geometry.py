@@ -14,11 +14,4 @@ class XmiBaseGeometry(XmiBaseEntity):
                  description: str = None,
                  ** kwargs):
 
-        # Check for mutual exclusivity, things that are optional should be inside any
-        # if kwargs and any([
-        #     id, name, description, ifcguid
-        # ]):
-        #     raise ValueError(
-        #         "Please use either standard parameters or kwargs, not both.")
-
         super().__init__(id, name, ifcguid, description, **kwargs)

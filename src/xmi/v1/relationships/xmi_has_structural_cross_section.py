@@ -12,3 +12,8 @@ class XmiHasStructuralCrossSection(XmiBaseRelationship):
         name = 'hasStructuralCrossSection'
 
         super().__init__(source, target, name)
+
+        for key, value in kwargs.items():
+            if key in self.__slots__:
+                # Use the property setter for type checking
+                setattr(self, key, value)

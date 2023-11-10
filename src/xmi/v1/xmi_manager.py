@@ -7,6 +7,7 @@ from .entities.xmi_structural_material import XmiStructuralMaterial
 from .entities.xmi_structural_curve_member import XmiStructuralCurveMember
 
 from .relationships.xmi_has_structural_material import XmiHasStructuralMaterial
+from .relationships.xmi_has_structural_cross_section import XmiHasStructuralCrossSection
 
 from .xmi_errors import *
 from .xmi_base import *

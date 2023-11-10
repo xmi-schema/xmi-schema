@@ -1,19 +1,19 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
-from ..xmi_base import XmiBaseEntity, XmiBaseRelationship
+from ..xmi_base import XmiBaseEntity
 from ..geometries.xmi_point_3d import XmiPoint3D
 
 
 class XmiStructuralPointConnection(XmiBaseEntity):
-    __slots__ = XmiBaseEntity.__slots__ + ('_node',
+    __slots__ = XmiBaseEntity.__slots__ + ('_point',
                                            '_storey')
 
     attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__]
 
     def __init__(self,
-                 node: XmiPoint3D,
+                 point: XmiPoint3D,
                  #  x: float = 0.0,
                  #  y: float = 0.0,
                  #  z: float = 0.0,
@@ -30,20 +30,20 @@ class XmiStructuralPointConnection(XmiBaseEntity):
         #         "Please use either standard parameters or kwargs, not both.")
 
         # # Ensure point is provided
-        if node is None:
+        if point is None:
             raise ValueError(
-                "The 'node' parameter is compulsory and must be provided.")
+                "The 'point' parameter is compulsory and must be provided.")
 
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
                          description=description)
 
         # Initialize attributes
-        self.set_attributes(node, storey, **kwargs)
+        self.set_attributes(point, storey, **kwargs)
 
-    def set_attributes(self, node, storey, **kwargs):
+    def set_attributes(self, point, storey, **kwargs):
         attributes = [
-            ('node', node),
+            ('point', point),
             ('storey', storey)
         ]
 
@@ -57,14 +57,14 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 setattr(self, attr_name, None)
 
     @property
-    def node(self):
-        return self._node
+    def point(self):
+        return self._point
 
-    @node.setter
-    def node(self, value):
+    @point.setter
+    def point(self, value):
         if not isinstance(value, XmiPoint3D):
-            raise TypeError("node should be an XmiPoint3D")
-        self._node = value
+            raise TypeError("point should be an XmiPoint3D")
+        self._point = value
 
     @property
     def storey(self):
@@ -86,14 +86,8 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None
 
-        node_found = processed_data['node']
-
-        # remove compulsory keys for proper class instantiation
-        # del processed_data['node']
-
         try:
             instance = cls(
-                # node=node_found,
                 **processed_data)
         except Exception as e:
             error_logs.append(

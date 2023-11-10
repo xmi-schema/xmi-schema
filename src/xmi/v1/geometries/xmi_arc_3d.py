@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from ..xmi_base import XmiBaseEntity
 from .xmi_point_3d import XmiPoint3D
-from .xmi_geometry import XmiBaseGeometry
+from .xmi_base_geometry import XmiBaseGeometry
 
 
 class XmiArc3D(XmiBaseGeometry):
