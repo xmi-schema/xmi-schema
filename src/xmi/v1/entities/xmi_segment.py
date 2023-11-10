@@ -1,6 +1,8 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
+from ..entities.xmi_structural_point_connection import XmiStructuralPointConnection
+
 from ..geometries.xmi_geometry import XmiBaseGeometry
 
 from ..xmi_base import XmiBaseEntity
@@ -17,6 +19,8 @@ class XmiSegment(XmiBaseEntity):
     def __init__(self,
                  geometry: XmiBaseGeometry,
                  position: int,
+                 start_node: XmiStructuralPointConnection,
+                 end_node: XmiStructuralPointConnection,
                  id: str = None,
                  name: str = None,
                  description: str = None,
@@ -33,6 +37,16 @@ class XmiSegment(XmiBaseEntity):
             raise ValueError(
                 "The 'position' parameter is compulsory and must be provided.")
 
+        # Ensure material_type is provided
+        if start_node is None:
+            raise ValueError(
+                "The 'start_node' parameter is compulsory and must be provided.")
+
+        # Ensure material_type is provided
+        if end_node is None:
+            raise ValueError(
+                "The 'end_node' parameter is compulsory and must be provided.")
+
         # Initialize parent class
         super().__init__(id=id, name=name, ifcguid=ifcguid,
                          description=description)
@@ -40,10 +54,14 @@ class XmiSegment(XmiBaseEntity):
     def set_attributes(self,
                        geometry: XmiBaseGeometry,
                        position: int,
+                       start_node: XmiStructuralPointConnection,
+                       end_node: XmiStructuralPointConnection,
                        **kwargs):
         attributes = [
             ('geometry', geometry),
             ('position', position),
+            ('start_node', start_node),
+            ('end_node', end_node)
         ]
 
         for attr_name, attr_value in attributes:
@@ -76,3 +94,25 @@ class XmiSegment(XmiBaseEntity):
             raise TypeError(
                 "position should be of type int")
         self._position = value
+
+    @property
+    def start_node(self):
+        return self._start_node
+
+    @start_node.setter
+    def start_node(self, value):
+        if not isinstance(value, XmiStructuralPointConnection):
+            raise TypeError(
+                "start_node should be of type XmiStructuralPointConnection")
+        self._start_node = value
+
+    @property
+    def end_node(self):
+        return self._end_node
+
+    @end_node.setter
+    def end_node(self, value):
+        if not isinstance(value, XmiStructuralPointConnection):
+            raise TypeError(
+                "end_node should be of type XmiStructuralPointConnection")
+        self._end_node = value
