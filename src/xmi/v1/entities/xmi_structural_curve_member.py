@@ -34,7 +34,6 @@ class XmiStructuralCurveMember(XmiBaseEntity):
          '_end_node_z_offset',
          '_end_fixity_start',
          '_end_fixity_end',
-         #  '_segment_types',
          )
 
     _attributes_needed = [slot[1:] if slot.startswith(
@@ -55,7 +54,6 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                  end_node_z_offset: float | int = 0.0,
                  segments: list[XmiBaseGeometry] = [],
                  nodes: list[XmiStructuralPointConnection] = [],
-                 #  segment_types: list[XmiSegmentTypeEnum] = [],
                  length: int | float | None = None,
                  begin_node: XmiStructuralPointConnection = None,
                  end_node: XmiStructuralPointConnection = None,
@@ -169,7 +167,6 @@ class XmiStructuralCurveMember(XmiBaseEntity):
             ('curve_member_type', curve_member_type),
             ('nodes', nodes),
             ('segments', segments),
-            # ('segment_types', segment_types),
             ('system_line', system_line),
             ('begin_node', begin_node),
             ('end_node', end_node),
@@ -284,27 +281,15 @@ class XmiStructuralCurveMember(XmiBaseEntity):
             raise TypeError(
                 "Segments should be of type list")
 
+        # if len(value) < 1:
+        #     raise ValueError(
+        #         "'segments' list should have at least 1 items of type XmiSegment")
+
         for item in value:
             if not isinstance(item, XmiSegment):
                 raise ValueError(
                     f"All items must be instances of XmiSegment, got {type(item)} instead.")
         self._segments = value
-
-    # @property
-    # def segment_types(self):
-    #     return self._segment_types
-
-    # @segment_types.setter
-    # def segment_types(self, value):
-    #     if not isinstance(value, list):
-    #         raise TypeError(
-    #             "segment_typesshould be of type list")
-
-    #     for item in value:
-    #         if not isinstance(item, XmiSegmentTypeEnum):
-    #             raise ValueError(
-    #                 f"All items in segment_types must be instances of XmiSegmentTypeEnum, got {type(item)} instead.")
-    #     self._segment_types = value
 
     @property
     def length(self):
