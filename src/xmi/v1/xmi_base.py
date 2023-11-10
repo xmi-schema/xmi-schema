@@ -89,6 +89,16 @@ class XmiBaseRelationship():
         XmiBaseRelationship
             _description_
         """
+
+        if not isinstance(source, XmiBaseEntity):
+            raise TypeError("'source' should be of type XmiBaseEntity")
+
+        if not isinstance(target, XmiBaseEntity):
+            raise TypeError("'target' should be of type XmiBaseEntity")
+
+        if name is None:
+            raise ValueError("'name' value should not be None")
+
         self.source = source
         self.target = target
         self.name = name

@@ -15,6 +15,7 @@ class XmiHasStructuralNode(XmiBaseRelationship):
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralNode', **kwargs):
         name = 'hasStructuralNode'
+
         super().__init__(source, target, name)
 
         for key, value in kwargs.items():
