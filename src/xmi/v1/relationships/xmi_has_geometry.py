@@ -17,14 +17,14 @@ class XmiHasGeometry(XmiBaseRelationship):
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseGeometry, name='hasGeometry', **kwargs):
         name = 'hasGeometry'
-
+        entity_type = "XmiRelHasGeometry"
         if not isinstance(source, XmiBaseEntity):
             raise TypeError("'source' should be of type XmiBaseEntity")
 
         if not isinstance(target, XmiBaseGeometry):
             raise TypeError("'target' should be of type XmiBaseGeometry")
 
-        super().__init__(source, target, name)
+        super().__init__(source, target, name, entity_type=entity_type)
 
         for key, value in kwargs.items():
             if key in self.__slots__:

@@ -36,7 +36,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
          )
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  material: XmiStructuralMaterial,
@@ -58,7 +58,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                  ifcguid=None,
                  **kwargs
                  ):
-
+        entity_type = "XmiStructuralSurfaceMember"
         if material is None:
             raise ValueError(
                 "The 'material' parameter is compulsory and must be provided.")
@@ -88,8 +88,12 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 "The 'area' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(material=material,

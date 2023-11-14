@@ -15,7 +15,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
                                            '_thermal_coefficient')
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  material_type: XmiStructuralMaterialTypeEnum,
@@ -31,27 +31,19 @@ class XmiStructuralMaterial(XmiBaseEntity):
                  ifcguid: str = None,
                  **kwargs
                  ):
-
-        # Check for mutual exclusivity, things that are optional should be inside any
-        # if kwargs and any([grade,
-        #                    unit_weight,
-        #                    e_modulus,
-        #                    g_modulus,
-        #                    poisson_ratio,
-        #                    thermal_coefficient,
-        #                    id, name, description, ifcguid
-        #                    ]):
-        #     raise ValueError(
-        #         "Please use either standard parameters or kwargs, not both.")
-
+        entity_type = "XmiStructuralMaterial"
         # Ensure material_type is provided
         if material_type is None:
             raise ValueError(
                 "The 'material_type' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(material_type, grade, unit_weight, e_modulus,

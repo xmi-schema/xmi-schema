@@ -9,8 +9,8 @@ from .xmi_base_geometry import XmiBaseGeometry
 class XmiArc3D(XmiBaseGeometry):
     __slots__ = ('_start_point', '_end_point')
 
-    attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+    _attributes_needed = [slot[1:] if slot.startswith(
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  start_point: XmiPoint3D,
@@ -23,12 +23,7 @@ class XmiArc3D(XmiBaseGeometry):
                  ifcguid: str = None,
                  **kwargs):
 
-        # Check for mutual exclusivity, things that are optional should be inside any
-        # if kwargs and any([
-        #     id, name, description, ifcguid
-        # ]):
-        #     raise ValueError(
-        #         "Please use either standard parameters or kwargs, not both.")
+        entity_type = "XmiArc3D"
 
         # Ensure material_type is provided
         if start_point is None:
@@ -45,8 +40,12 @@ class XmiArc3D(XmiBaseGeometry):
                 "The 'center_point' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description, **kwargs)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(start_point, end_point, center_point, **kwargs)
@@ -102,7 +101,7 @@ class XmiArc3D(XmiBaseGeometry):
         error_logs = []
         processed_data = obj.copy()
 
-        for attr in cls.attributes_needed:
+        for attr in cls._attributes_needed:
             if attr not in obj:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None

@@ -16,6 +16,7 @@ class XmiHasStructuralMaterial(XmiBaseRelationship):
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralMaterial', **kwargs):
         name = 'hasStructuralMaterial'
+        entity_type = "XmiRelHasSegment"
 
         # if not isinstance(source, XmiStructuralCrossSection):
         #     raise XmiInconsistentDataTypeError(
@@ -24,7 +25,7 @@ class XmiHasStructuralMaterial(XmiBaseRelationship):
         #     raise XmiInconsistentDataTypeError(
         #         "'target' parameter needs to be of type XmiStructuralMaterial")
 
-        super().__init__(source, target, name)
+        super().__init__(source, target, name, entity_type=entity_type)
 
         for key, value in kwargs.items():
             if key in self.__slots__:

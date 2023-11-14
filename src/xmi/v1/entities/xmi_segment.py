@@ -19,7 +19,7 @@ class XmiSegment(XmiBaseEntity):
                                            )
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  geometry: XmiBaseGeometry,
@@ -32,6 +32,7 @@ class XmiSegment(XmiBaseEntity):
                  description: str = None,
                  ifcguid: str = None,
                  **kwargs):
+        entity_type = "XmiSegment"
 
         # Ensure material_type is provided
         if geometry is None:
@@ -59,8 +60,12 @@ class XmiSegment(XmiBaseEntity):
                 "The 'segment_type' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(

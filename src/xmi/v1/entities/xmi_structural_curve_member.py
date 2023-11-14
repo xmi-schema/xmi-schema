@@ -37,7 +37,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
          )
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  cross_section: XmiStructuralCrossSection,
@@ -66,6 +66,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                  ifcguid: str = None,
                  **kwargs
                  ):
+        entity_type = "XmiStructuralCurveMember"
 
         # Check for mutual exclusivity, things that are optional should be inside any
         # if kwargs and any([
@@ -114,8 +115,12 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 "The 'end_node' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(
@@ -516,7 +521,8 @@ class XmiStructuralCurveMember(XmiBaseEntity):
             # setting up begin_node and end_node of element
             if len(segments_found) > 0:
                 segment_begin: XmiSegment = segments_found[0]
-                segment_end: XmiSegment = segments_found[len(segments_found)-1]
+                segment_end: XmiSegment = segments_found[len(
+                    segments_found) - 1]
 
                 begin_node_found = next(
                     (spc for spc in nodes_found if spc == segment_begin.begin_node), None)

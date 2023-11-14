@@ -9,15 +9,32 @@ class XmiStructuralUnit(XmiBaseEntity):
                                            '_Unit')
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
-    def __init__(self, entity, attribute, unit, id=None, name=None, description=None, ifcguid=None):
+    def __init__(self,
+                 entity,
+                 attribute,
+                 unit,
+                 id=None,
+                 name=None,
+                 description=None,
+                 ifcguid=None,
+                 **kwargs):
+        entity_type = "XmiStructuralUnit"
+
         uuid_value = uuid.uuid4()
         id = id if id else uuid_value
         name = name if name else "{class_name}_{uuid_value}".format(
             class_name=type(self).__name__, uuid_value=uuid_value)
 
-        super().__init__(id=id, name=name, ifcguid=ifcguid, description=description)
+        # Initialize parent class
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
+
         self.Entity = entity
         self.Attribute = attribute
         self.Unit = unit

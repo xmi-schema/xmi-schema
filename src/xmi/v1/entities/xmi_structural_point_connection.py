@@ -10,7 +10,7 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                                            '_storey')
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  point: XmiPoint3D,
@@ -20,6 +20,7 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                  description: str = None,
                  ifcguid: str = None,
                  **kwargs):
+        entity_type = "XmiStructuralPointConnection"
 
         # Check for mutual exclusivity, things that are optional should be inside any
         # if kwargs and any([storey, id, name, description, ifcguid]):
@@ -32,8 +33,12 @@ class XmiStructuralPointConnection(XmiBaseEntity):
                 "The 'point' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(point, storey, **kwargs)

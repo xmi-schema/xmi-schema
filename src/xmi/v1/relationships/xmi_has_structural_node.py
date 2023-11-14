@@ -15,8 +15,9 @@ class XmiHasStructuralNode(XmiBaseRelationship):
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralNode', **kwargs):
         name = 'hasStructuralNode'
+        entity_type = "XmiRelHasSegment"
 
-        super().__init__(source, target, name)
+        super().__init__(source, target, name, entity_type=entity_type)
 
         for key, value in kwargs.items():
             if key in self._attributes_needed:

@@ -32,7 +32,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                                            "_torsional_constant")
 
     _attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__]
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  material: XmiStructuralMaterial,
@@ -54,6 +54,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                  ifcguid: str = None,
                  **kwargs
                  ):
+        entity_type = "XmiStructuralCrossSection"
 
         # Ensure material_type is provided
         if material is None:
@@ -71,8 +72,12 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                 "The 'parameters' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(

@@ -15,8 +15,9 @@ class XmiHasLine3D(XmiBaseRelationship):
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasLine3D', **kwargs):
         name = 'hasLine3D'
+        entity_type = "XmiRelHasLine3D"
 
-        super().__init__(source, target, name)
+        super().__init__(source, target, name, entity_type=entity_type)
 
         for key, value in kwargs.items():
             if key in self._attributes_needed:

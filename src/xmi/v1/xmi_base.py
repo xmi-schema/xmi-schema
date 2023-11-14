@@ -6,13 +6,18 @@ import uuid
 
 class XmiBaseEntity():
 
-    __slots__ = ('_id', '_name', '_ifcguid', '_description')
+    __slots__ = ('_id',
+                 '_name',
+                 '_ifcguid',
+                 '_description',
+                 '_entity_type')
 
     def __init__(self,
                  id: str = None,
                  name: str = None,
                  ifcguid: str = None,
                  description: str = None,
+                 entity_type: str = "XmiBaseEntity",
                  ** kwargs):
 
         id = id if id else kwargs.get('id', str(uuid.uuid4()))
@@ -20,10 +25,22 @@ class XmiBaseEntity():
         description = description if description else kwargs.get(
             'description', None)
         ifcguid = ifcguid if ifcguid else kwargs.get('ifcguid', None)
+
         self.id = id  # Calls the setter
         self.name = name
         self.ifcguid = ifcguid
         self.description = description
+        self.entity_type = entity_type
+
+    @property
+    def entity_type(self):
+        return self._entity_type
+
+    @entity_type.setter
+    def entity_type(self, value):
+        # if value is not isinstance(value, str):
+        #     raise TypeError("'entity_type' should be an str")
+        self._entity_type = value
 
     @property
     def id(self):
@@ -70,9 +87,14 @@ class XmiBaseEntity():
 
 
 class XmiBaseRelationship():
-    __slots__ = ('_source', '_target', '_name')
+    __slots__ = ('_source', '_target', '_name', '_entity_type')
 
-    def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name: str = None) -> XmiBaseRelationship:
+    def __init__(self,
+                 source: XmiBaseEntity,
+                 target: XmiBaseEntity,
+                 name: str = None,
+                 entity_type: str = "XmiRelBaseRelationship"
+                 ) -> XmiBaseRelationship:
         """_summary_
 
         Parameters
@@ -102,8 +124,19 @@ class XmiBaseRelationship():
         self.source = source
         self.target = target
         self.name = name
+        self.entity_type = entity_type
 
     # Getter and setter for source
+    @property
+    def entity_type(self):
+        return self._entity_type
+
+    @entity_type.setter
+    def entity_type(self, value):
+        if not isinstance(value, str):
+            raise ValueError("'entity_type' must be of type str")
+        self._entity_type = value
+
     @property
     def source(self):
         return self._source

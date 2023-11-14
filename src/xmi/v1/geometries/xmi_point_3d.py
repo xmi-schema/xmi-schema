@@ -9,8 +9,8 @@ class XmiPoint3D(XmiBaseGeometry):
 
     __slots__ = XmiBaseEntity.__slots__ + ('_x', '_y', '_z')
 
-    attributes_needed = [slot[1:] if slot.startswith(
-        '_') else slot for slot in __slots__ if slot not in ('_ifcguid')]
+    _attributes_needed = [slot[1:] if slot.startswith(
+        '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
                  x: float,
@@ -21,13 +21,7 @@ class XmiPoint3D(XmiBaseGeometry):
                  description: str = None,
                  ifcguid: str = None,
                  **kwargs):
-
-        # Check for mutual exclusivity, things that are optional should be inside any
-        # if kwargs and any([
-        #     id, name, description, ifcguid
-        # ]):
-        #     raise ValueError(
-        #         "Please use either standard parameters or kwargs, not both.")
+        entity_type = "XmiPoint3D"
 
         # Ensure material_type is provided
         if x is None:
@@ -43,8 +37,12 @@ class XmiPoint3D(XmiBaseGeometry):
                 "The 'z' parameter is compulsory and must be provided.")
 
         # Initialize parent class
-        super().__init__(id=id, name=name, ifcguid=ifcguid,
-                         description=description, **kwargs)
+        super().__init__(id=id,
+                         name=name,
+                         ifcguid=ifcguid,
+                         description=description,
+                         entity_type=entity_type
+                         )
 
         # Initialize attributes
         self.set_attributes(x, y, z, **kwargs)
@@ -110,7 +108,7 @@ class XmiPoint3D(XmiBaseGeometry):
         error_logs = []
         processed_data = obj.copy()
 
-        for attr in cls.attributes_needed:
+        for attr in cls._attributes_needed:
             if attr not in obj:
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None

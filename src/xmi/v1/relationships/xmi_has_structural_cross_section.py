@@ -13,8 +13,9 @@ class XmiHasStructuralCrossSection(XmiBaseRelationship):
 
     def __init__(self, source: XmiBaseEntity, target: XmiBaseEntity, name='hasStructuralCrossSection', **kwargs):
         name = 'hasStructuralCrossSection'
+        entity_type = "XmiRelHasSegment"
 
-        super().__init__(source, target, name)
+        super().__init__(source, target, name, entity_type=entity_type)
 
         for key, value in kwargs.items():
             if key in self.__slots__:
