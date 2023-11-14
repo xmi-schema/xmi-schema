@@ -30,9 +30,9 @@ def test_xmi_manager_1():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
 
-    print(xmi_manager)
+    print(xmi_model)
 
     # StructuralMaterial = 1
     # StructuralPointConnection = 562
@@ -42,22 +42,22 @@ def test_xmi_manager_1():
     # StructuralCrossSection = 8
 
     xmi_structural_materials_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralMaterial)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
     # cannot find because cross sections has errors
     xmi_structural_cross_sections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCrossSection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
     xmi_structural_point_connections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralPointConnection)]
     xmi_point_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiPoint3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiPoint3D)]
     xmi_line_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiLine3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiLine3D)]
     xmi_segments_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiSegment)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiSegment)]
     xmi_structural_curve_members_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCurveMember)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCurveMember)]
     xmi_structural_surface_members_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralSurfaceMember)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralSurfaceMember)]
 
     assert len(xmi_structural_materials_found) == 1
     assert len(xmi_structural_cross_sections_found) == 8
@@ -75,32 +75,32 @@ def test_xmi_manager_2():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
 
-    print(xmi_manager)
+    print(xmi_model)
 
     # StructuralMaterial = 1
     # StructuralCrossSection = 1
     # HasStructuralMaterialRelationship = 1
 
-    assert len(xmi_manager.entities) == 4
-    assert len(xmi_manager.relationships) == 2
+    assert len(xmi_model.entities) == 4
+    assert len(xmi_model.relationships) == 2
 
     xmi_structural_materials_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralMaterial)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
     xmi_structural_cross_sections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCrossSection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
     xmi_structural_point_connections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralPointConnection)]
     xmi_point_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiPoint3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiPoint3D)]
     xmi_line_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiLine3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiLine3D)]
 
     xmi_has_structural_material_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasStructuralMaterial)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasStructuralMaterial)]
     xmi_has_geometry_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasGeometry)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasGeometry)]
 
     assert len(xmi_structural_materials_found) == 1
     assert len(xmi_structural_cross_sections_found) == 1
@@ -124,42 +124,42 @@ def test_xmi_manager_3():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
 
-    print(xmi_manager)
+    print(xmi_model)
 
     # StructuralMaterial = 1
     # StructuralCrossSection = 1
     # HasStructuralMaterialRelationship = 1
 
     xmi_structural_materials_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralMaterial)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
     xmi_structural_cross_sections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCrossSection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
     xmi_structural_point_connections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralPointConnection)]
     xmi_structural_curve_members_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCurveMember)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCurveMember)]
     xmi_point_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiPoint3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiPoint3D)]
     xmi_line_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiLine3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiLine3D)]
     xmi_segments_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiSegment)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiSegment)]
 
     xmi_has_structural_material_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasStructuralMaterial)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasStructuralMaterial)]
     xmi_has_segment_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasSegment)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasSegment)]
     xmi_has_structural_cross_sections_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasStructuralCrossSection)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasStructuralCrossSection)]
     xmi_has_structural_nodes_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasStructuralNode)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasStructuralNode)]
     xmi_has_geometry_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasGeometry)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasGeometry)]
 
-    assert len(xmi_manager.entities) == 9
-    assert len(xmi_manager.relationships) == 12
+    assert len(xmi_model.entities) == 9
+    assert len(xmi_model.relationships) == 12
 
     assert len(xmi_structural_materials_found) == 1
     assert len(xmi_structural_cross_sections_found) == 1
@@ -188,9 +188,9 @@ def test_xmi_manager_4():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
 
-    print(xmi_manager)
+    print(xmi_model)
 
     # StructuralMaterial = 1
     # StructuralSurfaceMember = 1
@@ -201,29 +201,29 @@ def test_xmi_manager_4():
     # StructuralPointConnection = 4
 
     xmi_structural_materials_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralMaterial)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
     xmi_structural_point_connections_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralPointConnection)]
     xmi_structural_surface_members_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralSurfaceMember)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralSurfaceMember)]
     xmi_point_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiPoint3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiPoint3D)]
     xmi_line_3d_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiLine3D)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiLine3D)]
     xmi_segments_found = [
-        obj for obj in xmi_manager.entities if isinstance(obj, XmiSegment)]
+        obj for obj in xmi_model.entities if isinstance(obj, XmiSegment)]
 
     xmi_has_structural_material_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasStructuralMaterial)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasStructuralMaterial)]
     xmi_has_segment_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasSegment)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasSegment)]
     xmi_has_structural_structural_nodes_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasStructuralNode)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasStructuralNode)]
     xmi_has_geometry_relationships_found = [
-        obj for obj in xmi_manager.relationships if isinstance(obj, XmiHasGeometry)]
+        obj for obj in xmi_model.relationships if isinstance(obj, XmiHasGeometry)]
 
-    assert len(xmi_manager.entities) == 18
-    assert len(xmi_manager.relationships) == 29
+    assert len(xmi_model.entities) == 18
+    assert len(xmi_model.relationships) == 29
 
     assert len(xmi_structural_materials_found) == 1
     assert len(xmi_structural_point_connections_found) == 4
