@@ -21,7 +21,7 @@ from src.xmi.v1.relationships.xmi_has_segment import XmiHasSegment
 from src.xmi.v1.relationships.xmi_has_geometry import XmiHasGeometry
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_xmi_manager_1():
     # ERROR FOUND IN DATA as material values should not be 0.0
 
@@ -50,17 +50,25 @@ def test_xmi_manager_1():
         obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralPointConnection)]
     xmi_point_3d_found = [
         obj for obj in xmi_manager.entities if isinstance(obj, XmiPoint3D)]
+    xmi_line_3d_found = [
+        obj for obj in xmi_manager.entities if isinstance(obj, XmiLine3D)]
+    xmi_segments_found = [
+        obj for obj in xmi_manager.entities if isinstance(obj, XmiSegment)]
+    xmi_structural_curve_members_found = [
+        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralCurveMember)]
+    xmi_structural_surface_members_found = [
+        obj for obj in xmi_manager.entities if isinstance(obj, XmiStructuralSurfaceMember)]
 
     assert len(xmi_structural_materials_found) == 1
-    assert len(xmi_point_3d_found) == 562
+    assert len(xmi_structural_cross_sections_found) == 8
     assert len(xmi_structural_point_connections_found) == 562
-    assert len(xmi_structural_cross_sections_found) == 0
+    assert len(xmi_structural_curve_members_found) == 555
+    assert len(xmi_structural_surface_members_found) == 334
 
-    assert len(xmi_manager.entities) == 2243
-    assert len(xmi_manager.relationships) == 562
+    assert len(xmi_point_3d_found) == 562
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_xmi_manager_2():
     json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_2.json"
     with open(json_path, 'r') as f:
@@ -222,6 +230,7 @@ def test_xmi_manager_4():
     assert len(xmi_segments_found) == 4
     assert len(xmi_point_3d_found) == 4
     assert len(xmi_line_3d_found) == 4
+    assert len(xmi_structural_surface_members_found) == 1
 
     assert len(xmi_has_structural_material_relationships_found) == 1
     assert len(xmi_has_geometry_relationships_found) == 12
