@@ -4,10 +4,10 @@ from enum import unique
 
 @unique
 class XmiStructuralSurfaceMemberTypeEnum(XmiEnum):
-    SLAB = (1, "Beam")
-    WALL = (2, "Column")
-    PAD_FOOTING = (3, "Bracing")
-    STRIP_FOOTING = (4, "Other")
+    SLAB = (1, "Slab")
+    WALL = (2, "Wall")
+    PAD_FOOTING = (3, "PadFooting")
+    STRIP_FOOTING = (4, "StripFooting")
     PILECAP = (5, "Pilecap")  # i think this shouldn't be here
     ROOF_PANEL = (6, "RoofPanel")  # this sounds like archi. should not be here
     WALL_PANEL = (7, "WallPanel")  # this sounds like archi. should not be here
