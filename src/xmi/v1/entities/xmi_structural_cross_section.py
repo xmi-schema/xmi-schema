@@ -193,8 +193,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
     def area(self, value):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError("Area should be of type float,int or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("Area should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("Area should be larger than 0.0")
         self._area = value
 
     @property
@@ -206,8 +206,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "Ix (Second Moment of Area - x axis) should be of type float,int or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("Ix should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("Ix should be larger than 0.0")
         self._second_moment_of_area_x_axis = value
 
     @property
@@ -219,8 +219,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "Iy (Second Moment of Area - y axis) should be of type float,int or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("Iy should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("Iy should be larger than 0.0")
         self._second_moment_of_area_y_axis = value
 
     @property
@@ -232,8 +232,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "rx (Radius of Gyration - x axis) should be of type float or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("rx should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("rx should be larger than 0.0")
         self._radius_of_gyration_x_axis = value
 
     @property
@@ -245,8 +245,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (float, int)):
             raise TypeError(
                 "ry (Radius of Gyration - y axis) should be of type float or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("ry should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("ry should be larger than 0.0")
         self._radius_of_gyration_y_axis = value
 
     @property
@@ -258,8 +258,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Ex (E Modulus - x axis) should be of type float, integer, or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("Ex should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("Ex should be larger than 0.0")
         self._elastic_modulus_x_axis = value
 
     @property
@@ -271,8 +271,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Ey (E Modulus - y axis) should be of type float, integer, or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("Ey should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("Ey should be larger than 0.0")
         self._elastic_modulus_y_axis = value
 
     @property
@@ -284,8 +284,8 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Torsional Constant should be of type float, integer, or None")
-        if value is not None and value <= 0.0:
-            raise ValueError("Torsional Constant should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError("Torsional Constant should be larger than 0.0")
         self._torsional_constant = value
 
     @property
@@ -297,9 +297,9 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Zx (Plastic Modulus - x axis) should be of type float, integer, or None")
-        if value is not None and value <= 0.0:
-            raise ValueError(
-                "Zx (Plastic Modulus - x axis) should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError(
+        #         "Zx (Plastic Modulus - x axis) should be larger than 0.0")
         self._plastic_modulus_x_axis = value
 
     @property
@@ -311,9 +311,9 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         if value is not None and not isinstance(value, (int, float)):
             raise TypeError(
                 "Zy (Plastic Modulus - y axis) should be of type float, integer, or None")
-        if value is not None and value <= 0.0:
-            raise ValueError(
-                "Zy (Plastic Modulus - y axis) should be larger than 0.0")
+        # if value is not None and value <= 0.0:
+        #     raise ValueError(
+        #         "Zy (Plastic Modulus - y axis) should be larger than 0.0")
         self._plastic_modulus_y_axis = value
 
     # def is_empty_or_whitespace(input_string: str) -> bool:
