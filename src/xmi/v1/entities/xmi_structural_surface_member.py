@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from .xmi_structural_curve_member import XmiStructuralCurveMember
-from .xmi_structural_cross_section import XmiStructuralCrossSection
 from .xmi_segment import XmiSegment
 from .xmi_structural_material import XmiStructuralMaterial
 from .xmi_structural_point_connection import XmiStructuralPointConnection
@@ -13,16 +12,19 @@ from ..enums.xmi_structural_surface_member_enums import *
 from ..xmi_base import XmiBaseEntity
 from ..xmi_errors import *
 
+# Temporarily disabled span_type attribute as there isnt seem to be any export for this.
+# Remove Edges as it doesnt need to be translated to edges
+
 
 class XmiStructuralSurfaceMember(XmiBaseEntity):
     __slots__ = XmiBaseEntity.__slots__ + \
         ('_material',
          '_surface_member_type',
-         '_span_type',
+         #  '_span_type',
          '_thickness',
          '_system_plane',
          '_nodes',
-         '_edges',
+         #  '_edges',
          '_area',
          '_storey',
          '_segments',
@@ -39,7 +41,6 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
     def __init__(self,
                  material: XmiStructuralMaterial,
                  surface_member_type: XmiStructuralSurfaceMemberTypeEnum,
-                 span_type: XmiStructuralSurfaceMemberSpanTypeEnum,
                  thickness: float | int,
                  system_plane: XmiStructuralSurfaceMemberSystemPlaneEnum,
                  segments: list[XmiSegment] = [],
@@ -49,6 +50,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                  local_axis_x: tuple = (1.0, 0.0, 0.0),
                  local_axis_y: tuple = (0.0, 1.0, 0.0),
                  local_axis_z: tuple = (0.0, 0.0, 1.0),
+                 #  span_type: XmiStructuralSurfaceMemberSpanTypeEnum = None,
                  storey: str = None,
                  id=None,
                  name=None,
@@ -64,10 +66,6 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
         if surface_member_type is None:
             raise ValueError(
                 "The 'surface_member_type' parameter is compulsory and must be provided.")
-
-        if span_type is None:
-            raise ValueError(
-                "The 'span_type' parameter is compulsory and must be provided.")
 
         if thickness is None:
             raise ValueError(
@@ -96,7 +94,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
         # Initialize attributes
         self.set_attributes(material=material,
                             surface_member_type=surface_member_type,
-                            span_type=span_type,
+                            # span_type=span_type,
                             thickness=thickness,
                             system_plane=system_plane,
                             segments=segments,
@@ -113,7 +111,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
     def set_attributes(self,
                        material: XmiStructuralMaterial,
                        surface_member_type: XmiStructuralSurfaceMemberTypeEnum,
-                       span_type: XmiStructuralSurfaceMemberSpanTypeEnum,
+                       #    span_type: XmiStructuralSurfaceMemberSpanTypeEnum,
                        thickness: float | int,
                        system_plane: XmiStructuralSurfaceMemberSystemPlaneEnum,
                        segments: list[XmiSegment],
@@ -128,7 +126,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
         attributes = [
             ('material', material),
             ('surface_member_type', surface_member_type),
-            ('span_type', span_type),
+            # ('span_type', span_type),
             ('thickness', thickness),
             ('system_plane', system_plane),
             ('segments', segments),
@@ -178,7 +176,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
 
     @span_type.setter
     def span_type(self, value):
-        if not isinstance(value, XmiStructuralSurfaceMemberSpanTypeEnum):
+        if value is not None and not isinstance(value, XmiStructuralSurfaceMemberSpanTypeEnum):
             raise TypeError(
                 "span_type should be of type XmiStructuralSurfaceMemberSpanTypeEnum")
         self._span_type = value
@@ -304,6 +302,9 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             raise TypeError("Storey should be an str")
         self._storey = value
 
+    def is_empty_or_whitespace(input_string: str) -> bool:
+        return not input_string or not input_string.strip()
+
     @classmethod
     def convert_local_axis_string_to_tuple(cls, axis_direction, local_axis_str: str) -> tuple:
         local_axis_list: list[str] = local_axis_str.split(',')
@@ -327,7 +328,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
     @classmethod
     def from_dict(cls,
                   obj: dict
-                  ) -> XmiStructuralCurveMember:
+                  ) -> XmiStructuralSurfaceMember:
         instance = None
         exceptions = []
         processed_data = obj.copy()
@@ -453,7 +454,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             surface_member_type_found = processed_data['surface_member_type']
             if surface_member_type_found is None:
                 exceptions.append(XmiMissingRequiredAttributeError(
-                    "Please provide value for the curve_member_type attribute"))
+                    "Please provide value for the surface_member_type attribute"))
                 return None, exceptions
             surface_member_type_found = XmiStructuralSurfaceMemberTypeEnum.from_attribute_get_enum(
                 processed_data['surface_member_type'])
@@ -468,7 +469,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 ** processed_data)
         except Exception as e:
             exceptions.append(
-                Exception(f"Error instantiating XmiStructuralCurveMember: {obj}"))
+                Exception(f"Error instantiating XmiStructuralSurfaceMember: {obj}"))
 
         return instance, exceptions
 
@@ -484,6 +485,8 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
             "Material": "material",
             "Storey": "storey",
             "Type": "surface_member_type",
+            "Thickness": "thickness",
+            "Edges": "edges",
             "Nodes": "nodes",
             "SystemPlane": "system_plane",
             "Area": "area",
