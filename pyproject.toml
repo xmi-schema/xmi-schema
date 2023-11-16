@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xmi"
-version = "0.1.1"
+version = "0.0.5"
 authors = [
   { name="darellchua2", email="darellchua2@gmail.com" },
 ]
