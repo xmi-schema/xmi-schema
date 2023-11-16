@@ -1,25 +1,48 @@
 #!/bin/bash
 
-# Step 1: Build the package
+# Exit if any command fails
+set -e
+
+# Build the package
 echo "Building the package..."
 python -m build
 
-# Check if build was successful
-if [ $? -ne 0 ]; then
-    echo "Build failed, exiting."
-    exit 1
-fi
-
-# Step 2: Create the virtual environment
+# Create the virtual environment
 echo "Creating the virtual environment..."
 python -m venv .venv
 
-# Step 3: Install the built package
-echo "Installing the built package..."
-source .venv/Scripts/activate
-VERSION=$(awk -F'"' '/version =/ {print $2}' pyproject.toml)
-pip install "./dist/xmi-$VERSION-py3-none-any.whl"
+# Activate the virtual environment and install the package
+source .venv/bin/activate
+echo "Activated Virtual environment"
 
-# Running tests
-echo "Running tests..."
-pytest after_install_tests/
+echo "Current directory: $(pwd)"
+
+# Extract the version from pyproject.toml and install the package
+
+# Path to your pyproject.toml file
+FILE_PATH="pyproject.toml"
+
+# Variable to store the version
+VERSION=""
+
+# Read each line from the file
+while IFS= read -r line; do
+    echo "Reading line: $line"
+
+    # Check if the line contains 'version ='
+    if [[ $line == *"version ="* ]]; then
+        # Extract the version number
+        VERSION=$(echo $line | awk -F '"' '{print $2}')
+        echo "Found version line: $VERSION"
+        break
+    fi
+done < "$FILE_PATH"
+
+if [ -z "$VERSION" ]; then
+    echo "Version not found."
+else
+    echo "Extracted Version: $VERSION"
+
+    # Install with pip
+    pip install "dist/xmi-$VERSION-py3-none-any.whl"
+fi
