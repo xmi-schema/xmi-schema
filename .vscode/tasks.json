@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Setup and Install Package (Unix-like)",
+      "type": "shell",
+      "command": "./setup_and_install.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "linux": {
+        "command": "./setup_and_install.sh"
+      },
+      "osx": {
+        "command": "./setup_and_install.sh"
+      }
+    },
+    {
+      "label": "Setup and Install Package (Windows)",
+      "type": "shell",
+      "command": "setup_and_install.bat",
+      "windows": {
+        "command": "./setup_and_install.bat"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
