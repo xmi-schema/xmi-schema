@@ -6,17 +6,19 @@ python -m build
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 REM Create the virtual environment
-echo Creating the virtual environment...
-python -m venv .venv
+SET VENV_DIR=.venv
 
-REM Activate the virtual environment and install the package
-call .venv\Scripts\activate
+IF EXIST "%VENV_DIR%" (
+    echo Virtual environment already exists.
+) ELSE (
+    echo Creating a new virtual environment...
+    python -m venv %VENV_DIR%
+    echo Virtual environment created.
+)
+
+echo Activating the virtual environment...
+CALL "%VENV_DIR%\Scripts\activate"
 echo Activated Virtual environment
-
-echo Current directory: %cd%
-
-REM Extract the version from pyproject.toml and install the package
-
 
 
 setlocal enabledelayedexpansion
@@ -56,7 +58,8 @@ if not defined VERSION (
 
 
 REM Install to pip
-pip install dist\xmi-%VERSION%-py3-none-any.whl
+pip uninstall xmi -y
+pip install dist\xmi-!VERSION!-py3-none-any.whl
 pip install pytest
 
 REM Running tests
