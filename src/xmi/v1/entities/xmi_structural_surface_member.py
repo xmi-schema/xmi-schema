@@ -249,7 +249,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
     def z_offset(self, value):
         if not isinstance(value, (float, int)):
             raise TypeError(
-                "z_offset should be type flaot or int")
+                "z_offset should be type float or int")
         self._z_offset = value
 
     @property
