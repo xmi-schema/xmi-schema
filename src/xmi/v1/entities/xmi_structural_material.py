@@ -86,8 +86,8 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
     @grade.setter
     def grade(self, value):
-        if value is not None and not isinstance(value, float):
-            raise TypeError("Grade should be of type float or None")
+        if value is not None and not isinstance(value, (float, int)):
+            raise TypeError("Grade should be of type float, integer, or None")
         self._grade = value
 
     # Similarly, for other properties:
@@ -98,8 +98,9 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
     @unit_weight.setter
     def unit_weight(self, value):
-        if value is not None and not isinstance(value, float):
-            raise TypeError("UnitWeight should be of type float or None")
+        if value is not None and not isinstance(value, (float, int)):
+            raise TypeError(
+                "UnitWeight should be of type float, integer, or None")
         self._unit_weight = value
 
     @property
@@ -108,8 +109,9 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
     @e_modulus.setter
     def e_modulus(self, value):
-        if value is not None and not isinstance(value, float):
-            raise TypeError("EModulus should be of type float or None")
+        if value is not None and not isinstance(value, (float, int)):
+            raise TypeError(
+                "EModulus should be of type float, integer, or None")
         self._e_modulus = value
 
     @property
@@ -118,8 +120,9 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
     @g_modulus.setter
     def g_modulus(self, value):
-        if value is not None and not isinstance(value, float):
-            raise TypeError("GModulus should be of type float or None")
+        if value is not None and not isinstance(value, (float, int)):
+            raise TypeError(
+                "GModulus should be of type float, integer, or None")
         self._g_modulus = value
 
     @property
@@ -128,8 +131,9 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
     @poisson_ratio.setter
     def poisson_ratio(self, value):
-        if value is not None and not isinstance(value, float):
-            raise TypeError("PoissonRatio should be of type float or None")
+        if value is not None and not isinstance(value, (float, int)):
+            raise TypeError(
+                "PoissonRatio should be of type float, integer, or None")
         self._poisson_ratio = value
 
     @property
