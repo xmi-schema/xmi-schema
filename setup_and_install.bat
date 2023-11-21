@@ -57,9 +57,8 @@ if not defined VERSION (
 )
 
 
-REM Install to pip
-pip uninstall xmi -y
-pip install dist\xmi-!VERSION!-py3-none-any.whl
+REM Install to testing virtual environment
+pip install dist\xmi-!VERSION!-py3-none-any.whl --force-reinstall
 pip install pytest
 
 REM Running tests
