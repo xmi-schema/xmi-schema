@@ -232,7 +232,7 @@ def test_xmi_manager_4():
     assert len(xmi_has_structural_structural_nodes_relationships_found) == 12
 
 
-def test_xmi_manager_test_bim_0():
+def test_xmi_manager_test0_bim1():
     FILENAME = "test0-bim1.json"
     json_path = "{test_inputs_directory}/{filename}".format(
         test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
@@ -249,7 +249,9 @@ def test_xmi_manager_test_bim_0():
     assert len(xmi_structural_materials_found) == 4
 
 
-def test_xmi_manager_test_analysis_0():
+def test_xmi_manager_test0_analysis1():
+    # bug found inside test0-analysis1.json
+    # StructuralCrossSection's material should refer to 'Name' of the StructuralMaterial instance and not the 'Type' of the StructuralMaterial instance.
     FILENAME = "test0-analysis1.json"
     json_path = "{test_inputs_directory}/{filename}".format(
         test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
@@ -261,5 +263,31 @@ def test_xmi_manager_test_analysis_0():
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
+    xmi_structural_cross_sections_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
 
     assert len(xmi_structural_materials_found) == 3
+    # ERROR FOUND IN STRUCTURAL_CROSS_SECTIONS
+    assert len(xmi_structural_cross_sections_found) == 0
+
+
+def test_xmi_manager_test0_analysis1_mod():
+    # bug found inside test0-analysis1.json
+    # StructuralCrossSection's material should refer to 'Name' of the StructuralMaterial instance and not the 'Type' of the StructuralMaterial instance.
+    FILENAME = "test0-analysis1_mod.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
+    with open(json_path, 'r') as f:
+        xmi_file_dict = json.load(f)
+
+    xmi_manager = XmiManager()
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+
+    xmi_structural_materials_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
+    xmi_structural_cross_sections_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
+
+    assert len(xmi_structural_materials_found) == 3
+    # ERROR FOUND IN STRUCTURAL_CROSS_SECTIONS
+    assert len(xmi_structural_cross_sections_found) == 7

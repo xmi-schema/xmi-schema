@@ -20,14 +20,15 @@ from src.xmi.v1.relationships.xmi_has_structural_cross_section import XmiHasStru
 from src.xmi.v1.relationships.xmi_has_segment import XmiHasSegment
 from src.xmi.v1.relationships.xmi_has_geometry import XmiHasGeometry
 
-TEST_INPUTS_DIRECTORY = "after_install_tests/xmi/v1/test_inputs/xmi_manager"
+TEST_INPUTS_DIRECTORY = "tests/xmi/v1/test_inputs/xmi_manager"
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_xmi_manager_1():
     # ERROR FOUND IN DATA as material values should not be 0.0
-
-    json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_1.json"
+    FILENAME = "xmi_structural_manager_test_1.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
     with open(json_path, 'r') as f:
         xmi_file_dict = json.load(f)
 
@@ -70,9 +71,11 @@ def test_xmi_manager_1():
     assert len(xmi_point_3d_found) == 562
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_xmi_manager_2():
-    json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_2.json"
+    FILENAME = "xmi_structural_manager_test_2.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
     with open(json_path, 'r') as f:
         xmi_file_dict = json.load(f)
 
@@ -119,9 +122,12 @@ def test_xmi_manager_2():
     assert xmi_has_structural_material.target == xmi_structural_materials_found[0]
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_xmi_manager_3():
-    json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_3.json"
+    FILENAME = "xmi_structural_manager_test_3.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
+    # json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_3.json"
     with open(json_path, 'r') as f:
         xmi_file_dict = json.load(f)
 
@@ -182,9 +188,12 @@ def test_xmi_manager_3():
     assert xmi_has_structural_material.target == xmi_structural_materials_found[0]
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_xmi_manager_4():
-    json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_4.json"
+    FILENAME = "xmi_structural_manager_test_4.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
+    # json_path = "tests/xmi/v1/test_inputs/xmi_manager/xmi_structural_manager_test_4.json"
     with open(json_path, 'r') as f:
         xmi_file_dict = json.load(f)
 
@@ -239,7 +248,9 @@ def test_xmi_manager_4():
     assert len(xmi_has_structural_structural_nodes_relationships_found) == 12
 
 
-def test_xmi_manager_test_bim_0():
+# @pytest.mark.skip()
+def test_xmi_manager_test0_bim1():
+    # error found in ZOffet not in StructuralSurfaceMember
     FILENAME = "test0-bim1.json"
     json_path = "{test_inputs_directory}/{filename}".format(
         test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
@@ -252,11 +263,20 @@ def test_xmi_manager_test_bim_0():
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
+    xmi_structural_cross_sections_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
+    xmi_structural_surface_members_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralSurfaceMember)]
 
     assert len(xmi_structural_materials_found) == 4
+    assert len(xmi_structural_cross_sections_found) == 7
+    assert len(xmi_structural_surface_members_found) == 0
 
 
-def test_xmi_manager_test_analysis_0():
+@pytest.mark.skip()
+def test_xmi_manager_test0_analysis1():
+    # bug found inside test0-analysis1.json
+    # StructuralCrossSection's material should refer to 'Name' of the StructuralMaterial instance and not the 'Type' of the StructuralMaterial instance.
     FILENAME = "test0-analysis1.json"
     json_path = "{test_inputs_directory}/{filename}".format(
         test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
@@ -268,5 +288,55 @@ def test_xmi_manager_test_analysis_0():
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
+    xmi_structural_cross_sections_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
 
     assert len(xmi_structural_materials_found) == 3
+    # ERROR FOUND IN STRUCTURAL_CROSS_SECTIONS
+    assert len(xmi_structural_cross_sections_found) == 0
+
+
+def test_xmi_manager_test0_bim1_mod():
+    # bug found inside test0-analysis1.json
+    # StructuralCrossSection's material should refer to 'Name' of the StructuralMaterial instance and not the 'Type' of the StructuralMaterial instance.
+    FILENAME = "test0-bim1_mod.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
+    with open(json_path, 'r') as f:
+        xmi_file_dict = json.load(f)
+
+    xmi_manager = XmiManager()
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+
+    xmi_structural_materials_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
+    xmi_structural_cross_sections_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
+    xmi_structural_surface_members_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralSurfaceMember)]
+
+    assert len(xmi_structural_materials_found) == 4
+    assert len(xmi_structural_cross_sections_found) == 7
+    assert len(xmi_structural_surface_members_found) == 8
+
+
+def test_xmi_manager_test0_analysis1_mod():
+    # bug found inside test0-analysis1.json
+    # StructuralCrossSection's material should refer to 'Name' of the StructuralMaterial instance and not the 'Type' of the StructuralMaterial instance.
+    FILENAME = "test0-analysis1_mod.json"
+    json_path = "{test_inputs_directory}/{filename}".format(
+        test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
+    with open(json_path, 'r') as f:
+        xmi_file_dict = json.load(f)
+
+    xmi_manager = XmiManager()
+    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+
+    xmi_structural_materials_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
+    xmi_structural_cross_sections_found = [
+        obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralCrossSection)]
+
+    assert len(xmi_structural_materials_found) == 3
+    # ERROR FOUND IN STRUCTURAL_CROSS_SECTIONS
+    assert len(xmi_structural_cross_sections_found) == 7
