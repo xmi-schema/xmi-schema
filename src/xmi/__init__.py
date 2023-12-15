@@ -26,3 +26,4 @@ from .v1.relationships.xmi_has_structural_cross_section import XmiHasStructuralC
 from .v1.relationships.xmi_has_point_3d import XmiHasPoint3D
 from .v1.relationships.xmi_has_segment import XmiHasSegment
 from .v1.relationships.xmi_has_geometry import XmiHasGeometry
+from .v1.shapes.xmi_shape import XmiShape, XmiShapeC, XmiShapeCircle, XmiShapeI, XmiShapeL, XmiShapeOthers, XmiShapeRectangle, XmiShapeRectangularHollow, XmiShapeSquareHollow

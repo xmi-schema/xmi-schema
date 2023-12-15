@@ -92,7 +92,7 @@ class XmiBaseRelationship():
     def __init__(self,
                  source: XmiBaseEntity,
                  target: XmiBaseEntity,
-                 name: str = None,
+                 name: str,
                  entity_type: str = "XmiRelBaseRelationship"
                  ) -> XmiBaseRelationship:
         """_summary_

@@ -63,6 +63,20 @@ class XmiUnitEnum(XmiEnum):
 
 
 @unique
+class XmiUnitV2Enum(Enum):
+    METER3 = "m^3"
+    METER2 = "m^2"
+    METER = "m"
+    METER4 = "m^4"
+    MILLIMETER4 = "mm^4"
+    MILLIMETER = "mm"
+    CENTIMETER = "cm"
+    MILLIMETER3 = "mm^3"
+    MILLIMETER2 = "mm^2"
+    SECOND = "sec"
+
+
+@unique
 class XmiSegmentTypeEnum(XmiEnum):
     LINE = (1, "Line", XmiLine3D)
     CIRCULAR_ARC = (2, "Circular Arc", XmiArc3D)

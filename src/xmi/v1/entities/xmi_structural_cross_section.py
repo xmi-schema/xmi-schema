@@ -99,7 +99,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
     def set_attributes(self,
                        material: XmiStructuralMaterial,
                        shape: XmiStructuralCrossSectionShapeEnum,
-                       parameters: list | tuple,
+                       parameters: list[float | int] | tuple[float | int],
                        second_moment_of_area_x_axis: float | int | None,
                        second_moment_of_area_y_axis: float | int | None,
                        radius_of_gyration_x_axis: float | int | None,
