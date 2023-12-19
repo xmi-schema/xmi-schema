@@ -3,6 +3,8 @@ from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossS
 from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
 from src.xmi.v1.enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 from src.xmi.v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
+from src.xmi.v1.shapes.xmi_shape import *
+from src.xmi.v1.enums.xmi_shape_enums import XmiShapeEnum
 from src.xmi.v1.xmi_errors import *
 import json
 
@@ -18,7 +20,7 @@ def test_xmi_structural_cross_section_ok_1():
     name = xmi_structural_material_obj['Name']
     description = xmi_structural_material_obj['Description']
     ifcguid = xmi_structural_material_obj['IFCGUID']
-    material_type = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+    material_type = XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
         xmi_structural_material_obj['Type'])
     grade = xmi_structural_material_obj['Grade']
     unit_weight = xmi_structural_material_obj['UnitWeight']
@@ -41,7 +43,7 @@ def test_xmi_structural_cross_section_ok_1():
         thermal_coefficient=thermal_coefficient
     )
 
-    shape = XmiStructuralCrossSectionShapeEnum.from_attribute_get_enum(
+    shape = XmiShapeEnum.from_attribute_get_enum_v2(
         xmi_structural_cross_section_obj['Shape'])
     parameters_expected = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
         xmi_structural_cross_section_obj['Parameters'])  # value is shown in mm for testing purposes
@@ -71,7 +73,7 @@ def test_xmi_structural_cross_section_ok_2():
     name = xmi_structural_material_obj['Name']
     description = xmi_structural_material_obj['Description']
     ifcguid = xmi_structural_material_obj['IFCGUID']
-    material_type = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+    material_type = XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
         xmi_structural_material_obj['Type'])
     grade = xmi_structural_material_obj['Grade']
     unit_weight = xmi_structural_material_obj['UnitWeight']
@@ -94,7 +96,7 @@ def test_xmi_structural_cross_section_ok_2():
         # thermal_coefficient=thermal_coefficient
     )
 
-    shape = XmiStructuralCrossSectionShapeEnum.from_attribute_get_enum(
+    shape = XmiShapeEnum.from_attribute_get_enum_v2(
         xmi_structural_cross_section_obj['Shape'])
     parameters_expected = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
         xmi_structural_cross_section_obj['Parameters'])  # value is shown in mm for testing purposes
@@ -122,7 +124,7 @@ def test_xmi_structural_cross_section_fail():
     name = data['Name']
     description = data['Description']
     ifcguid = data['IFCGUID']
-    material_type = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+    material_type = XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
         data['Type'])
     grade = data['Grade']
     unit_weight = data['UnitWeight']
@@ -145,9 +147,9 @@ def test_xmi_structural_cross_section_fail():
         thermal_coefficient=thermal_coefficient
     )
 
-    shape = XmiStructuralCrossSectionShapeEnum.CIRCULAR
+    shape = XmiShapeEnum.CIRCULAR
     parameters = (100, 100)  # value is shown in mm for testing purposes
-    with pytest.raises(XmiInconsistentDataTypeError, match="The parameter length is different than required XmiStructuralCrossSectionShapeEnum"):
+    with pytest.raises(XmiInconsistentDataTypeError, match="The parameter length is different than required XmiShape's parameter_quantity value"):
         xmi_structural_cross_section = XmiStructuralCrossSection(
             material=xmi_structural_material,
             shape=shape,

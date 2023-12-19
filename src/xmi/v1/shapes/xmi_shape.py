@@ -12,12 +12,13 @@ from ..enums.xmi_shape_enums import XmiShapeEnum
 
 
 class XmiShape():
+
     def __init__(self, shape: XmiShapeEnum,
                  parameter_quantity: int,
                  parameter_names: tuple[str]) -> None:
-        self.shape = shape
-        self.parameter_quantity = parameter_quantity
-        self.parameter_names = parameter_names
+        self.shape: XmiShapeEnum = shape
+        self.parameter_quantity: int = parameter_quantity
+        self.parameter_names: tuple[str] = parameter_names
 
 
 class XmiShapeRectangle(XmiShape):
@@ -55,9 +56,17 @@ class XmiShapeC(XmiShape):
 
 class XmiShapeI(XmiShape):
     def __init__(self) -> None:
-        shape = XmiShapeEnum.T_SHAPE
+        shape = XmiShapeEnum.I_SHAPE
         parameter_quantity = 5
         parameter_names = ("D", "B", "T", "t", "r")
+        super().__init__(shape, parameter_quantity, parameter_names)
+
+
+class XmiShapeT(XmiShape):
+    def __init__(self) -> None:
+        shape = XmiShapeEnum.T_SHAPE
+        parameter_quantity = 4
+        parameter_names = ("H", "B", "T", "t")
         super().__init__(shape, parameter_quantity, parameter_names)
 
 

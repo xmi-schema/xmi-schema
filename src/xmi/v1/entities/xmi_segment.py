@@ -34,27 +34,27 @@ class XmiSegment(XmiBaseEntity):
                  **kwargs):
         entity_type = "XmiSegment"
 
-        # Ensure material_type is provided
+        # Ensure geometry is provided
         if geometry is None:
             raise ValueError(
                 "The 'geometry' parameter is compulsory and must be provided.")
 
-        # Ensure material_type is provided
+        # Ensure position is provided
         if position is None:
             raise ValueError(
                 "The 'position' parameter is compulsory and must be provided.")
 
-        # Ensure material_type is provided
+        # Ensure begin_node is provided
         if begin_node is None:
             raise ValueError(
                 "The 'start_node' parameter is compulsory and must be provided.")
 
-        # Ensure material_type is provided
+        # Ensure end_node is provided
         if end_node is None:
             raise ValueError(
                 "The 'end_node' parameter is compulsory and must be provided.")
 
-        # Ensure material_type is provided
+        # Ensure segment_type is provided
         if segment_type is None:
             raise ValueError(
                 "The 'segment_type' parameter is compulsory and must be provided.")

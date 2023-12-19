@@ -21,6 +21,13 @@ class XmiEnum(Enum):
         return None  # Or raise a custom exception if you prefer
 
     @classmethod
+    def from_attribute_get_enum_v2(cls, attribute_str: str):
+        for member in cls:
+            if member.value == attribute_str:
+                return member
+        return None  # Or raise a custom exception if you prefer
+
+    @classmethod
     def from_name_get_enum_attribute(cls, name_str: str):
         try:
             return cls[name_str].value[1]
@@ -50,20 +57,6 @@ class XmiEnum(Enum):
 
 @unique
 class XmiUnitEnum(XmiEnum):
-    METER3 = (1, "m^3")
-    METER2 = (2, "m^2")
-    METER = (3, "m")
-    METER4 = (4, "m^4")
-    MILLIMETER4 = (5, "mm^4")
-    MILLIMETER = (6, "mm")
-    CENTIMETER = (7, "cm")
-    MILLIMETER3 = (8, "mm^3")
-    MILLIMETER2 = (9, "mm^2")
-    SECOND = (10, "sec")
-
-
-@unique
-class XmiUnitV2Enum(Enum):
     METER3 = "m^3"
     METER2 = "m^2"
     METER = "m"
@@ -78,12 +71,12 @@ class XmiUnitV2Enum(Enum):
 
 @unique
 class XmiSegmentTypeEnum(XmiEnum):
-    LINE = (1, "Line", XmiLine3D)
-    CIRCULAR_ARC = (2, "Circular Arc", XmiArc3D)
-    PARABOLIC_ARC = (3, "Parabolic Arc")
-    BEZIER = (4, "Bezier")
-    SPLINE = (5, "Spline")
-    OTHERS = (6, "Others")
+    LINE = "Line"
+    CIRCULAR_ARC = "Circular Arc"
+    PARABOLIC_ARC = "Parabolic Arc"
+    BEZIER = "Bezier"
+    SPLINE = "Spline"
+    OTHERS = "Others"
 
     def get_geometry_class(self):
         try:

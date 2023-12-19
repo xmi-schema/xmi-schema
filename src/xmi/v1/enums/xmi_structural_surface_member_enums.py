@@ -4,27 +4,27 @@ from enum import unique
 
 @unique
 class XmiStructuralSurfaceMemberTypeEnum(XmiEnum):
-    SLAB = (1, "Slab")
-    WALL = (2, "Wall")
-    PAD_FOOTING = (3, "PadFooting")
-    STRIP_FOOTING = (4, "StripFooting")
-    PILECAP = (5, "Pilecap")  # i think this shouldn't be here
-    ROOF_PANEL = (6, "RoofPanel")  # this sounds like archi. should not be here
-    WALL_PANEL = (7, "WallPanel")  # this sounds like archi. should not be here
+    SLAB = "Slab"
+    WALL = "Wall"
+    PAD_FOOTING = "PadFooting"
+    STRIP_FOOTING = "StripFooting"
+    PILECAP = "Pilecap"  # i think this shouldn't be here
+    ROOF_PANEL = "RoofPanel"  # this sounds like archi. should not be here
+    WALL_PANEL = "WallPanel"  # this sounds like archi. should not be here
     # For future changes to be shifted to foundation type elements
-    RAFT = (8, "Raft")
+    RAFT = "Raft"
 
 
 @unique
 class XmiStructuralSurfaceMemberSpanTypeEnum(XmiEnum):
-    ONE_WAY = (1, "OneWay")
-    TWO_WAY = (2, "TwoWay")
+    ONE_WAY = "OneWay"
+    TWO_WAY = "TwoWay"
 
 
 @unique
 class XmiStructuralSurfaceMemberSystemPlaneEnum(XmiEnum):
-    BOTTOM = (1, "Bottom")
-    TOP = (2, "Top")
-    MIDDLE = (3, "Middle")
-    LEFT = (4, "Left")
-    RIGHT = (5, "Right")
+    BOTTOM = "Bottom"
+    TOP = "Top"
+    MIDDLE = "Middle"
+    LEFT = "Left"
+    RIGHT = "Right"

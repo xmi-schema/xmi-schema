@@ -1,8 +1,9 @@
 from enum import unique, Enum
+from .xmi_enums import XmiEnum
 
 
 @unique
-class XmiShapeEnum(Enum):
+class XmiShapeEnum(XmiEnum):
     RECTANGULAR = "Rectangular"
     CIRCULAR = "Circular"
     L_SHAPE = "L Shape"

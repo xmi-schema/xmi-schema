@@ -3,7 +3,8 @@ from __future__ import annotations
 
 from ..constants import *
 from ..enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
-
+from ..shapes.xmi_shape import *
+from ..enums.xmi_shape_enums import XmiShapeEnum
 from ..xmi_errors import *
 from ..xmi_base import XmiBaseEntity
 from .xmi_structural_material import XmiStructuralMaterial
@@ -14,6 +15,18 @@ from ..xmi_utilities import is_empty_or_whitespace
 1. Need to standardize "Parameters" property
 
 """
+
+SHAPE_MAPPING = {
+    XmiShapeEnum.RECTANGULAR: XmiShapeRectangle,
+    XmiShapeEnum.CIRCULAR: XmiShapeCircle,
+    XmiShapeEnum.L_SHAPE: XmiShapeL,
+    XmiShapeEnum.T_SHAPE: XmiShapeT,
+    XmiShapeEnum.C_SHAPE: XmiShapeC,
+    XmiShapeEnum.I_SHAPE: XmiShapeI,
+    XmiShapeEnum.SQUARE_HOLLOW: XmiShapeSquareHollow,
+    XmiShapeEnum.RECTANGULAR_HOLLOW: XmiShapeRectangularHollow,
+    XmiShapeEnum.OTHERS: XmiShapeOthers
+}
 
 
 class XmiStructuralCrossSection(XmiBaseEntity):
@@ -36,7 +49,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
 
     def __init__(self,
                  material: XmiStructuralMaterial,
-                 shape: XmiStructuralCrossSectionShapeEnum,
+                 shape: XmiShapeEnum,
                  parameters: list | tuple,
                  area: float | int | None = None,
                  second_moment_of_area_x_axis: float | int | None = None,
@@ -98,7 +111,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
 
     def set_attributes(self,
                        material: XmiStructuralMaterial,
-                       shape: XmiStructuralCrossSectionShapeEnum,
+                       shape: XmiShapeEnum,
                        parameters: list[float | int] | tuple[float | int],
                        second_moment_of_area_x_axis: float | int | None,
                        second_moment_of_area_y_axis: float | int | None,
@@ -153,9 +166,9 @@ class XmiStructuralCrossSection(XmiBaseEntity):
 
     @shape.setter
     def shape(self, value):
-        if not isinstance(value, XmiStructuralCrossSectionShapeEnum):
+        if not isinstance(value, XmiShapeEnum):
             raise TypeError(
-                "Shape should be of type XmiStructuralCrossSectionShapeEnum")
+                "Shape should be of type XmiShapeEnum")
         self._shape = value
 
     # Similarly, for other properties:
@@ -172,12 +185,14 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                 "Parameters should be of type list or tuple")
 
         # check for quantity of params
-        if self.shape and self.shape != XmiStructuralCrossSectionShapeEnum.OTHERS and value:
-            param_required_length = self.shape.get_quantity_of_cross_section_params()
+        if self.shape and self.shape != XmiShapeEnum.OTHERS and value:
+            mapped_class = SHAPE_MAPPING[self.shape]
+            mapped_class_instance: XmiShape = mapped_class()
+            param_required_length = mapped_class_instance.parameter_quantity
             value_length = len(value)
             if value_length != param_required_length:
                 raise XmiInconsistentDataTypeError(
-                    f"The parameter length is different than required XmiStructuralCrossSectionShapeEnum")
+                    f"The parameter length is different than required XmiShape's parameter_quantity value")
         # check for every item within the list of tuple to be an int or float value and all data needs to be at least 0.0
         for item in value:
             if not isinstance(item, (int, float)):
@@ -344,7 +359,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
     # from_dict class method is used to do data conversion
     @classmethod
     def from_dict(cls, obj: dict) -> XmiStructuralCrossSection:
-        instance = None
+        instance: XmiStructuralCrossSection | None = None
         error_logs = []
         processed_data = obj.copy()
 
@@ -356,7 +371,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
         # for type conversion when reading dictionary
         try:
             # check for material found
-            material_found = processed_data['material']
+            material_found: XmiStructuralMaterial | str | None = processed_data['material']
             if material_found is None:
                 error_logs.append(XmiMissingReferenceInstanceError(
                     "Please provide material value of type XmiStructuralMaterial"))
@@ -367,17 +382,17 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                         "material provided need to be of instance XmiStructuralMaterial"))
 
             # check for conversion of parameters to tuple of parameters suitable for the Shape
-            shape_found = processed_data['shape']
+            shape_found: XmiShapeEnum | None | str = processed_data['shape']
             if shape_found is None:
                 error_logs.append(XmiMissingRequiredAttributeError(
-                    "Please provide value of type XmiStructuralCrossSectionShapeTypeEnum for the shape attribute"))
+                    "Please provide value of type XmiShapeEnum for the shape attribute"))
                 return None, error_logs
             else:
-                shape_found = XmiStructuralCrossSectionShapeEnum.from_attribute_get_enum(
+                shape_found = XmiShapeEnum.from_attribute_get_enum_v2(
                     processed_data['shape'])
-                if not isinstance(shape_found, XmiStructuralCrossSectionShapeEnum):
+                if not isinstance(shape_found, XmiShapeEnum):
                     error_logs.append(XmiInconsistentDataTypeError(
-                        "shape value provided need to be of instance XmiStructuralCrossSectionShapeEnum"))
+                        "shape value provided need to be of instance XmiShapeEnum"))
                     return None, error_logs
                 processed_data['shape'] = shape_found
 
@@ -388,7 +403,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                     "Please provide value for the parameters attribute"))
                 return None, error_logs
             else:
-                parameters_found = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
+                parameters_found: tuple[float | int] = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
                     processed_data['parameters'])
 
                 if not isinstance(parameters_found, tuple):

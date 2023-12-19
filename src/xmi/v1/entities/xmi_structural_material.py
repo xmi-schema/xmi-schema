@@ -150,8 +150,8 @@ class XmiStructuralMaterial(XmiBaseEntity):
     @classmethod
     def from_dict(cls, obj: dict) -> XmiStructuralMaterial:
         instance = None
-        error_logs = []
-        processed_data = obj.copy()
+        error_logs: list[Exception] = []
+        processed_data: dict = obj.copy()
 
         for attr in cls._attributes_needed:
             if attr not in processed_data:
@@ -160,7 +160,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
         # for type conversion when reading dictionary
         try:
-            material_type_found = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+            material_type_found = XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
                 processed_data['material_type'])
 
             if material_type_found is None:

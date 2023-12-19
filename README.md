@@ -11,14 +11,14 @@ https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f
 
 # Library Development Progress
 
-XmiManager is currently able to read the following entities
+XmiManager is currently able to read the following entities from the JSON File
 
 | Entity Name               | Status                                                         |
 | ------------------------- | -------------------------------------------------------------- |
 | StructuralModel           | ![TO DO](https://img.shields.io/badge/Status-TO_DO-red)        |
 | StructuralPointConnection | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
 | StructuralCurveMember     | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
-| StructuralSurfaceMember   | ![ONGOING](https://img.shields.io/badge/Status-ONGOING-yellow) |
+| StructuralSurfaceMember   | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
 | StructuralMaterial        | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
 | StructuralCrossSection    | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
 | StructuralUnit            | ![ONGOING](https://img.shields.io/badge/Status-ONGOING-yellow) |

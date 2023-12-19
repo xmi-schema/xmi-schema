@@ -2,8 +2,6 @@
 
 REM Build the package
 echo Building the package...
-python -m build
-if %errorlevel% neq 0 exit /b %errorlevel%
 
 REM Create the virtual environment
 SET VENV_DIR=.venv
@@ -16,10 +14,16 @@ IF EXIST "%VENV_DIR%" (
     echo Virtual environment created.
 )
 
+
 echo Activating the virtual environment...
 CALL "%VENV_DIR%\Scripts\activate"
 echo Activated Virtual environment
 
+echo Installing the build module...
+CALL "%VENV_DIR%\Scripts\python.exe" -m pip install build
+
+python -m build
+if %errorlevel% neq 0 exit /b %errorlevel%
 
 setlocal enabledelayedexpansion
 

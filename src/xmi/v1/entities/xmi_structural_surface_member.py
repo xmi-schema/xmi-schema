@@ -344,7 +344,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
 
         # for type conversion when reading dictionary
         try:
-            # check for cross_section_found
+            # check for material_found
             material_found = processed_data['material']
             if material_found is None:
                 exceptions.append(XmiMissingReferenceInstanceError(
@@ -450,7 +450,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the system_line attribute"))
                 return None, exceptions
-            system_plane_found = XmiStructuralSurfaceMemberSystemPlaneEnum.from_attribute_get_enum(
+            system_plane_found = XmiStructuralSurfaceMemberSystemPlaneEnum.from_attribute_get_enum_v2(
                 processed_data['system_plane'])
             processed_data["system_plane"] = system_plane_found
 
@@ -460,7 +460,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the surface_member_type attribute"))
                 return None, exceptions
-            surface_member_type_found = XmiStructuralSurfaceMemberTypeEnum.from_attribute_get_enum(
+            surface_member_type_found = XmiStructuralSurfaceMemberTypeEnum.from_attribute_get_enum_v2(
                 processed_data['surface_member_type'])
             processed_data["surface_member_type"] = surface_member_type_found
 

@@ -16,6 +16,7 @@ from .v1.enums.xmi_structural_cross_section_enums import XmiStructuralCrossSecti
 from .v1.enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberSystemLineEnum, XmiStructuralCurveMemberTypeEnum
 from .v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 from .v1.enums.xmi_structural_surface_member_enums import XmiStructuralSurfaceMemberTypeEnum, XmiStructuralSurfaceMemberSpanTypeEnum, XmiStructuralSurfaceMemberSystemPlaneEnum
+from .v1.enums.xmi_shape_enums import XmiShapeEnum
 from .v1.geometries.xmi_arc_3d import XmiArc3D
 from .v1.geometries.xmi_line_3d import XmiLine3D
 from .v1.geometries.xmi_point_3d import XmiPoint3D
@@ -26,4 +27,4 @@ from .v1.relationships.xmi_has_structural_cross_section import XmiHasStructuralC
 from .v1.relationships.xmi_has_point_3d import XmiHasPoint3D
 from .v1.relationships.xmi_has_segment import XmiHasSegment
 from .v1.relationships.xmi_has_geometry import XmiHasGeometry
-from .v1.shapes.xmi_shape import XmiShape, XmiShapeC, XmiShapeCircle, XmiShapeI, XmiShapeL, XmiShapeOthers, XmiShapeRectangle, XmiShapeRectangularHollow, XmiShapeSquareHollow
+from .v1.shapes.xmi_shape import XmiShape, XmiShapeC, XmiShapeCircle, XmiShapeI, XmiShapeT, XmiShapeL, XmiShapeOthers, XmiShapeRectangle, XmiShapeRectangularHollow, XmiShapeSquareHollow

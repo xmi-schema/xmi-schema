@@ -12,6 +12,9 @@ from .entities.xmi_structural_surface_member import XmiStructuralSurfaceMember
 
 from .xmi_model import XmiModel, ErrorLog
 from .geometries.xmi_point_3d import XmiPoint3D
+from .geometries.xmi_line_3d import XmiLine3D
+from .geometries.xmi_arc_3d import XmiArc3D
+from .geometries.xmi_base_geometry import XmiBaseGeometry
 
 from .relationships.xmi_has_structural_material import XmiHasStructuralMaterial
 from .relationships.xmi_has_structural_node import XmiHasStructuralNode
@@ -23,8 +26,14 @@ from .xmi_errors import *
 from .xmi_base import XmiBaseEntity
 from .enums.xmi_enums import XmiSegmentTypeEnum
 
+SEGMENT_TYPE_MAPPING = {
+    XmiSegmentTypeEnum.LINE: XmiLine3D,
+    XmiSegmentTypeEnum.CIRCULAR_ARC: XmiArc3D
+}
+
 
 class XmiManager():
+
     def __init__(self):
         self.models = []
 
@@ -112,7 +121,7 @@ class XmiManager():
                             material=xmi_structural_material_found_in_xmi_manager
                         )
                         xmi_model.errors.extend(error_logs)
-                        if xmi_structural_cross_section:
+                        if xmi_structural_cross_section and isinstance(xmi_structural_cross_section, XmiStructuralCrossSection):
                             xmi_model.entities.append(
                                 xmi_structural_cross_section)
                             xmi_model.create_relationship(
@@ -173,19 +182,26 @@ class XmiManager():
                         xmi_segments_found_in_xmi_manager: list[XmiSegment] = [
                         ]
                         for index, xmi_segment_name_to_find in enumerate(xmi_segments_list_to_find):
+
+                            xmi_geometry_class_found: XmiBaseEntity | None = None
+
                             # find segment_type
-                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum(
+                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum_v2(
                                 xmi_segment_name_to_find)
                             # if segment type exist. find and create geometry_element
-                            xmi_geometry_class_found: XmiBaseEntity = xmi_segment_type_found.get_geometry_class()
-                            begin_node_found = xmi_structural_point_connections_found_in_xmi_manager[
+                            xmi_geometry_class_found = SEGMENT_TYPE_MAPPING[xmi_segment_type_found] if xmi_segment_type_found in SEGMENT_TYPE_MAPPING.keys(
+                            ) else None
+
+                            begin_node_found: XmiStructuralPointConnection = xmi_structural_point_connections_found_in_xmi_manager[
                                 index]
-                            end_node_found = xmi_structural_point_connections_found_in_xmi_manager[
+                            end_node_found: XmiStructuralPointConnection = xmi_structural_point_connections_found_in_xmi_manager[
                                 index + 1]
 
                             try:
-                                geometry_found = xmi_geometry_class_found(start_point=begin_node_found.point,
-                                                                          end_point=end_node_found.point)
+
+                                geometry_found: XmiBaseGeometry = xmi_geometry_class_found(start_point=begin_node_found.point,
+                                                                                           end_point=end_node_found.point)
+
                                 xmi_segment_found = XmiSegment(geometry=geometry_found,
                                                                position=index + 1,
                                                                begin_node=begin_node_found,
@@ -203,8 +219,7 @@ class XmiManager():
                                         XmiHasGeometry, geometry_found, geometry_found.start_point, is_begin=True)
                                     xmi_model.create_relationship(
                                         XmiHasGeometry, geometry_found, geometry_found.end_point, is_end=True)
-                                    xmi_model.create_relationship(
-                                        XmiHasGeometry, segment, segment.geometry)
+
                             except Exception as e:
                                 xmi_model.errors.append(
                                     ErrorLog(xmi_dict_key, index, str(e)))
@@ -297,10 +312,13 @@ class XmiManager():
                         ]
                         for index, xmi_segment_name_to_find in enumerate(xmi_segments_list_to_find):
                             # find segment_type
-                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum(
+                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum_v2(
                                 xmi_segment_name_to_find)
                             # if segment type exist. find and create geometry_element
-                            xmi_geometry_class_found: XmiBaseEntity = xmi_segment_type_found.get_geometry_class()
+                            xmi_geometry_class_found = SEGMENT_TYPE_MAPPING[xmi_segment_type_found] if xmi_segment_type_found in SEGMENT_TYPE_MAPPING.keys(
+                            ) else None
+
+                            # if segment type exist. find and create geometry_element
                             begin_node_found = xmi_structural_point_connections_found_in_xmi_manager[
                                 index]
                             end_node_found = None

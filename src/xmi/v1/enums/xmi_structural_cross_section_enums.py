@@ -8,7 +8,7 @@ from enum import unique, Enum
 
 
 @unique
-class XmiStructuralCrossSectionShapeEnum(Enum):
+class XmiStructuralCrossSectionShapeEnum(XmiEnum):
     RECTANGULAR = (1, "Rectangular", 2, ("H", "B"))
     CIRCULAR = (2, "Circular", 1, ("D"))
     L_SHAPE = (3, "L Shape", 4, ("H", "B", "T", "t"))

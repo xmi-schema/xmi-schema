@@ -71,7 +71,7 @@ def test_xmi_structural_material_json_object_only():
     assert xmi_structural_material.name == name
     assert xmi_structural_material.description == description
     assert xmi_structural_material.ifcguid == ifcguid
-    assert xmi_structural_material.material_type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+    assert xmi_structural_material.material_type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
         material_type_string)
     assert xmi_structural_material.grade == grade
     assert xmi_structural_material.unit_weight == unit_weight
@@ -130,7 +130,7 @@ def test_xmi_structural_material_json_object_only_pass():
     assert xmi_structural_material.name == name
     assert xmi_structural_material.description == description
     assert xmi_structural_material.ifcguid == ifcguid
-    assert xmi_structural_material.material_type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+    assert xmi_structural_material.material_type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
         material_type_string)
     assert xmi_structural_material.grade == grade
     assert xmi_structural_material.unit_weight == unit_weight
@@ -174,7 +174,7 @@ def test_xmi_structural_material_json_object_only_pass_missing_e_modulus():
     assert xmi_structural_material.name == name
     assert xmi_structural_material.description == description
     assert xmi_structural_material.ifcguid == ifcguid
-    assert xmi_structural_material.material_type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
+    assert xmi_structural_material.material_type == XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
         material_type_string)
     assert xmi_structural_material.grade == grade
     assert xmi_structural_material.unit_weight == unit_weight
