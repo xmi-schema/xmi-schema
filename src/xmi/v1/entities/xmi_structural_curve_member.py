@@ -593,7 +593,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the system_line attribute"))
                 return None, exceptions
-            system_line_found = XmiStructuralCurveMemberSystemLineEnum.from_attribute_get_enum(
+            system_line_found = XmiStructuralCurveMemberSystemLineEnum.from_attribute_get_enum_v2(
                 processed_data['system_line'])
             processed_data["system_line"] = system_line_found
 
@@ -603,7 +603,7 @@ class XmiStructuralCurveMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the curve_member_type attribute"))
                 return None, exceptions
-            curve_member_type_found = XmiStructuralCurveMemberTypeEnum.from_attribute_get_enum(
+            curve_member_type_found = XmiStructuralCurveMemberTypeEnum.from_attribute_get_enum_v2(
                 processed_data['curve_member_type'])
             processed_data["curve_member_type"] = curve_member_type_found
 
