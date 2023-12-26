@@ -55,7 +55,7 @@ class XmiManager():
 
         return rearranged_xmi_dict
 
-    def read_xmi_dict_v2(self, xmi_dict: dict) -> XmiModel:
+    def read_xmi_dict(self, xmi_dict: dict) -> XmiModel:
         xmi_model = XmiModel()
 
         # 1. rearrange the dictionary first
@@ -186,7 +186,7 @@ class XmiManager():
                             xmi_geometry_class_found: XmiBaseEntity | None = None
 
                             # find segment_type
-                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum_v2(
+                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum(
                                 xmi_segment_name_to_find)
                             # if segment type exist. find and create geometry_element
                             xmi_geometry_class_found = SEGMENT_TYPE_MAPPING[xmi_segment_type_found] if xmi_segment_type_found in SEGMENT_TYPE_MAPPING.keys(
@@ -312,7 +312,7 @@ class XmiManager():
                         ]
                         for index, xmi_segment_name_to_find in enumerate(xmi_segments_list_to_find):
                             # find segment_type
-                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum_v2(
+                            xmi_segment_type_found: XmiSegmentTypeEnum = XmiSegmentTypeEnum.from_attribute_get_enum(
                                 xmi_segment_name_to_find)
                             # if segment type exist. find and create geometry_element
                             xmi_geometry_class_found = SEGMENT_TYPE_MAPPING[xmi_segment_type_found] if xmi_segment_type_found in SEGMENT_TYPE_MAPPING.keys(

@@ -160,7 +160,7 @@ class XmiStructuralMaterial(XmiBaseEntity):
 
         # for type conversion when reading dictionary
         try:
-            material_type_found = XmiStructuralMaterialTypeEnum.from_attribute_get_enum_v2(
+            material_type_found = XmiStructuralMaterialTypeEnum.from_attribute_get_enum(
                 processed_data['material_type'])
 
             if material_type_found is None:

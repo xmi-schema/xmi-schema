@@ -450,7 +450,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the system_line attribute"))
                 return None, exceptions
-            system_plane_found = XmiStructuralSurfaceMemberSystemPlaneEnum.from_attribute_get_enum_v2(
+            system_plane_found = XmiStructuralSurfaceMemberSystemPlaneEnum.from_attribute_get_enum(
                 processed_data['system_plane'])
             processed_data["system_plane"] = system_plane_found
 
@@ -460,7 +460,7 @@ class XmiStructuralSurfaceMember(XmiBaseEntity):
                 exceptions.append(XmiMissingRequiredAttributeError(
                     "Please provide value for the surface_member_type attribute"))
                 return None, exceptions
-            surface_member_type_found = XmiStructuralSurfaceMemberTypeEnum.from_attribute_get_enum_v2(
+            surface_member_type_found = XmiStructuralSurfaceMemberTypeEnum.from_attribute_get_enum(
                 processed_data['surface_member_type'])
             processed_data["surface_member_type"] = surface_member_type_found
 

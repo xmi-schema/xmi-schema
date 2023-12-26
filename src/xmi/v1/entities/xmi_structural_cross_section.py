@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from ..constants import *
-from ..enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 from ..shapes.xmi_shape import *
 from ..enums.xmi_shape_enums import XmiShapeEnum
 from ..xmi_errors import *
@@ -388,7 +387,7 @@ class XmiStructuralCrossSection(XmiBaseEntity):
                     "Please provide value of type XmiShapeEnum for the shape attribute"))
                 return None, error_logs
             else:
-                shape_found = XmiShapeEnum.from_attribute_get_enum_v2(
+                shape_found = XmiShapeEnum.from_attribute_get_enum(
                     processed_data['shape'])
                 if not isinstance(shape_found, XmiShapeEnum):
                     error_logs.append(XmiInconsistentDataTypeError(

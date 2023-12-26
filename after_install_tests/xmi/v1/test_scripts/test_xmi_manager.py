@@ -18,7 +18,7 @@ def test_xmi_manager_1():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     print(xmi_model)
 
@@ -67,7 +67,7 @@ def test_xmi_manager_test0_bim1():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
@@ -92,7 +92,7 @@ def test_xmi_manager_test0_analysis1():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
@@ -115,7 +115,7 @@ def test_xmi_manager_test0_bim1_mod():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
@@ -140,7 +140,7 @@ def test_xmi_manager_test0_analysis1_mod():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     xmi_structural_materials_found = [
         obj for obj in xmi_model.entities if isinstance(obj, XmiStructuralMaterial)]
@@ -163,7 +163,7 @@ def test_xmi_manager_2():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     print(xmi_model)
 
@@ -215,7 +215,7 @@ def test_xmi_manager_3():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     print(xmi_model)
 
@@ -281,7 +281,7 @@ def test_xmi_manager_4():
         xmi_file_dict = json.load(f)
 
     xmi_manager = XmiManager()
-    xmi_model = xmi_manager.read_xmi_dict_v2(xmi_file_dict)
+    xmi_model = xmi_manager.read_xmi_dict(xmi_file_dict)
 
     print(xmi_model)
 

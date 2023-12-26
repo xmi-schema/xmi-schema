@@ -16,43 +16,9 @@ class XmiEnum(Enum):
     @classmethod
     def from_attribute_get_enum(cls, attribute_str: str):
         for member in cls:
-            if member.value[1] == attribute_str:
-                return member
-        return None  # Or raise a custom exception if you prefer
-
-    @classmethod
-    def from_attribute_get_enum_v2(cls, attribute_str: str):
-        for member in cls:
             if member.value == attribute_str:
                 return member
         return None  # Or raise a custom exception if you prefer
-
-    @classmethod
-    def from_name_get_enum_attribute(cls, name_str: str):
-        try:
-            return cls[name_str].value[1]
-        except KeyError:
-            return None  # Or raise a custom exception if you prefer
-
-    def get_attribute_value(cls):
-        try:
-            return cls.value[1]
-        except KeyError:
-            return None  # Or raise a custom exception if you prefer
-
-    @classmethod
-    def get_attribute_value(cls, enum: Enum):
-        try:
-            return enum.value[1]
-        except KeyError:
-            return None  # Or raise a custom exception if you prefer
-
-    @classmethod
-    def from_name_get_enum_value(cls, name_str: str):
-        try:
-            return cls[name_str].value[0]
-        except KeyError:
-            return None  # Or raise a custom exception if you prefer
 
 
 @unique

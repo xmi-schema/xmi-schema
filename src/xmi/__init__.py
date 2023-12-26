@@ -12,7 +12,6 @@ from .v1.entities.xmi_structural_surface_member import XmiStructuralSurfaceMembe
 from .v1.entities.xmi_structural_unit import XmiStructuralUnit
 from .v1.entities.xmi_segment import XmiSegment
 from .v1.enums.xmi_enums import XmiEnum, XmiSegmentTypeEnum, XmiUnitEnum
-from .v1.enums.xmi_structural_cross_section_enums import XmiStructuralCrossSectionShapeEnum
 from .v1.enums.xmi_structural_curve_member_enums import XmiStructuralCurveMemberSystemLineEnum, XmiStructuralCurveMemberTypeEnum
 from .v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
 from .v1.enums.xmi_structural_surface_member_enums import XmiStructuralSurfaceMemberTypeEnum, XmiStructuralSurfaceMemberSpanTypeEnum, XmiStructuralSurfaceMemberSystemPlaneEnum
