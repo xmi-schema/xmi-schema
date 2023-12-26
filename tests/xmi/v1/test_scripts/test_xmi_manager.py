@@ -1,7 +1,5 @@
 import json
 
-import pytest
-
 from src.xmi.v1.xmi_manager import XmiManager
 from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
 from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
@@ -100,7 +98,7 @@ def test_xmi_manager_test0_bim1():
 def test_xmi_manager_test0_analysis1():
     # bug found inside test0-analysis1.json
     # StructuralCrossSection's material should refer to 'Name' of the StructuralMaterial instance and not the 'Type' of the StructuralMaterial instance.
-    FILENAME = "test0-analysis1.json"
+    FILENAME = "test0-analysis1_mod.json"
     json_path = "{test_inputs_directory}/{filename}".format(
         test_inputs_directory=TEST_INPUTS_DIRECTORY, filename=FILENAME)
     with open(json_path, 'r') as f:
@@ -116,7 +114,7 @@ def test_xmi_manager_test0_analysis1():
 
     assert len(xmi_structural_materials_found) == 3
     # ERROR FOUND IN STRUCTURAL_CROSS_SECTIONS
-    assert len(xmi_structural_cross_sections_found) == 0
+    assert len(xmi_structural_cross_sections_found) == 7
 
 
 # @pytest.mark.skip()
