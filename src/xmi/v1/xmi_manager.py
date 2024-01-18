@@ -199,7 +199,7 @@ class XmiManager():
 
                             try:
 
-                                geometry_found: XmiBaseGeometry = xmi_geometry_class_found(start_point=begin_node_found.point,
+                                geometry_found: XmiBaseGeometry = xmi_geometry_class_found(begin_point=begin_node_found.point,
                                                                                            end_point=end_node_found.point)
 
                                 xmi_segment_found = XmiSegment(geometry=geometry_found,
@@ -216,7 +216,7 @@ class XmiManager():
                                     xmi_model.entities.append(
                                         xmi_segment_found)
                                     xmi_model.create_relationship(
-                                        XmiHasGeometry, geometry_found, geometry_found.start_point, is_begin=True)
+                                        XmiHasGeometry, geometry_found, geometry_found.begin_point, is_begin=True)
                                     xmi_model.create_relationship(
                                         XmiHasGeometry, geometry_found, geometry_found.end_point, is_end=True)
 
@@ -332,7 +332,7 @@ class XmiManager():
                                     0]
 
                             try:
-                                geometry_found = xmi_geometry_class_found(start_point=begin_node_found.point,
+                                geometry_found = xmi_geometry_class_found(begin_point=begin_node_found.point,
                                                                           end_point=end_node_found.point)
                                 xmi_segment_found = XmiSegment(geometry=geometry_found,
                                                                position=index + 1,
@@ -348,7 +348,7 @@ class XmiManager():
                                     xmi_model.entities.append(
                                         xmi_segment_found.geometry)
                                     xmi_model.create_relationship(
-                                        XmiHasGeometry, geometry_found, geometry_found.start_point, is_begin=True)
+                                        XmiHasGeometry, geometry_found, geometry_found.begin_point, is_begin=True)
                                     xmi_model.create_relationship(
                                         XmiHasGeometry, geometry_found, geometry_found.end_point, is_end=True)
                                     xmi_model.create_relationship(

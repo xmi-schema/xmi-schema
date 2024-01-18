@@ -1,18 +1,20 @@
 # Optional, for forward declarations in Python 3.7+
 from __future__ import annotations
 
+from math import sqrt
+
 from .xmi_point_3d import XmiPoint3D
 from .xmi_base_geometry import XmiBaseGeometry
 
 
 class XmiLine3D(XmiBaseGeometry):
-    __slots__ = ('_start_point', '_end_point')
+    __slots__ = ('_begin_point', '_end_point')
 
     _attributes_needed = [slot[1:] if slot.startswith(
         '_') else slot for slot in __slots__ if slot != "_entity_type"]
 
     def __init__(self,
-                 start_point: XmiPoint3D,
+                 begin_point: XmiPoint3D,
                  end_point: XmiPoint3D,
                  id: str = None,
                  name: str = None,
@@ -22,9 +24,9 @@ class XmiLine3D(XmiBaseGeometry):
         entity_type = "XmiLine3D"
 
         # Ensure material_type is provided
-        if start_point is None:
+        if begin_point is None:
             raise ValueError(
-                "The 'start_point' parameter is compulsory and must be provided.")
+                "The 'begin_point' parameter is compulsory and must be provided.")
         # Ensure material_type is provided
         if end_point is None:
             raise ValueError(
@@ -39,11 +41,11 @@ class XmiLine3D(XmiBaseGeometry):
                          )
 
         # Initialize attributes
-        self.set_attributes(start_point, end_point, **kwargs)
+        self.set_attributes(begin_point, end_point, **kwargs)
 
-    def set_attributes(self, start_point, end_point, **kwargs):
+    def set_attributes(self, begin_point, end_point, **kwargs):
         attributes = [
-            ('start_point', start_point),
+            ('begin_point', begin_point),
             ('end_point', end_point),
         ]
 
@@ -57,14 +59,14 @@ class XmiLine3D(XmiBaseGeometry):
                 setattr(self, attr_name, None)
 
     @property
-    def start_point(self):
-        return self._start_point
+    def begin_point(self):
+        return self._begin_point
 
-    @start_point.setter
-    def start_point(self, value):
+    @begin_point.setter
+    def begin_point(self, value):
         if not isinstance(value, XmiPoint3D):
-            raise TypeError("start_point should be an XmiPoint3D")
-        self._start_point = value
+            raise TypeError("begin_point should be an XmiPoint3D")
+        self._begin_point = value
 
     @property
     def end_point(self):
@@ -86,15 +88,15 @@ class XmiLine3D(XmiBaseGeometry):
                 error_logs.append(Exception(f"Missing attribute: {attr}"))
                 processed_data[attr] = None
 
-        start_point_found = processed_data['start_point']
+        begin_point_found = processed_data['begin_point']
         end_point_found = processed_data['end_point']
 
         # remove compulsory keys for proper class instantiation
-        del processed_data['start_point']
+        del processed_data['begin_point']
         del processed_data['end_point']
         try:
             instance = cls(
-                start_point=start_point_found,
+                begin_point=begin_point_found,
                 end_point=end_point_found,
                 **processed_data)
         except Exception as e:
@@ -102,3 +104,8 @@ class XmiLine3D(XmiBaseGeometry):
                 Exception(f"Error instantiating XmiLine3D: {obj}"))
 
         return instance, error_logs
+
+    def get_length(self) -> float:
+        return sqrt((self.end_point.x - self.begin_point.x) ** 2 +
+                    (self.end_point.y - self.begin_point.y) ** 2 +
+                    (self.end_point.z - self.begin_point.z) ** 2)
