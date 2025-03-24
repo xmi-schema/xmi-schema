@@ -62,9 +62,9 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ env.NEXT_VERSION }}
-          name: v${{ env.NEXT_VERSION }}
-          body: v${{ env.NEXT_VERSION }}
+          tag: ${{ env.NEXT_VERSION }}
+          name: ${{ env.NEXT_VERSION }}
+          body: ${{ env.NEXT_VERSION }}
           artifacts: |
             dist/*.whl
             dist/*.tar.gz
