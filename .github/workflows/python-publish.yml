@@ -45,22 +45,6 @@ jobs:
           echo "next_version=$version" >> $GITHUB_OUTPUT
           echo "NEXT_VERSION=$version" >> $GITHUB_ENV
 
-      - name: Commit version bump
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-
-          # Stage updated files (pyproject.toml)
-          git add pyproject.toml
-
-          # Check if there are staged changes before committing
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "ci: bump version to ${{ steps.tag_version.outputs.new_tag }} [skip ci]"
-            git push origin main
-          fi
-
       - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
@@ -78,9 +62,25 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{ env.NEXT_VERSION }}
-          name: v${{ env.NEXT_VERSION }}
-          body: v${{ env.NEXT_VERSION }}
+          tag: ${{ env.NEXT_VERSION }}
+          name: ${{ env.NEXT_VERSION }}
+          body: ${{ env.NEXT_VERSION }}
           artifacts: |
             dist/*.whl
             dist/*.tar.gz
+
+      - name: Commit version bump
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Stage updated files (pyproject.toml)
+          git add pyproject.toml
+
+          # Check if there are staged changes before committing
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "ci: bump version to ${{ steps.tag_version.outputs.new_tag }} [skip ci]"
+            git push origin main
+          fi
