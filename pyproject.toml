@@ -1,7 +1,7 @@
 [project]
 name = "xmi"
 version = "0.1.0"
-description = ""
+description = "Used to intepret XMI Schema"
 authors = [
     {name = "darellchua",email = "darellchua2@gmail.com"}
 ]
@@ -18,3 +18,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
 
+
+[project.urls]
+"Homepage" = "https://github.com/darellchua2/xmi-schema"
+"Bug Tracker" = "https://github.com/darellchua2/xmi-schema/issues"
