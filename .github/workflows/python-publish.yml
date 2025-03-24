@@ -2,21 +2,16 @@ name: Semantic Release & Publish to PyPI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: write
-  id-token: write # for publishing
+  id-token: write # for OIDC publish to PyPI
 
 jobs:
   release:
-    name: Semantic Versioning & PyPI Publish
     runs-on: ubuntu-latest
-
-    outputs:
-      next_version: ${{ steps.update_pyproject.outputs.next_version }}
 
     steps:
       - name: Checkout Repository
@@ -27,60 +22,63 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.9"
 
-      - name: Bump version and tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update pyproject.toml with new version
-        id: update_pyproject
-        run: |
-          new_tag="${{ steps.tag_version.outputs.new_tag }}"
-          version="${new_tag#v}"
-          echo "Updating version to $version"
-          sed -i "s/^version = \".*\"/version = \"$version\"/" pyproject.toml
-          echo "next_version=$version" >> $GITHUB_OUTPUT
-          echo "NEXT_VERSION=$version" >> $GITHUB_ENV
-
-      - name: Install build dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install build
 
-      - name: Build the Python package
+      # STEP 1: Determine next version (but do NOT tag yet)
+      - name: Get next semantic version (no tag)
+        id: get_next_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+
+      # STEP 2: Update pyproject.toml with that version
+      - name: Update pyproject.toml
+        id: update_version
+        run: |
+          version="${{ steps.get_next_version.outputs.new_version }}"
+          echo "Determined next version: $version"
+          sed -i "s/^version = \".*\"/version = \"$version\"/" pyproject.toml
+          echo "NEXT_VERSION=$version" >> $GITHUB_ENV
+
+      # STEP 3: Build the package
+      - name: Build Python package
         run: python -m build
 
+      # STEP 4: Publish to PyPI
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
 
-      - name: Create GitHub Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ env.NEXT_VERSION }}
-          name: ${{ env.NEXT_VERSION }}
-          body: ${{ env.NEXT_VERSION }}
-          artifacts: |
-            dist/*.whl
-            dist/*.tar.gz
-
-      - name: Commit version bump
+      # STEP 5: Commit version bump to main
+      - name: Commit pyproject.toml bump
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-
-          # Stage updated files (pyproject.toml)
           git add pyproject.toml
+          git commit -m "ci: bump version to v${{ env.NEXT_VERSION }} [skip ci]" || echo "No changes to commit"
+          git push origin main
 
-          # Check if there are staged changes before committing
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "ci: bump version to ${{ steps.tag_version.outputs.new_tag }} [skip ci]"
-            git push origin main
-          fi
+      # STEP 6: Tag the new version (after publish success)
+      - name: Tag and push
+        run: |
+          git tag "v${{ env.NEXT_VERSION }}"
+          git push origin "v${{ env.NEXT_VERSION }}"
+
+      # STEP 7: Create GitHub Release
+      - name: GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ env.NEXT_VERSION }}
+          name: v${{ env.NEXT_VERSION }}
+          body: v${{ env.NEXT_VERSION }}
+          artifacts: |
+            dist/*.whl
+            dist/*.tar.gz
