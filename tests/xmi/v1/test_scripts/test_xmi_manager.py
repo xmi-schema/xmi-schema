@@ -1,22 +1,22 @@
 import json
 
-from src.xmi.v1.xmi_manager import XmiManager
-from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
-from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
-from src.xmi.v1.entities.xmi_structural_point_connection import XmiStructuralPointConnection
-from src.xmi.v1.entities.xmi_structural_curve_member import XmiStructuralCurveMember
-from src.xmi.v1.entities.xmi_structural_surface_member import XmiStructuralSurfaceMember
+from xmi.v1.xmi_manager import XmiManager
+from xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
+from xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
+from xmi.v1.entities.xmi_structural_point_connection import XmiStructuralPointConnection
+from xmi.v1.entities.xmi_structural_curve_member import XmiStructuralCurveMember
+from xmi.v1.entities.xmi_structural_surface_member import XmiStructuralSurfaceMember
 
-from src.xmi.v1.entities.xmi_segment import XmiSegment
+from xmi.v1.entities.xmi_segment import XmiSegment
 
-from src.xmi.v1.geometries.xmi_point_3d import XmiPoint3D
-from src.xmi.v1.geometries.xmi_line_3d import XmiLine3D
+from xmi.v1.geometries.xmi_point_3d import XmiPoint3D
+from xmi.v1.geometries.xmi_line_3d import XmiLine3D
 
-from src.xmi.v1.relationships.xmi_has_structural_material import XmiHasStructuralMaterial
-from src.xmi.v1.relationships.xmi_has_structural_node import XmiHasStructuralNode
-from src.xmi.v1.relationships.xmi_has_structural_cross_section import XmiHasStructuralCrossSection
-from src.xmi.v1.relationships.xmi_has_segment import XmiHasSegment
-from src.xmi.v1.relationships.xmi_has_geometry import XmiHasGeometry
+from xmi.v1.relationships.xmi_has_structural_material import XmiHasStructuralMaterial
+from xmi.v1.relationships.xmi_has_structural_node import XmiHasStructuralNode
+from xmi.v1.relationships.xmi_has_structural_cross_section import XmiHasStructuralCrossSection
+from xmi.v1.relationships.xmi_has_segment import XmiHasSegment
+from xmi.v1.relationships.xmi_has_geometry import XmiHasGeometry
 
 TEST_INPUTS_DIRECTORY = "tests/xmi/v1/test_inputs/xmi_manager"
 

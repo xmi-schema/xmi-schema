@@ -1,10 +1,10 @@
 import pytest
-from src.xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
-from src.xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
-from src.xmi.v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
-from src.xmi.v1.shapes.xmi_shape import *
-from src.xmi.v1.enums.xmi_shape_enums import XmiShapeEnum
-from src.xmi.v1.xmi_errors import *
+from xmi.v1.entities.xmi_structural_cross_section import XmiStructuralCrossSection
+from xmi.v1.entities.xmi_structural_material import XmiStructuralMaterial
+from xmi.v1.enums.xmi_structural_material_enums import XmiStructuralMaterialTypeEnum
+from xmi.v1.shapes.xmi_shape import *
+from xmi.v1.enums.xmi_shape_enums import XmiShapeEnum
+from xmi.v1.xmi_errors import *
 import json
 
 
@@ -45,7 +45,8 @@ def test_xmi_structural_cross_section_ok_1():
     shape = XmiShapeEnum.from_attribute_get_enum(
         xmi_structural_cross_section_obj['Shape'])
     parameters_expected = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
-        xmi_structural_cross_section_obj['Parameters'])  # value is shown in mm for testing purposes
+        # value is shown in mm for testing purposes
+        xmi_structural_cross_section_obj['Parameters'])
     xmi_structural_cross_section = XmiStructuralCrossSection(
         material=xmi_structural_material,
         shape=shape,
@@ -98,7 +99,8 @@ def test_xmi_structural_cross_section_ok_2():
     shape = XmiShapeEnum.from_attribute_get_enum(
         xmi_structural_cross_section_obj['Shape'])
     parameters_expected = XmiStructuralCrossSection.convert_parameter_string_to_tuple(
-        xmi_structural_cross_section_obj['Parameters'])  # value is shown in mm for testing purposes
+        # value is shown in mm for testing purposes
+        xmi_structural_cross_section_obj['Parameters'])
     xmi_structural_cross_section = XmiStructuralCrossSection(
         material=xmi_structural_material,
         shape=shape,
