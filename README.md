@@ -22,3 +22,6 @@ XmiManager is currently able to read the following entities from the JSON File
 | StructuralMaterial        | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
 | StructuralCrossSection    | ![DONE](https://img.shields.io/badge/Status-DONE-green)        |
 | StructuralUnit            | ![ONGOING](https://img.shields.io/badge/Status-ONGOING-yellow) |
+
+
+testing
